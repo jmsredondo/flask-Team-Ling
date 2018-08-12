@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/registration.css') }}">
+</head>
+
+<body>
+<form class="signUp" id="signupForm" action="" method="post">
+    <h1 class="signUpTitle">Sign up in seconds</h1>
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    {{ form.username(class_='signUpInput', placeholder='Type your username') }}
+    {{ form.password(class_='signUpInput', placeholder='Choose a password') }}
+    {{ form.password2(class_='signUpInput', placeholder='Retype Password') }}
+    {{ form.email(class_='signUpInput', placeholder='Type your email') }}
+    {{ form.submit(type="submit", value="Register", class="signUpButton") }}
+</form>
+</body>
+</html>
