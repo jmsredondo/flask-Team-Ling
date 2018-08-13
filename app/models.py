@@ -63,7 +63,7 @@ class Book(db.Model):
         pass
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    bookName = db.Column(db.String(120), index=True, unique=True, nullable=True)
+    book_name = db.Column(db.String(120), index=True, unique=True, nullable=True)
     image = db.Column(db.String(120), index=True, unique=True, nullable=True)
     description = db.Column(db.String(120), index=True, unique=True, nullable=True)
     genres = db.relationship('Genre', secondary=book_category, lazy='subquery',
@@ -74,13 +74,23 @@ class Book(db.Model):
         b = Book.query.all()
         item = []
         for x in b:
-            item.append({'book_name': x.bookName,'image':x.image,'description':x.description})
+            item.append({'book_name': x.book_name,'image':x.image,'description':x.description})
         return item
     def book_info(self,book_id):
         b = Book.query.filter_by(id=book_id).first()
-        return [{'book_name': b.bookName,'image':b.image,'description':b.description}]
-
-
+        return [{'book_name': b.book_name,'image':b.image,'description':b.description}]
+    def add(self, book_name,image,description):
+        b = Book(book_name,image,description)
+        b.session.add(b)
+        b.session.commit()
+        return [{'book_name':book_name,'image':image,'description':description}]
+    def delete(self,book_id):
+        b = Book.query.filter_by(id=book_id)
+        data = b.first()
+        delete = b.delete()
+        b.session.add(delete)
+        b.session.commit()
+        return
 
 class Genre(db.Model):
     def __init__(self):

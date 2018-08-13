@@ -105,14 +105,28 @@ def users_list():
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
 
-# Book
-@app.route("/book")
+# Get all books
+# Add A new book
+@app.route("/book", methods=['GET', 'POST'])
 def book():
-    books = jsonify(Book().book())
-    return books
-@app.route("/book/<book_id>")
+    if request.method == 'POST':
+        book_name = request.data['book_name']
+        image = request.data['image']
+        description = request.data['description']
+        return jsonify(Book().add(book_name,image,description))
+    else:
+        books = jsonify(Book().book())
+        return books
+# Get a book object
+# Delete a book object
+@app.route("/book/<book_id>",methods=['GET', 'DELETE'])
 def bookinfo(book_id):
-    return jsonify(Book().book_info(book_id))
+    if request.method == 'DELETE':
+        return jsonify(Book().delete(book_id))
+    else:
+        return jsonify(Book().book_info(book_id))
+
+
 
 
 # Error Handling
