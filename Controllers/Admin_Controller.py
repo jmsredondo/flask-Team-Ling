@@ -7,3 +7,4 @@ def admin_dashboard():  # noqa: E501
 # def list_users():  # noqa: E501
 #     return render_template('admin/dashboard.html', title='Dashboard')
 
+

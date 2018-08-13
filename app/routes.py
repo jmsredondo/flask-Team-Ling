@@ -1,5 +1,4 @@
 from flask import render_template, flash, redirect, url_for, request
-from werkzeug.urls import url_parse
 from app import app
 from app import db
 from app.forms import *
@@ -8,7 +7,7 @@ from app.models import User
 from flask_login import logout_user
 from flask_login import login_required
 from Controllers.Admin_Controller import *
-
+from werkzeug.urls import url_parse
 from app import models
 
 
@@ -75,8 +74,20 @@ def index():
 def dashboard():
     return admin_dashboard()
 
+# Admin Index
+@app.route('/users-list')
+@login_required
+def dashboard():
+    return admin_dashboard()
+
 
 # Error Handling
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template('404.html'), 404
+    return render_template('error/404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('500.html'), 500

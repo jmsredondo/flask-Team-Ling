@@ -1,53 +1,74 @@
 {% extends "layouts/admin_layout.html" %}
 
+{% block styles %}
+<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
-                    <div class="col-md-4">
-                        <div class="card">
-
-                            <div class="header">
-                                <h4 class="title">Email Statistics</h4>
-                                <p class="category">Last Campaign Performance</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
-
-                                <div class="footer">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Bounce
-                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
-                                    </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Users Behavior</h4>
-                                <p class="category">24 Hours performance</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartHours" class="ct-chart"></div>
-                                <div class="footer">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Click
-                                        <i class="fa fa-circle text-warning"></i> Click Second Time
-                                    </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-history"></i> Updated 3 minutes ago
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<table id="example" class="display" style="width:100%">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Office</th>
+        <th>Extn.</th>
+        <th>Start date</th>
+        <th>Salary</th>
+    </tr>
+    </thead>
+    <tfoot>
+    <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Office</th>
+        <th>Extn.</th>
+        <th>Start date</th>
+        <th>Salary</th>
+    </tr>
+    </tfoot>
+</table>
+<table border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td class="gutter">
+            <div class="line number1 index0 alt2">1</div>
+            <div class="line number2 index1 alt1">2</div>
+            <div class="line number3 index2 alt2">3</div>
+            <div class="line number4 index3 alt1">4</div>
+            <div class="line number5 index4 alt2">5</div>
+        </td>
+        <td class="code">
+            <div class="container">
+                <div class="line number1 index0 alt2"><code class="js plain">$(document).ready(</code><code
+                        class="js keyword">function</code><code class="js plain">() {</code></div>
+                <div class="line number2 index1 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code
+                        class="js plain">$(</code><code class="js string">'#example'</code><code class="js plain">).DataTable(
+                    {</code></div>
+                <div class="line number3 index2 alt2"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code
+                        class="js string">"ajax"</code><code class="js plain">: </code><code class="js string">'../ajax/data/arrays.txt'</code>
+                </div>
+                <div class="line number4 index3 alt1"><code class="js spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code
+                        class="js plain">} );</code></div>
+                <div class="line number5 index4 alt2"><code class="js plain">} );</code></div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td class="gutter">
+            <div class="line number1 index0 alt2" style="display: none;">1</div>
+        </td>
+        <td class="code">
+            <div class="container" style="display: none;">
+                <div class="line number1 index0 alt2" style="display: none;">&nbsp;</div>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
 {% endblock %}
 
 
