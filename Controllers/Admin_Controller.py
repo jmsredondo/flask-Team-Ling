@@ -18,5 +18,5 @@ def get_users():  # noqa: E501
 
 
     # session['ulist'] = json.dumps(ul)
-    return Response(json.loads(json.dumps(ul)), content_type="application/json")
-    # return json.loads(json.dumps(ul))
+    # return Response(json.loads(json.dumps(ul)), content_type="application/json")
+    return flask.jsonify({'users': ul})

@@ -116,9 +116,9 @@ def dashboard():
     return render_template('admin/dashboard.html', title='Dashboard', page='Dashboard')
 
 
-# Admin Index
+# Admin view Users List
 @app.route("/users-list")
-@login_required
+# @login_required
 def users_list():
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
