@@ -110,7 +110,9 @@ def users_list():
 def book():
     books = jsonify(Book().book())
     return books
-
+@app.route("/book/<book_id>")
+def bookinfo(book_id):
+    return jsonify(Book().book_info(book_id))
 
 
 # Error Handling
