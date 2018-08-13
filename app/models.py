@@ -1,11 +1,12 @@
 import os
 
-from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import login
+
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
+
+from app import db, login
 
 
 library = db.Table('library',
@@ -13,17 +14,20 @@ library = db.Table('library',
     db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
 )
 
+
 book_category = db.Table('book_category',
     db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True),
     db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
 )
 
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(64), nullable=False)
-    lastname = db.Column(db.String(64), nullable=False)
+    firstname = db.Column(db.String(64), nullable=True)
+    lastname = db.Column(db.String(64), nullable=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     phone = db.Column(db.String(11), unique=True, nullable=True)
@@ -103,5 +107,7 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.String(120), index=True, unique=True, nullable=True)
     genre = db.Column(db.String(120), index=True, unique=True, nullable=True)
+
+
 
 
