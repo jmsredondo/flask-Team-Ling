@@ -4,10 +4,11 @@ from app import app
 from app import db
 from app.forms import *
 from flask_login import current_user, login_user
-from app.models import User, Book
+from app.models import User, Book, Genre
 from flask_login import logout_user
 from flask_login import login_required
 from Controllers import Admin_Controller as ac
+from Controllers import Genre_Controller as genre_cont
 from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
@@ -130,10 +131,32 @@ def book():
     books = jsonify(Book().book())
     return books
 
-
 @app.route("/book/<book_id>")
 def bookinfo(book_id):
     return jsonify(Book().book_info(book_id))
+
+
+#Genre - Add Or show all
+@app.route("/genre", methods=['GET', 'POST'])
+def genre():
+    if request.method == 'GET':
+        return jsonify(Genre().list_all_genre())
+    else:
+        if request.is_json:
+            return jsonify(genre_cont.create_genre(request.get_json()))
+        else:
+            return jsonify({'message':'Invalid Request'})
+
+#Delete Or retrieve
+@app.route("/genre/<genre_id>", methods=['GET', 'DELETE'])
+def search_genre_by_id(genre_id):
+    if request.method == 'GET':
+        if Genre().get_genre_by_id(genre_id):
+            return jsonify(Genre().get_genre_by_id(genre_id))
+        else:
+            return jsonify({'message':'Cannot Find Specified Genre'})
+    else:
+        return jsonify(genre_cont.delete_genre(genre_id))
 
 
 # Error Handling
