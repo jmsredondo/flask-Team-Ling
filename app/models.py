@@ -22,13 +22,28 @@ class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(64), nullable=False)
+    lastname = db.Column(db.String(64), nullable=False)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
+    phone = db.Column(db.String(11), unique=True, nullable=True)
     role = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
 
-    def __repr__(self):
-        return '<User {}>'.format(self.username)
+
+    #JSON OBJECT
+    def user_obj(self):
+        user_data = {
+            'username': self.username,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'email': self.email,
+            'password': self.password_hash,
+            'phone': self.phone,
+            'role': self.role
+        }
+
+        return user_data
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

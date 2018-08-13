@@ -85,19 +85,46 @@ def logout():
 
 
 # User Register
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/register', methods=['GET'])
+def register_form():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))
+    # if form.validate_on_submit():
+    #
+    #     user = User(username=form.username.data,
+    #                 lastname=form.lastname.data,
+    #                 firstname=form.firstname.data,
+    #                 email=form.email.data
+    #                 )
+    #
+    #     user.set_password(form.password.data)
+    #
+    #     #db.session.add(user)
+    #     #db.session.commit()
+    #     return jsonify(user.__repr__())
+        #flash('Congratulations, you are now a registered user!')
+        #return redirect(url_for('login'))
+
     return render_template('registration.html', title='Register', form=form)
+
+@app.route('/users', methods=['POST'])
+def register():
+    form = RegistrationForm(request.form)
+
+    user = User(username=form.username.data,
+                lastname=form.lastname.data,
+                firstname=form.firstname.data,
+                email=form.email.data,
+                password_hash=form.password.data,
+                phone=form.phone.data,
+                role='basic'
+                )
+
+    user.set_password(form.password.data)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(user.user_obj())
 
 
 # Users Index
@@ -160,4 +187,5 @@ def authentication_error(error):
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
+
     return render_template('error/empty.html', message="INTERNAL ERROR"), 500
