@@ -13,7 +13,6 @@ from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
 
-from app import models
 
 
 # Log In User
@@ -86,19 +85,48 @@ def logout():
 
 
 # User Register
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/register', methods=['GET'])
+def register_form():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Congratulations, you are now a registered user!')
-        return redirect(url_for('login'))
+    # if form.validate_on_submit():
+    #
+    #     user = User(username=form.username.data,
+    #                 lastname=form.lastname.data,
+    #                 firstname=form.firstname.data,
+    #                 email=form.email.data
+    #                 )
+    #
+    #     user.set_password(form.password.data)
+    #
+    #     #db.session.add(user)
+    #     #db.session.commit()
+    #     return jsonify(user.__repr__())
+    # flash('Congratulations, you are now a registered user!')
+    # return redirect(url_for('login'))
+
     return render_template('registration.html', title='Register', form=form)
+
+
+@app.route('/users', methods=['POST'])
+def register():
+    form = RegistrationForm(request.form)
+
+    user = User(username=form.username.data,
+                lastname=form.lastname.data,
+                firstname=form.firstname.data,
+                email=form.email.data,
+                password_hash=form.password.data,
+                phone=form.phone.data,
+                role='basic'
+                )
+
+    user.set_password(form.password.data)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify(user.user_obj())
 
 
 # Users Index
@@ -117,23 +145,36 @@ def dashboard():
     return render_template('admin/dashboard.html', title='Dashboard', page='Dashboard')
 
 
-# Admin Index
+# Admin view Users List
 @app.route("/users-list")
-@login_required
+# @login_required
 def users_list():
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
 
 
-# Book
-@app.route("/book")
+# Get all books
+# Add A new book
+@app.route("/book", methods=['GET', 'POST'])
 def book():
-    books = jsonify(Book().book())
-    return books
+    if request.method == 'POST':
+        book_name = request.data['book_name']
+        image = request.data['image']
+        description = request.data['description']
+        return jsonify(Book().add(book_name, image, description))
+    else:
+        books = jsonify(Book().book())
+        return books
 
-@app.route("/book/<book_id>")
+
+# Get a book object
+# Delete a book object
+@app.route("/book/<book_id>", methods=['GET', 'DELETE'])
 def bookinfo(book_id):
-    return jsonify(Book().book_info(book_id))
+    if request.method == 'DELETE':
+        return jsonify(Book().delete(book_id))
+    else:
+        return jsonify(Book().book_info(book_id))
 
 
 #Genre - Add Or show all
@@ -174,4 +215,5 @@ def authentication_error(error):
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
+
     return render_template('error/empty.html', message="INTERNAL ERROR"), 500
