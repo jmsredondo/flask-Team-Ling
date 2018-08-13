@@ -19,7 +19,7 @@ auth = HTTPBasicAuth()
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({ 'token': token.decode('ascii') })
+    return jsonify({'token': token.decode('ascii')})
 
 
 @auth.verify_password
@@ -28,11 +28,27 @@ def verify_password(username_or_token, password):
     user = User.verify_auth_token(username_or_token)
     if not user:
         # try to authenticate with username/password
-        user = User.query.filter_by(username = username_or_token).first()
+        user = User.query.filter_by(username=username_or_token).first()
         if not user or not user.check_password(password):
             return False
     g.user = user
     return True
+
+
+@app.route('/users/<username>', methods=['GET', 'POST'])
+@auth.login_required
+def get_user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return render_template('error/empty.html', message="User not found"), 404
+    return jsonify({"username": user.username})
+    #                ,
+    # "firstName": user.firstName,
+    # "lastName": user.lastName,
+    # "email": user.email,
+    # "balance": user.balance,
+    # "phone": user.phone})
+
 
 # @app.route('/admin', methods=['GET', 'POST'])
 # @app.route('/users/login', methods=['GET', 'POST'])
@@ -97,21 +113,25 @@ def index():
 def dashboard():
     return render_template('admin/dashboard.html', title='Dashboard', page='Dashboard')
 
+
 # Admin Index
 @app.route("/users-list")
 @login_required
 def users_list():
-
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
-
-
 
 
 # Error Handling
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('error/404.html'), 404
+
+
+# Error Handling
+@app.errorhandler(401)
+def authentication_error(error):
+    return "Not Authorized"
 
 
 @app.errorhandler(500)
