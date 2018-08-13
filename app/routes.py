@@ -14,6 +14,7 @@ auth = HTTPBasicAuth()
 
 from app import models
 
+
 # Log In User
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/users/login', methods=['GET', 'POST'])
@@ -122,11 +123,18 @@ def users_list():
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
 
+
 # Book
 @app.route("/book")
 def book():
     books = jsonify(Book().book())
     return books
+
+
+@app.route("/book/<book_id>")
+def bookinfo(book_id):
+    return jsonify(Book().book_info(book_id))
+
 
 # Error Handling
 @app.errorhandler(404)

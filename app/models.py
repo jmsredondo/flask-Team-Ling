@@ -75,6 +75,9 @@ class Book(db.Model):
         for x in b:
             item.append({'book_name': x.bookName,'image':x.image,'description':x.description})
         return item
+    def book_info(self,book_id):
+        b = Book.query.filter_by(id=book_id).first()
+        return [{'book_name': b.bookName,'image':b.image,'description':b.description}]
 
 
 
