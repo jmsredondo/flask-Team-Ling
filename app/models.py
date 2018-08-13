@@ -5,20 +5,18 @@ from flask_login import UserMixin
 
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-
 from app import db, login
-
-
 library = db.Table('library',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
-    db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
-)
+                   db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                   db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
+                   )
 
 
 book_category = db.Table('book_category',
-    db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True),
-    db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
-)
+                         db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True),
+                         db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
+                         )
+
 
 
 
@@ -34,8 +32,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(120), index=True)
     password_hash = db.Column(db.String(128))
 
-
-    #JSON OBJECT
+    # JSON OBJECT
     def user_obj(self):
         user_data = {
             'username': self.username,
@@ -85,19 +82,34 @@ class Book(db.Model):
     image = db.Column(db.String(120), index=True, unique=True, nullable=True)
     description = db.Column(db.String(120), index=True, unique=True, nullable=True)
     genres = db.relationship('Genre', secondary=book_category, lazy='subquery',
-                           backref=db.backref('books', lazy=True))
+                             backref=db.backref('books', lazy=True))
     library = db.relationship('User', secondary=library, lazy='subquery',
-                             backref=db.backref('users', lazy=True))
+                              backref=db.backref('users', lazy=True))
+
     def book(self):
         b = Book.query.all()
         item = []
         for x in b:
-            item.append({'book_name': x.bookName,'image':x.image,'description':x.description})
+            item.append({'book_name': x.bookName, 'image': x.image, 'description': x.description})
         return item
-    def book_info(self,book_id):
-        b = Book.query.filter_by(id=book_id).first()
-        return [{'book_name': b.bookName,'image':b.image,'description':b.description}]
 
+    def book_info(self, book_id):
+        b = Book.query.filter_by(id=book_id).first()
+        return [{'book_name': b.bookName, 'image': b.image, 'description': b.description}]
+
+    def add(book_name, image, description):
+        b = Book(book_name, image, description)
+        b.session.add(b)
+        b.session.commit()
+        return [{'book_name': book_name, 'image': image, 'description': description}]
+
+    def delete(self, book_id):
+        b = Book.query.filter_by(id=book_id)
+        data = b.first()
+        delete = b.delete()
+        b.session.add(delete)
+        b.session.commit()
+        return
 
 
 class Genre(db.Model):
@@ -107,7 +119,3 @@ class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.String(120), index=True, unique=True, nullable=True)
     genre = db.Column(db.String(120), index=True, unique=True, nullable=True)
-
-
-
-

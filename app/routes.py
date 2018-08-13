@@ -102,10 +102,11 @@ def register_form():
     #     #db.session.add(user)
     #     #db.session.commit()
     #     return jsonify(user.__repr__())
-        #flash('Congratulations, you are now a registered user!')
-        #return redirect(url_for('login'))
+    # flash('Congratulations, you are now a registered user!')
+    # return redirect(url_for('login'))
 
     return render_template('registration.html', title='Register', form=form)
+
 
 @app.route('/users', methods=['POST'])
 def register():
@@ -143,24 +144,36 @@ def dashboard():
     return render_template('admin/dashboard.html', title='Dashboard', page='Dashboard')
 
 
-# Admin Index
+# Admin view Users List
 @app.route("/users-list")
-@login_required
+# @login_required
 def users_list():
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
 
 
-# Book
-@app.route("/book")
+# Get all books
+# Add A new book
+@app.route("/book", methods=['GET', 'POST'])
 def book():
-    books = jsonify(Book().book())
-    return books
+    if request.method == 'POST':
+        book_name = request.data['book_name']
+        image = request.data['image']
+        description = request.data['description']
+        return jsonify(Book().add(book_name, image, description))
+    else:
+        books = jsonify(Book().book())
+        return books
 
 
-@app.route("/book/<book_id>")
+# Get a book object
+# Delete a book object
+@app.route("/book/<book_id>", methods=['GET', 'DELETE'])
 def bookinfo(book_id):
-    return jsonify(Book().book_info(book_id))
+    if request.method == 'DELETE':
+        return jsonify(Book().delete(book_id))
+    else:
+        return jsonify(Book().book_info(book_id))
 
 
 # Error Handling
