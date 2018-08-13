@@ -55,7 +55,6 @@ class User(UserMixin, db.Model):
     def load_user(id):
         return User.query.get(int(id))
 
-
     def generate_auth_token(self, expiration=600):
         s = Serializer(os.environ.get('SECRET_KEY'), expires_in=expiration)
         return s.dumps({'id': self.id})
@@ -85,9 +84,17 @@ class Book(db.Model):
                            backref=db.backref('books', lazy=True))
     library = db.relationship('User', secondary=library, lazy='subquery',
                              backref=db.backref('users', lazy=True))
+    def book(self):
+        b = Book.query.all()
+        item = []
+        for x in b:
+            item.append({'book_name': x.bookName,'image':x.image,'description':x.description})
+        return item
+    def book_info(self,book_id):
+        b = Book.query.filter_by(id=book_id).first()
+        return [{'book_name': b.bookName,'image':b.image,'description':b.description}]
 
-    def __repr__(self):
-        return '<Book {}>'.format(self.bookName)
+
 
 class Genre(db.Model):
     def __init__(self):
@@ -97,6 +104,4 @@ class Genre(db.Model):
     type = db.Column(db.String(120), index=True, unique=True, nullable=True)
     genre = db.Column(db.String(120), index=True, unique=True, nullable=True)
 
-    def __repr__(self):
-        return '<Genre {}>'.format(self.genre)
 

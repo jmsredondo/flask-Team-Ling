@@ -4,13 +4,15 @@ from app import app
 from app import db
 from app.forms import *
 from flask_login import current_user, login_user
-from app.models import User
+from app.models import User, Book
 from flask_login import logout_user
 from flask_login import login_required
 from Controllers import Admin_Controller as ac
 from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
+
+from app import models
 
 
 # Log In User
@@ -19,7 +21,7 @@ auth = HTTPBasicAuth()
 @auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
-    return jsonify({ 'token': token.decode('ascii') })
+    return jsonify({'token': token.decode('ascii')})
 
 
 @auth.verify_password
@@ -28,11 +30,27 @@ def verify_password(username_or_token, password):
     user = User.verify_auth_token(username_or_token)
     if not user:
         # try to authenticate with username/password
-        user = User.query.filter_by(username = username_or_token).first()
+        user = User.query.filter_by(username=username_or_token).first()
         if not user or not user.check_password(password):
             return False
     g.user = user
     return True
+
+
+@app.route('/users/<username>', methods=['GET', 'POST'])
+@auth.login_required
+def get_user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        return render_template('error/empty.html', message="User not found"), 404
+    return jsonify({"username": user.username})
+    #                ,
+    # "firstName": user.firstName,
+    # "lastName": user.lastName,
+    # "email": user.email,
+    # "balance": user.balance,
+    # "phone": user.phone})
+
 
 # @app.route('/admin', methods=['GET', 'POST'])
 # @app.route('/users/login', methods=['GET', 'POST'])
@@ -124,24 +142,41 @@ def index():
 def dashboard():
     return render_template('admin/dashboard.html', title='Dashboard', page='Dashboard')
 
+
 # Admin Index
 @app.route("/users-list")
 @login_required
 def users_list():
-
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
 
 
+# Book
+@app.route("/book")
+def book():
+    books = jsonify(Book().book())
+    return books
+
+
+@app.route("/book/<book_id>")
+def bookinfo(book_id):
+    return jsonify(Book().book_info(book_id))
 
 
 # Error Handling
 @app.errorhandler(404)
 def not_found_error(error):
-    return render_template('error/404.html'), 404
+    return render_template('error/empty.html', message="NOT FOUND"), 404
+
+
+# Error Handling
+@app.errorhandler(401)
+def authentication_error(error):
+    return render_template('error/empty.html', message="NOT AUTHORIZED"),
 
 
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
-    return render_template('error/500.html'), 500
+
+    return render_template('error/empty.html', message="INTERNAL ERROR"), 500
