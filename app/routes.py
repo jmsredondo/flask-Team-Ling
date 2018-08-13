@@ -4,7 +4,7 @@ from app import app
 from app import db
 from app.forms import *
 from flask_login import current_user, login_user
-from app.models import User
+from app.models import User, Book
 from flask_login import logout_user
 from flask_login import login_required
 from Controllers import Admin_Controller as ac
@@ -105,6 +105,11 @@ def users_list():
     return ac.get_users()
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
 
+# Book
+@app.route("/book")
+def book():
+    books = jsonify(Book().book())
+    return books
 
 
 
