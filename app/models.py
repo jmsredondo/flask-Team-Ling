@@ -40,7 +40,6 @@ class User(UserMixin, db.Model):
     def load_user(id):
         return User.query.get(int(id))
 
-
     def generate_auth_token(self, expiration=600):
         s = Serializer(os.environ.get('SECRET_KEY'), expires_in=expiration)
         return s.dumps({'id': self.id})
