@@ -77,7 +77,7 @@ def dashboard():
 # Admin Index
 @app.route('/users-list')
 @login_required
-def dashboard():
+def users_list():
     return admin_dashboard()
 
 
