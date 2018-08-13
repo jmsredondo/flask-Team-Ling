@@ -1,22 +1,43 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, Form
+from wtforms.validators import *
 from app.models import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired(),])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
 
-class RegistrationForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField(
-        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+class RegistrationForm(Form):
+    firstname = StringField('Firstname',
+                            validators=[DataRequired(),
+                                        Regexp('([a-z|_]+)')])
+
+    lastname = StringField('Lastname',
+                           validators=[DataRequired()])
+
+    username = StringField('Username',
+                           validators=[DataRequired()])
+
+    email = StringField('Email',
+                        validators=[DataRequired(),
+                                    Email(),
+                                    Regexp('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')])
+    password = PasswordField('Password',
+                             validators=[DataRequired(),
+                                         InputRequired(),
+                                         Regexp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$')])
+
+    password2 = PasswordField('Repeat Password',
+                              validators=[DataRequired(),
+                                          EqualTo('password', message="Password Must Match")])
+    phone = StringField('Phone',
+                        validators=[Regexp('([0-9])'),
+                                    Length(min=11, max=11)])
+
     submit = SubmitField('Register')
 
     def validate_username(self, username):
