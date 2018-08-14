@@ -159,7 +159,10 @@ def users_list():
 def book():
     if request.method == 'POST':
         form = BookForm(request.form)
-        return jsonify(Book().add(form.bookName.data, form.image.data, form.description.data))
+        b = Book(bookName = form.bookName.data, image = form.image.data, description = form.description.data)
+        b.session.add(b)
+        b.session.commit()
+        return jsonify([{'book_name': form.bookName.data, 'image':form.image.data, 'description':form.description.data}])
     else:
         books = jsonify(Book().book())
         return books
