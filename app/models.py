@@ -97,7 +97,7 @@ class Book(db.Model):
         b = Book.query.filter_by(id=book_id).first()
         return [{'book_name': b.bookName, 'image': b.image, 'description': b.description}]
 
-    def add(book_name, image, description):
+    def add(self,book_name, image, description):
         b = Book(book_name, image, description)
         b.session.add(b)
         b.session.commit()
