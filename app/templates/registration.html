@@ -6,10 +6,10 @@
 </head>
 
 <body>
-<form class="signUp" id="signupForm" action="" method="post">
+<form class="signUp" id="signupForm" action="/users" method="post">
     <h1 class="signUpTitle">Sign up in seconds</h1>
     {{ form.csrf_token }}
-    {{ form.hidden_tag() }}
+{#    {{ form.hidden_tag() }}#}
     {{ form.username(class_='signUpInput', placeholder='Type your username') }}<br>
     {{ form.firstname(class_='signUpInput', placeholder='Type your first name') }}<br>
     {{ form.lastname(class_='signUpInput', placeholder='Type your last name') }}<br>
