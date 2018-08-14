@@ -113,9 +113,21 @@ class Book(db.Model):
 
 
 class Genre(db.Model):
-    def __init__(self):
-        pass
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.String(120))
     genre = db.Column(db.String(120))
+
+    def list_all_genre(self):
+        genreQuery = Genre.query.all()
+        genreList = []
+        for genreItem in genreQuery:
+            genreList.append({'id':genreItem.id,'type':genreItem.type,'genre':genreItem.genre})
+        return genreList
+
+    def get_genre_by_id(self,genreId):
+        genreQuery = Genre.query.get(genreId)
+        if genreQuery is not None:
+            return {'id':genreQuery.id,'type':genreQuery.type,'genre':genreQuery.genre}
+        else:
+            return False
+
