@@ -98,7 +98,8 @@ class Book(db.Model):
         return [{'book_name': b.bookName, 'image': b.image, 'description': b.description}]
 
     def add(self,book_name, image, description):
-        b = Book(book_name, image, description)
+
+        b = Book(bookName = book_name, image = image, description = description)
         b.session.add(b)
         b.session.commit()
         return [{'book_name': book_name, 'image': image, 'description': description}]
