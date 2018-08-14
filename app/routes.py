@@ -12,7 +12,6 @@ from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
 
-from app import models
 
 
 # Log In User
@@ -125,6 +124,7 @@ def register():
     user.set_password(form.password.data)
     db.session.add(user)
     db.session.commit()
+
     return jsonify(user.user_obj())
 
 

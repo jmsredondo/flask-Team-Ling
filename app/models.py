@@ -1,16 +1,16 @@
 import os
 
-from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import login
+
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
-
+from app import db, login
 library = db.Table('library',
                    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                    db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
                    )
+
 
 book_category = db.Table('book_category',
                          db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True),
@@ -18,16 +18,18 @@ book_category = db.Table('book_category',
                          )
 
 
+
+
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
-    firstname = db.Column(db.String(64), nullable=False)
-    lastname = db.Column(db.String(64), nullable=False)
-    username = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
-    phone = db.Column(db.String(11), unique=True, nullable=True)
-    role = db.Column(db.String(120), index=True)
+    firstname = db.Column(db.String(64))
+    lastname = db.Column(db.String(64))
+    username = db.Column(db.String(64), unique=True)
+    email = db.Column(db.String(120), unique=True)
+    phone = db.Column(db.String(11), nullable=True)
+    role = db.Column(db.String(120), default='user')
     password_hash = db.Column(db.String(128))
 
     # JSON OBJECT
@@ -76,9 +78,9 @@ class Book(db.Model):
         pass
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    bookName = db.Column(db.String(120), index=True, unique=True, nullable=True)
-    image = db.Column(db.String(120), index=True, unique=True, nullable=True)
-    description = db.Column(db.String(120), index=True, unique=True, nullable=True)
+    bookName = db.Column(db.String(120))
+    image = db.Column(db.String(120), nullable=True)
+    description = db.Column(db.String(250), nullable=True)
     genres = db.relationship('Genre', secondary=book_category, lazy='subquery',
                              backref=db.backref('books', lazy=True))
     library = db.relationship('User', secondary=library, lazy='subquery',
@@ -115,5 +117,5 @@ class Genre(db.Model):
         pass
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    type = db.Column(db.String(120), index=True, unique=True, nullable=True)
-    genre = db.Column(db.String(120), index=True, unique=True, nullable=True)
+    type = db.Column(db.String(120))
+    genre = db.Column(db.String(120))

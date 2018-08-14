@@ -13,14 +13,14 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(Form):
     firstname = StringField('Firstname',
-                            validators=[DataRequired(),
-                                        Regexp('([a-z|_]+)')])
+                            validators=[DataRequired()])
 
     lastname = StringField('Lastname',
                            validators=[DataRequired()])
 
     username = StringField('Username',
-                           validators=[DataRequired()])
+                           validators=[DataRequired(),
+                                        Regexp('([a-z|_]+)')])
 
     email = StringField('Email',
                         validators=[DataRequired(),
@@ -39,6 +39,8 @@ class RegistrationForm(Form):
                                     Length(min=11, max=11)])
 
     submit = SubmitField('Register')
+
+
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
