@@ -158,10 +158,8 @@ def users_list():
 @app.route("/book", methods=['GET', 'POST'])
 def book():
     if request.method == 'POST':
-        book_name = request.data['book_name']
-        image = request.data['image']
-        description = request.data['description']
-        return jsonify(Book().add(book_name, image, description))
+        form = BookForm(request.form)
+        return jsonify(Book().add(form.bookName.data, form.image.data, form.description.data))
     else:
         books = jsonify(Book().book())
         return books

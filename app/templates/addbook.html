@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/registration.css') }}">
+</head>
+
+<body>
+<form class="" id="bookForm" action="" method="post">
+    <h1 class="signUpTitle">Add Book</h1>
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    {{ form.bookName(class_='book', placeholder='Enter Book Name') }}<br>
+    {{ form.image(class_='', placeholder='image') }}<br>
+    {{ form.description(class_='', placeholder='Enter description') }}<br>
+    {{ form.submit(type="submit", value="Book", class="") }}
+</form>
+</body>
+</html>
