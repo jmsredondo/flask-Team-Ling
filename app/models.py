@@ -1,4 +1,5 @@
 import os
+import json
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -73,9 +74,6 @@ class User(UserMixin, db.Model):
         return user
 
 class Book(db.Model):
-    def __init__(self):
-        pass
-
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     bookName = db.Column(db.String(120))
     image = db.Column(db.String(120), nullable=True)
@@ -96,20 +94,35 @@ class Book(db.Model):
         b = Book.query.filter_by(id=book_id).first()
         return [{'book_name': b.bookName, 'image': b.image, 'description': b.description}]
 
-    def add(book_name, image, description):
-        b = Book(book_name, image, description)
-        b.session.add(b)
-        b.session.commit()
+    def add(self,book_name, image, description):
+
+        b = Book(bookName = book_name,
+                 image = image,
+                 description = description)
+
+        db.session.add(b)
+        db.session.commit()
+
         return [{'book_name': book_name, 'image': image, 'description': description}]
 
-    def delete(self, book_id):
-        b = Book.query.filter_by(id=book_id)
-        data = b.first()
-        delete = b.delete()
-        b.session.add(delete)
-        b.session.commit()
-        return
+    def book_obj(self):
+        book_data = {
+            'bookName': self.bookName,
+            'image': self.image,
+            'description': self.description
+        }
 
+        return book_data
+
+
+    def delete(self,book_id):
+        book_record = Book.query.filter_by(id=book_id).first()
+        response = {'book_name': book_record.bookName,
+                    'description':book_record.image,
+                    'image':book_record.image}
+        db.session.delete(book_record)
+        db.session.commit()
+        return response
 
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
