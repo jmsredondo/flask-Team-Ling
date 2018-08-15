@@ -13,34 +13,39 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(Form):
     firstname = StringField('Firstname',
-                            validators=[DataRequired()])
+                            validators=[DataRequired()
+                                        ])
 
     lastname = StringField('Lastname',
-                           validators=[DataRequired()])
+                           validators=[DataRequired()
+                                       ])
 
     username = StringField('Username',
                            validators=[DataRequired(),
-                                        Regexp('([a-z|_]+)')])
+                                        Regexp('^(?=.*?([a-z)(?=.*?[_])]+)$')
+                                       ])
 
     email = StringField('Email',
                         validators=[DataRequired(),
                                     Email(),
-                                    Regexp('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')])
+                                    Regexp('(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)')
+                                    ])
     password = PasswordField('Password',
                              validators=[DataRequired(),
                                          InputRequired(),
-                                         Regexp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$')])
+                                         Regexp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$')
+                                         ])
 
     password2 = PasswordField('Repeat Password',
                               validators=[DataRequired(),
-                                          EqualTo('password', message="Password Must Match")])
+                                          EqualTo('password', message="Password Must Match")
+                                          ])
     phone = StringField('Phone',
                         validators=[Regexp('([0-9])'),
-                                    Length(min=11, max=11)])
+                                    Length(min=11, max=11)
+                                    ])
 
     submit = SubmitField('Register')
-
-
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
@@ -57,10 +62,10 @@ class BookForm(Form):
     bookName = StringField('Book Name',
                             validators=[DataRequired()])
 
-    image = StringField('Last Name')
+    image = StringField('Image')
 
     description = StringField('Description')
 
-    submit = SubmitField('Book')
+    submit = SubmitField('Add Book')
 
 
