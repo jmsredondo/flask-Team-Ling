@@ -1,13 +1,3 @@
-from flask import request, jsonify
-from flask_httpauth import HTTPBasicAuth
-
-from Controllers import Genre_Controller as genre_cont
-from app import app
-from app.models import Genre
-
-auth = HTTPBasicAuth()
-
-import json
 from flask import render_template, flash, redirect, url_for, request, Response, jsonify
 from app import app
 from app import db
@@ -22,8 +12,6 @@ from flask_httpauth import HTTPBasicAuth
 
 auth = HTTPBasicAuth()
 
-
-<<<<<<< HEAD
 # Log In User
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/users/login', methods=['GET', 'POST'])
@@ -209,6 +197,7 @@ def search_genre_by_id(genre_id):
         return jsonify(genre_cont.delete_genre(genre_id))
 
     return genre_cont.search_or_delete(request, genre_id)
+
 
 @app.route("/genre/addbook/<genre_id>", methods=['POST'])
 def add_genre_to_routes(genre_id):
