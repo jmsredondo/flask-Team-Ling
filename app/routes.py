@@ -181,25 +181,17 @@ def bookinfo(book_id):
 
 #Genre - Add Or show all
 @app.route("/genre", methods=['GET', 'POST'])
-def genre():
-    if request.method == 'GET':
-        return jsonify(Genre().list_all_genre())
-    else:
-        if request.is_json:
-            return jsonify(genre_cont.create_genre(request.get_json()))
-        else:
-            return jsonify({'message':'Invalid Request'})
+def routeGenre():
+    return genre_cont.genre(request)
 
 #Delete Or retrieve
 @app.route("/genre/<genre_id>", methods=['GET', 'DELETE'])
 def search_genre_by_id(genre_id):
-    if request.method == 'GET':
-        if Genre().get_genre_by_id(genre_id):
-            return jsonify(Genre().get_genre_by_id(genre_id))
-        else:
-            return jsonify({'message':'Cannot Find Specified Genre'})
-    else:
-        return jsonify(genre_cont.delete_genre(genre_id))
+    return genre_cont.search_or_delete(request, genre_id)
+
+@app.route("/genre/addbook/<genre_id>", methods=['POST'])
+def add_genre_to_routes(genre_id):
+    return genre_cont.add_book_to_genre(genre_id,request)
 
 
 # Error Handling
