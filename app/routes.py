@@ -153,20 +153,23 @@ def users_list():
     # return render_template("admin/users.html", title='Users', page='Users List', data=ac.get_users())
 
 
+@app.route('/addbook', methods=['GET'])
+def book_form_add():
+    form = BookForm()
+    return render_template('addbook.html', form=form)
+
+
 # Get all books
 # Add A new book
 @app.route("/book", methods=['GET', 'POST'])
 def book():
     if request.method == 'POST':
         form = BookForm(request.form)
-        b = Book(bookName = form.bookName.data, image = form.image.data, description = form.description.data)
-        b.session.add(b)
-        b.session.commit()
-        return jsonify([{'book_name': form.bookName.data, 'image':form.image.data, 'description':form.description.data}])
+        return jsonify(Book().add(form.bookName.data, form.image.data, form.description.data))
     else:
+        # return list of books
         books = jsonify(Book().book())
         return books
-
 
 # Get a book object
 # Delete a book object
