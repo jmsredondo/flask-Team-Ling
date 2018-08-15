@@ -1,5 +1,5 @@
 import json
-from flask import render_template, flash, redirect, url_for, request, Response, jsonify, g
+from flask import render_template, flash, redirect, url_for, request, Response, jsonify
 from app import app
 from app import db
 from app.forms import *
@@ -105,29 +105,28 @@ def register_form():
     #     return jsonify(user.__repr__())
     # flash('Congratulations, you are now a registered user!')
     # return redirect(url_for('login'))
-
     return render_template('registration.html', title='Register', form=form)
 
 
 @app.route('/users', methods=['POST'])
 def register():
     form = RegistrationForm(request.form)
+    if form.validate():
+        user = User(username=form.username.data,
+                    lastname=form.lastname.data,
+                    firstname=form.firstname.data,
+                    email=form.email.data,
+                    password_hash=form.password.data,
+                    phone=form.phone.data,
+                    role='basic'
+                    )
 
-    user = User(username=form.username.data,
-                lastname=form.lastname.data,
-                firstname=form.firstname.data,
-                email=form.email.data,
-                password_hash=form.password.data,
-                phone=form.phone.data,
-                role='basic'
-                )
-
-    user.set_password(form.password.data)
-    db.session.add(user)
-    db.session.commit()
-
-    return jsonify(user.user_obj())
-
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(user.user_obj())
+    else:
+        return jsonify(form.errors)
 
 # Users Index
 @app.route('/')
