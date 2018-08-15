@@ -73,7 +73,6 @@ class User(UserMixin, db.Model):
         user = User.query.get(data['id'])
         return user
 
-
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     bookName = db.Column(db.String(120))
