@@ -62,10 +62,10 @@ class BookForm(Form):
     bookName = StringField('Book Name',
                             validators=[DataRequired()])
 
-    image = StringField('Last Name')
+    image = StringField('Image')
 
     description = StringField('Description')
 
-    submit = SubmitField('Book')
+    submit = SubmitField('Add Book')
 
 
