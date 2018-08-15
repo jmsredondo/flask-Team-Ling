@@ -1,5 +1,4 @@
 from app import db
-import json
 from app.models import Genre
 
 def create_genre(request):
