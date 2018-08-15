@@ -72,7 +72,6 @@ class User(UserMixin, db.Model):
         user = User.query.get(data['id'])
         return user
 
-
 class Book(db.Model):
     def __init__(self):
         pass
