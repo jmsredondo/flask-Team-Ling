@@ -14,7 +14,6 @@ from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
 
-
 # Log In User
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/users/login', methods=['GET', 'POST'])
