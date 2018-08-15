@@ -1,3 +1,12 @@
+from flask import request, jsonify
+from flask_httpauth import HTTPBasicAuth
+
+from Controllers import Genre_Controller as genre_cont
+from app import app
+from app.models import Genre
+
+auth = HTTPBasicAuth()
+
 import json
 from flask import render_template, flash, redirect, url_for, request, Response, jsonify
 from app import app
@@ -14,6 +23,7 @@ from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
 
 
+<<<<<<< HEAD
 # Log In User
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/users/login', methods=['GET', 'POST'])
@@ -180,13 +190,24 @@ def bookinfo(book_id):
 
 
 #Genre - Add Or show all
+# Genre - Add Or show all
 @app.route("/genre", methods=['GET', 'POST'])
 def routeGenre():
     return genre_cont.genre(request)
 
-#Delete Or retrieve
+
+# Delete Or retrieve
 @app.route("/genre/<genre_id>", methods=['GET', 'DELETE'])
 def search_genre_by_id(genre_id):
+
+    if request.method == 'GET':
+        if Genre().get_genre_by_id(genre_id):
+            return jsonify(Genre().get_genre_by_id(genre_id))
+        else:
+            return jsonify({'message': 'Cannot Find Specified Genre'})
+    else:
+        return jsonify(genre_cont.delete_genre(genre_id))
+
     return genre_cont.search_or_delete(request, genre_id)
 
 @app.route("/genre/addbook/<genre_id>", methods=['POST'])
@@ -194,20 +215,5 @@ def add_genre_to_routes(genre_id):
     return genre_cont.add_book_to_genre(genre_id,request)
 
 
-# Error Handling
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template('error/empty.html', message="NOT FOUND"), 404
 
 
-# Error Handling
-@app.errorhandler(401)
-def authentication_error(error):
-    return render_template('error/empty.html', message="NOT AUTHORIZED"),
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-
-    return render_template('error/empty.html', message="INTERNAL ERROR"), 500

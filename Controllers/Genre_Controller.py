@@ -1,6 +1,8 @@
 from flask import jsonify
+
 from app import db
 from app.models import Genre, Book
+
 
 #GET or POST /genre
 def genre(request):
@@ -21,6 +23,7 @@ def genre(request):
                 return jsonify({'message': 'Invalid Request'})
         else:
             return jsonify({'message': 'Invalid Request'})
+
 
 # GET or DELETE /genre/<genre_id>
 def search_or_delete(request, genre_id):
