@@ -57,7 +57,7 @@ def add_book_to_genre(genre_id):
                 if genre_object and book:
                     book.genres.append(genre_object)
                     db.session.add(book)
-                    db.commit()
+                    db.session.commit()
                     return jsonify({"genre_id": genre_object.id, "book_id": book.id})
                 else:
                     return jsonify({'message': 'Cannot find Specified book or genre'})
