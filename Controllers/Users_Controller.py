@@ -22,7 +22,7 @@ def index():
 
 # Get User Profile
 @app.route('/users/<username>', methods=['GET', 'POST'])
-# @auth.login_required
+@auth.login_required
 def get_user(username):
     user = User.query.filter_by(username=username).first()
     if user is None:

@@ -1,25 +1,22 @@
 import os
 import json
 
-
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from app import db, login
+
 library = db.Table('library',
                    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
                    db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
                    )
 
-
 book_category = db.Table('book_category',
                          db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True),
                          db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
                          )
-
-
 
 
 class User(UserMixin, db.Model):
@@ -74,6 +71,7 @@ class User(UserMixin, db.Model):
         user = User.query.get(data['id'])
         return user
 
+
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     bookName = db.Column(db.String(120))
@@ -95,11 +93,10 @@ class Book(db.Model):
         b = Book.query.filter_by(id=book_id).first()
         return [{'book_name': b.bookName, 'image': b.image, 'description': b.description}]
 
-    def add(self,book_name, image, description):
-
-        b = Book(bookName = book_name,
-                 image = image,
-                 description = description)
+    def add(self, book_name, image, description):
+        b = Book(bookName=book_name,
+                 image=image,
+                 description=description)
 
         db.session.add(b)
         db.session.commit()
@@ -115,15 +112,15 @@ class Book(db.Model):
 
         return book_data
 
-
-    def delete(self,book_id):
+    def delete(self, book_id):
         book_record = Book.query.filter_by(id=book_id).first()
         response = {'book_name': book_record.bookName,
-                    'description':book_record.image,
-                    'image':book_record.image}
+                    'description': book_record.image,
+                    'image': book_record.image}
         db.session.delete(book_record)
         db.session.commit()
         return response
+
 
 class Genre(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -134,13 +131,12 @@ class Genre(db.Model):
         genreQuery = Genre.query.all()
         genreList = []
         for genreItem in genreQuery:
-            genreList.append({'id':genreItem.id,'type':genreItem.type,'genre':genreItem.genre})
+            genreList.append({'id': genreItem.id, 'type': genreItem.type, 'genre': genreItem.genre})
         return genreList
 
-    def get_genre_by_id(self,genreId):
+    def get_genre_by_id(self, genreId):
         genreQuery = Genre.query.get(genreId)
         if genreQuery is not None:
-            return {'id':genreQuery.id,'type':genreQuery.type,'genre':genreQuery.genre}
+            return {'id': genreQuery.id, 'type': genreQuery.type, 'genre': genreQuery.genre}
         else:
             return False
-
