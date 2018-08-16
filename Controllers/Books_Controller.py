@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from flask_httpauth import HTTPBasicAuth
 
 from app import app
@@ -20,8 +20,9 @@ def book():
         return jsonify(
             [{'book_name': form.bookName.data, 'image': form.image.data, 'description': form.description.data}])
     else:
-        books = jsonify(Book().book())
-        return books
+        # books = jsonify(Book().book())
+        books = Book().book()
+        return render_template('books/book_list.html', books=books)
 
 
 # Get a book object
