@@ -1,11 +1,13 @@
-from flask import jsonify
-
+from flask import request, jsonify
+from app import app
 from app import db
-from app.models import Genre, Book
+from app.models import Book, Genre
 
 
 #GET or POST /genre
-def genre(request):
+# Genre - Add Or show all
+@app.route("/genre", methods=['GET', 'POST'])
+def genre():
     if request.method == 'GET':
         return jsonify(Genre().list_all_genre())
     else:
@@ -26,7 +28,9 @@ def genre(request):
 
 
 # GET or DELETE /genre/<genre_id>
-def search_or_delete(request, genre_id):
+# Delete Or retrieve
+@app.route("/genre/<genre_id>", methods=['GET', 'DELETE'])
+def search_or_delete(genre_id):
     if request.method == 'GET':
         if Genre().get_genre_by_id(genre_id):
             return jsonify(Genre().get_genre_by_id(genre_id))
@@ -42,7 +46,8 @@ def search_or_delete(request, genre_id):
         else:
             return jsonify({'message': 'Cannot Find Specified Genre'})
 
-def add_book_to_genre(genre_id,request):
+@app.route("/genre/addbook/<genre_id>", methods=['POST'])
+def add_book_to_genre(genre_id):
     converted_requested = request.get_json()
     if request.is_json:
         genre_object = Genre().query.get(genre_id)
