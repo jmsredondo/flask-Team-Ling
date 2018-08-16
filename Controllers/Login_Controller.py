@@ -1,4 +1,4 @@
-from flask import jsonify, g
+from flask import jsonify, g, render_template
 from flask_httpauth import HTTPBasicAuth
 
 from app import app
@@ -23,7 +23,9 @@ def verify_password(username_or_token, password):
         # try to authenticate with username/password
         user = User.query.filter_by(username=username_or_token).first()
         if not user or not user.check_password(password):
-            return False
+            # return False
+            return render_template('error/empty.html', message="Invalid username/password supplied"), 404
+
     g.user = user
     return True
 
