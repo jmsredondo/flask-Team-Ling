@@ -22,7 +22,7 @@ class RegistrationForm(Form):
 
     username = StringField('Username',
                            validators=[DataRequired(),
-                                        Regexp('^(?=.*?([a-z)(?=.*?[_])]+)$')
+                                       Regexp('(([a-z]|_)+)')
                                        ])
 
     email = StringField('Email',
