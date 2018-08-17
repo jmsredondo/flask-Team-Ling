@@ -1,8 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user
-from flask_login import login_required
-
 from app import app
 from app import db
 from app.forms import *
@@ -21,19 +19,22 @@ def index():
 
 
 # Get User Profile
-@app.route('/users/<username>', methods=['GET', 'POST'])
-@auth.login_required
 def get_user(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         return render_template('error/empty.html', message="User not found"), 404
         # return redirect(404)
-    return jsonify({"username": user.username,
-                    "firstname": user.firstname,
-                    "lastname": user.lastname,
-                    "email": user.email,
-                    # "balance": user.balance,
-                    "phone": user.phone})
+    userslist = {"username": user.username,
+                 "firstname": user.firstname,
+                 "lastname": user.lastname,
+                 "email": user.email,
+                 # "balance": user.balance,
+                 "phone": user.phone}
+
+    response = jsonify(userslist)
+    response.status_code = 200
+
+    return response
 
 
 # User Register
@@ -111,4 +112,3 @@ def logout():
 #         return redirect(next_page)
 #         # return redirect(next_page)
 #     return render_template('login.html', title='Sign In', form=form)
-

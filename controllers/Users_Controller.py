@@ -1,8 +1,6 @@
 from flask import render_template, redirect, url_for, request, jsonify
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user
-from flask_login import login_required
-
 from app import app
 from app import db
 from app.forms import *
