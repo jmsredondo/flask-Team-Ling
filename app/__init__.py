@@ -36,3 +36,4 @@ def create_app(config_name):
     # Insert SwaggerHub routings below, do like example above (DO NOT DELETE)
 
     return app
+

@@ -1,0 +1,45 @@
+AD
+1. Cloning Virtual Domain Controllers in Windows Server 2012
+2. Enable Claims Support in Windows Server 2012 Active Directory
+3. Use Active Directory Claims for Windows Server 2012 File Service Access Control
+4. How Windows Server 2012 Improves Active Directory Disaster Recovery
+
+
+Storage
+1. BitLocker Changes in Windows 8
+2. Windows Server 2012 Storage Spaces
+3. Windows Server 2012 Beta Introduces ReFS: Resilient File System
+
+
+Upgrading your file servers
+1. Enabling the Next-Generation File Server with SMB 3.0
+2. Windows Server 2012: Implement Continuously Available File Shares
+
+
+Hyper-V
+1. Getting Started with Hyper-V in Windows Server 2012
+2. Integrating Hyper-V and vSphere Management
+3. Shared-Nothing VM Live Migration with Windows Server 2012 Hyper-V
+4. Windows Server 2012 Storage Live Migration
+5. Windows Server 2012: Shared Storage Live Migration
+
+
+Networking
+1. Windows Server 2012: Making DHCP Highly Available
+2. Implementing QoS in Windows Server 2012
+3. Deploying DirectAccess in Windows Server 2012
+
+
+Implementing High Availability in Server 2012
+1. Windows Server 2012: Building a Two-Node Failover Cluster
+2. Cluster-Aware Updating in Windows Server 2012
+
+
+Manage Windows Server 2012
+1. Getting Around in Windows Server 2012, Part 1
+2. Getting Around in Windows Server 2012, Part 2: Server Manager
+3. Windows Server 2012 Remote Server Management
+4. Windows Server 2012 File Classification Infrastructure
+
+
+Reference: https://www.itprotoday.com/project-plan-migrating-windows-server-2012
