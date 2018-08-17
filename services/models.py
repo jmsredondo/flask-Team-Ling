@@ -62,7 +62,7 @@ class Bucketlist(db.Model):
 
 class User(UserMixin, db.Model):
     """This class represents the users table."""
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column(db.String(64))
@@ -87,9 +87,9 @@ class User(UserMixin, db.Model):
 
         return user_data
 
-    def __init__(self, name):
+    def __init__(self, username):
         """initialize with name."""
-        self.name = name
+        self.username = username
 
     def save(self):
         db.session.add(self)
@@ -97,7 +97,7 @@ class User(UserMixin, db.Model):
 
     @staticmethod
     def get_all():
-        return Bucketlist.query.all()
+        return User.query.all()
 
     def delete(self):
         db.session.delete(self)
@@ -131,74 +131,74 @@ class User(UserMixin, db.Model):
         return user
 
     def __repr__(self):
-        return "<Users: {}>".format(self.name)
+        return "<Users: {}>".format(self.username)
 
 
-class Book(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    bookName = db.Column(db.String(120))
-    image = db.Column(db.String(120), nullable=True)
-    description = db.Column(db.String(250), nullable=True)
-    genres = db.relationship('Genre', secondary=book_category, lazy='subquery',
-                             backref=db.backref('books', lazy=True))
-    library = db.relationship('User', secondary=library, lazy='subquery',
-                              backref=db.backref('users', lazy=True))
-
-    def book(self):
-        b = Book.query.all()
-        item = []
-        for x in b:
-            item.append({'book_name': x.bookName, 'image': x.image, 'description': x.description})
-        return item
-
-    def book_info(self, book_id):
-        b = Book.query.filter_by(id=book_id).first()
-        return [{'book_name': b.bookName, 'image': b.image, 'description': b.description}]
-
-    def add(self, book_name, image, description):
-        b = Book(bookName=book_name,
-                 image=image,
-                 description=description)
-
-        db.session.add(b)
-        db.session.commit()
-
-        return [{'book_name': book_name, 'image': image, 'description': description}]
-
-    def book_obj(self):
-        book_data = {
-            'bookName': self.bookName,
-            'image': self.image,
-            'description': self.description
-        }
-
-        return book_data
-
-    def delete(self, book_id):
-        book_record = Book.query.filter_by(id=book_id).first()
-        response = {'book_name': book_record.bookName,
-                    'description': book_record.image,
-                    'image': book_record.image}
-        db.session.delete(book_record)
-        db.session.commit()
-        return response
-
-
-class Genre(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    type = db.Column(db.String(120))
-    genre = db.Column(db.String(120))
-
-    def list_all_genre(self):
-        genreQuery = Genre.query.all()
-        genreList = []
-        for genreItem in genreQuery:
-            genreList.append({'id': genreItem.id, 'type': genreItem.type, 'genre': genreItem.genre})
-        return genreList
-
-    def get_genre_by_id(self, genreId):
-        genreQuery = Genre.query.get(genreId)
-        if genreQuery is not None:
-            return {'id': genreQuery.id, 'type': genreQuery.type, 'genre': genreQuery.genre}
-        else:
-            return False
+# class Book(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     bookName = db.Column(db.String(120))
+#     image = db.Column(db.String(120), nullable=True)
+#     description = db.Column(db.String(250), nullable=True)
+#     genres = db.relationship('Genre', secondary=book_category, lazy='subquery',
+#                              backref=db.backref('books', lazy=True))
+#     library = db.relationship('User', secondary=library, lazy='subquery',
+#                               backref=db.backref('users', lazy=True))
+#
+#     def book(self):
+#         b = Book.query.all()
+#         item = []
+#         for x in b:
+#             item.append({'book_name': x.bookName, 'image': x.image, 'description': x.description})
+#         return item
+#
+#     def book_info(self, book_id):
+#         b = Book.query.filter_by(id=book_id).first()
+#         return [{'book_name': b.bookName, 'image': b.image, 'description': b.description}]
+#
+#     def add(self, book_name, image, description):
+#         b = Book(bookName=book_name,
+#                  image=image,
+#                  description=description)
+#
+#         db.session.add(b)
+#         db.session.commit()
+#
+#         return [{'book_name': book_name, 'image': image, 'description': description}]
+#
+#     def book_obj(self):
+#         book_data = {
+#             'bookName': self.bookName,
+#             'image': self.image,
+#             'description': self.description
+#         }
+#
+#         return book_data
+#
+#     def delete(self, book_id):
+#         book_record = Book.query.filter_by(id=book_id).first()
+#         response = {'book_name': book_record.bookName,
+#                     'description': book_record.image,
+#                     'image': book_record.image}
+#         db.session.delete(book_record)
+#         db.session.commit()
+#         return response
+#
+#
+# class Genre(db.Model):
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     type = db.Column(db.String(120))
+#     genre = db.Column(db.String(120))
+#
+#     def list_all_genre(self):
+#         genreQuery = Genre.query.all()
+#         genreList = []
+#         for genreItem in genreQuery:
+#             genreList.append({'id': genreItem.id, 'type': genreItem.type, 'genre': genreItem.genre})
+#         return genreList
+#
+#     def get_genre_by_id(self, genreId):
+#         genreQuery = Genre.query.get(genreId)
+#         if genreQuery is not None:
+#             return {'id': genreQuery.id, 'type': genreQuery.type, 'genre': genreQuery.genre}
+#         else:
+#             return False

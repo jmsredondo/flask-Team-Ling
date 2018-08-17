@@ -13,7 +13,7 @@ db = SQLAlchemy()
 login = LoginManager(app)
 login.login_view = 'login'
 
-from app.models import Bucketlist
+from services.models import Bucketlist
 
 
 def bucketlists():

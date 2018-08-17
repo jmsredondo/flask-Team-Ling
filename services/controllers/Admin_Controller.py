@@ -4,7 +4,7 @@ from flask_httpauth import HTTPBasicAuth
 from app import app
 
 auth = HTTPBasicAuth()
-from app.models import User
+from services.models import User
 
 
 # Admin Index

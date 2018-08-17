@@ -3,7 +3,6 @@
 from flask_api import FlaskAPI
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-import ebook_api
 
 # local import
 from instance.config import app_config
@@ -18,7 +17,7 @@ login.login_view = 'login'
 
 def create_app(config_name):
 
-    from app.ebook_api import BucketList, Users
+    from app.ebook_api import Users
 
     app.config.from_object(app_config[config_name])
     app.config.from_pyfile('config.py')
@@ -29,7 +28,7 @@ def create_app(config_name):
     # ----------- API URI -----------
 
     # Get User Profile
-    @app.route('/users/<username>', methods=['GET', 'POST'])
+    @app.route('/register', methods=['GET', 'POST'])
     def get_user(username):
         return Users.get_user(username)
 
@@ -44,6 +43,9 @@ def create_app(config_name):
         return Users.create_user()
     # --------------------------------
 
+
     return app
+
+
 
 

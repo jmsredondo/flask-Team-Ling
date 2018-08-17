@@ -1,11 +1,14 @@
 from flask import render_template, redirect, url_for, request, jsonify
+from flask_api import FlaskAPI
 from flask_httpauth import HTTPBasicAuth
-from flask_login import current_user, logout_user
-from app import app
-from app import db
-from app.forms import *
-from app.models import User
+from flask_login import logout_user
+from flask_sqlalchemy import SQLAlchemy
+from services.forms import *
+from services.models import User
 
+# app and db initiation
+app = FlaskAPI(__name__, instance_relative_config=True)
+db = SQLAlchemy()
 auth = HTTPBasicAuth()
 
 
@@ -24,49 +27,47 @@ def get_user(username):
     if user is None:
         return render_template('error/empty.html', message="User not found"), 404
         # return redirect(404)
-    userslist = {"username": user.username,
-                 "firstname": user.firstname,
-                 "lastname": user.lastname,
-                 "email": user.email,
-                 # "balance": user.balance,
-                 "phone": user.phone}
+    user = {"username": user.username,
+            "firstname": user.firstname,
+            "lastname": user.lastname,
+            "email": user.email,
+            # "balance": user.balance,
+            "phone": user.phone}
 
-    response = jsonify(userslist)
+    response = jsonify(user)
     response.status_code = 200
 
     return response
 
 
-# User Register
-@app.route('/register', methods=['GET'])
-def register_form():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
+# Return List of Users
+def users_list():
+    # GET
+    userslist = User.get_all()
+    results = []
+
+    for userslist in userslist:
+        obj = {
+            'id': userslist.id,
+            "firstname": userslist.firstname,
+            "lastname": userslist.lastname,
+            "email": userslist.email,
+            "password": userslist.password_hash,
+            # "balance": user.balance,
+            "phone": userslist.phone
+        }
+        results.append(obj)
+    response = jsonify(results)
+    response.status_code = 200
+    return response
+
+
+# User Create User
+def create_user():
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('index'))
     form = RegistrationForm()
     # if form.validate_on_submit():
-    #
-    #     user = User(username=form.username.data,
-    #                 lastname=form.lastname.data,
-    #                 firstname=form.firstname.data,
-    #                 email=form.email.data
-    #                 )
-    #
-    #     user.set_password(form.password.data)
-    #
-    #     #db.session.add(user)
-    #     #db.session.commit()
-    #     return jsonify(user.__repr__())
-    # flash('Congratulations, you are now a registered user!')
-    # return redirect(url_for('login'))
-
-    return render_template('registration.html', title='Register', form=form)
-
-
-# Create new User
-@app.route('/users', methods=['POST'])
-def register():
-    form = RegistrationForm(request.form)
-
     user = User(username=form.username.data,
                 lastname=form.lastname.data,
                 firstname=form.firstname.data,
@@ -77,8 +78,32 @@ def register():
                 )
 
     user.set_password(form.password.data)
-    db.session.add(user)
-    db.session.commit()
+
+    User.save(user)
+    response = jsonify(user)
+    response.status_code = 200
+
+    # flash('Congratulations, you are now a registered user!')
+    # return redirect(url_for('login'))
+
+    return response
+
+
+# Create new User
+def register():
+    form = RegistrationForm(request.form)
+
+    user = User(username=form.username.data,
+                lastname=form.lastname.data,
+                firstname=form.firstname.data,
+                email=form.email.data,
+                password_hash=form.password.data,
+                phone=form.phone.data,
+                role='user'
+                )
+
+    user.set_password(form.password.data)
+    User.save(user)
 
     return jsonify(user.user_obj())
 
