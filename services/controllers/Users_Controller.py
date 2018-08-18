@@ -32,6 +32,12 @@ def register_form():
     return render_template('registration.html', title='Register', form=form)
 
 
+@app.route('/newregister', methods=['GET'])
+def new():
+    form = RegistrationForm()
+    return render_template('newregister.html', title='new register', form=form)
+
+
 # Logout User
 @app.route('/users/logout')
 def logout():
