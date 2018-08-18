@@ -18,9 +18,7 @@
     <div class='login_title'>
         <span>Login to your account</span>
     </div>
-    <form class='login_fields' action="" method="post" novalidate>
-        {{ form.csrf_token() }}
-        {{ form.hidden_tag() }}
+    <form class='login_fields' action="/login" method="post" novalidate>
         <div class='login_fields__user'>
             <div class='icon'>
                 <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/user_icon_copy.png'>

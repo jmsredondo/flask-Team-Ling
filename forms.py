@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, Form
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import *
 from models import User
 
@@ -11,7 +11,7 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
-class RegistrationForm(Form):
+class RegistrationForm(FlaskForm):
     firstname = StringField('Firstname',
                             validators=[DataRequired()]
                             )
@@ -63,7 +63,7 @@ class RegistrationForm(Form):
             raise ValidationError('Please use a different email address.')
 
 
-class BookForm(Form):
+class BookForm(FlaskForm):
     bookName = StringField('Book Name',
                             validators=[DataRequired()])
 
