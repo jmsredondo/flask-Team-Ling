@@ -41,13 +41,14 @@ def create_app(config_name):
     def get_users_list():
         return user.users_list()
 
+
     # Create new User
     @app.route('/users', methods=['POST'])
     def register_user():
         form = RegistrationForm()
         return user.create_user(form)
 
-    # --------------------------------
+    # ------------------------------------
 
     # ----------- Book API URI -----------
 
@@ -66,7 +67,7 @@ def create_app(config_name):
         else: # Delete genra
             return book.delete_book(id)
 
-    # --------------------------------
+    # -------------------------------------
 
     # ----------- Genra API URI -----------
 
@@ -89,32 +90,33 @@ def create_app(config_name):
     def add_book_genre(id):
         return genre.add_book_genre(request, id)
 
-    # --------------------------------
+    # ---------------------------------------
 
     # ----------- Library API URI -----------
 
-    # User Library
-    @app.route('/library', methods=['GET', 'POST'])
-    def library():
-        if request.method == 'GET': # Get library
-            return library.get_library(id)
-        else: # Add new book to library
-            return genra.add_book_lib(id)
+    # # User Library
+    # @app.route('/library', methods=['GET', 'POST'])
+    # def library():
+    #     if request.method == 'GET': # Get library
+    #         return library.get_library(id)
+    #     else: # Add new book to library
+    #         return genre.add_book_lib(id)
 
-    # --------------------------------
+    # ------------------------------------
 
     # ----------- Rate API URI -----------
 
-    # Comment/Rate the book
-    @app.route('/rate', methods=['POST'])
-    def rate():
-        return rate.rate_book()
-
-    # Get all ratings on the book
-    @app.route('/rate/<book_id>', methods=['GET'])
-    def add_rate(book_id):
-        return rate.get_book_rating()
+    # # Comment/Rate the book
+    # @app.route('/rate', methods=['POST'])
+    # def rate():
+    #     return rate.rate_book()
+    #
+    # # Get all ratings on the book
+    # @app.route('/rate/<book_id>', methods=['GET'])
+    # def add_rate(book_id):
+    #     return rate.get_book_rating()
 
     # --------------------------------
 
     return app
+

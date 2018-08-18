@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='assets/css/main.css') }}">
+
+    <title>{{ title }}</title>
+</head>
+
+<body>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title">
+					<span class="login100-form-title-1">
+						Sign In
+					</span>
+                {% block messages %}
+                    {% include 'layouts/flash.html' %}
+                {% endblock %}
+            </div>
+
+
+            <form class="login100-form" action="" method="post" novalidate>
+                <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                    <span class="label-input100">{{ form.username.label }}</span>
+                    {{ render_field(form.username(class="input100", placeholder="Enter username")) }}
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                    <span class="label-input100">{{ form.password.label }}</span>
+                    {{ form.password(class="input100", placeholder="Enter password", type="password") }}
+                    <span class="focus-input100"></span>
+                </div>
+
+                <div class="flex-sb-m w-full p-b-30">
+                    <div>
+                        <a href="#" class="txt1">
+                            Forgot Password?
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/users/register" class="txt1">
+                            Create an Account
+                        </a>
+                    </div>
+
+                </div>
+
+                <div class="container-login100-form-btn">
+                    {{ form.submit(class="login100-form-btn", type="submit") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
