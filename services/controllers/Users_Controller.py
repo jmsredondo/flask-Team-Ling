@@ -1,10 +1,16 @@
 from flask import render_template, redirect, url_for
 from flask_httpauth import HTTPBasicAuth
-from flask_login import current_user, logout_user
+from flask_login import current_user, logout_user, LoginManager
+from flask_sqlalchemy import SQLAlchemy
 from app import app
 from services.forms import *
 
 auth = HTTPBasicAuth()
+db = SQLAlchemy()
+
+# Login
+login = LoginManager(app)
+login.login_view = 'login'
 
 
 # Users Index

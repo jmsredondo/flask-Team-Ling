@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, Form
 from wtforms.validators import *
-from services.models import User
+from models import User
 
 
 class LoginForm(FlaskForm):
