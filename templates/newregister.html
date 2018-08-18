@@ -6,6 +6,7 @@
 		<title> \\books - Portal</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/portal.css') }}">
 	</head>
+    {% from "./includes/_formhelpers.html" import render_field %}
 	<body>
 		<!-- Form-->
 		<div class="form">
@@ -30,6 +31,7 @@
 					</form>
 				</div>
 			</div>
+
 			<div class="form-panel two">
 				<div class="form-header">
 					<h1>Register Account</h1>
@@ -37,31 +39,38 @@
 				<div class="form-content">
 					<form>
 						<div class="form-group">
-							<label for="username">First name</label>
-							<input type="text" id="username" name="username" required="required"/>
+							<label for="firstname">First name</label>
+{#							<input type="text" id="username" name="username" required="required"/>#}
+                            {{ form.firstname }}
 						</div>
 						<div class="form-group">
-							<label for="username">Last name</label>
-							<input type="text" id="username" name="username" required="required"/>
+							<label for="lastname">Last name</label>
+{#							<input type="text" id="username" name="username" required="required"/>#}
+                            {{ form.lastname }}
 						</div>
 						<div class="form-group">
 							<label for="username">Username</label>
-							<input type="text" id="username" name="username" required="required"/>
+{#							<input type="text" id="username" name="username" required="required"/>#}
+                            {{ form.username }}
 						</div>
 						<div class="form-group">
 							<label for="password">Password</label>
-							<input type="password" id="password" name="password" required="required"/>
-						</div>
+{#							<input type="password" id="password" name="password" required="required"/>#}
+						    {{ form.password }}
+                        </div>
 						<div class="form-group">
 							<label for="cpassword">Confirm Password</label>
-							<input type="password" id="cpassword" name="cpassword" required="required"/>
-						</div>
+{#							<input type="password" id="cpassword" name="cpassword" required="required"/>#}
+						    {{ form.password2 }}
+                        </div>
 						<div class="form-group">
 							<label for="email">Email Address</label>
-							<input type="email" id="email" name="email" required="required"/>
+{#							<input type="email" id="email" name="email" required="required"/>#}
+                            {{ form.email }}
 						</div>
 						<div class="form-group">
-							<button type="submit">Register</button>
+{#							<button type="submit">Register</button>#}
+                            {{ form.submit }}
 						</div>
 					</form>
 				</div>
