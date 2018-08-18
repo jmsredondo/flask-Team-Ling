@@ -10,6 +10,11 @@ def register(username):
     return uc.register_form()
 
 
+@app.route('/newregister', methods=['GET'])
+def reg():
+    return uc.register_form()
+
+
 if __name__ == '__main__':
-   app.run(debug=True, host='0.0.0.0', port=80)
+   app.run(debug=True)
 
