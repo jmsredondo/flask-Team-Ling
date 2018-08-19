@@ -4,19 +4,18 @@ from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 
 from config import app_config
+from controllers import user, book, genre
 from forms import RegistrationForm
-from models import Bucketlist
-from models import User
-from controllers import user, admin, book, genre, library, rate
 
-# # initialize sql-alchemy
-db = SQLAlchemy()
+# initialize sql-alchemy
 
 app = Flask(__name__)
 api = Api(app)
 app.config.from_object(app_config['development'])
 app.config.from_pyfile('config.py')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy()
 db.init_app(app)
 
 

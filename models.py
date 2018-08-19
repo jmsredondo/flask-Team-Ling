@@ -2,15 +2,28 @@
 
 import os
 
-from flask_api import FlaskAPI
+from flask import Flask
 from flask_login import UserMixin, LoginManager
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager # class for handling a set of commands
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 from werkzeug.security import generate_password_hash, check_password_hash
 
-app = FlaskAPI(__name__, instance_relative_config=True)
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
+
 db = SQLAlchemy()
+migrate = Migrate(app, db)
+
+manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+
+# manager = Manager(app)
+# manager.add_command('db', MigrateCommand)
 
 # Login
 login = LoginManager(app)
@@ -212,3 +225,7 @@ class Rate(db.Model):
                           nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
                           nullable=False)
+
+
+if __name__ == '__main__':
+    manager.run()
