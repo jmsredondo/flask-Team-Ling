@@ -71,6 +71,7 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(11), nullable=True)
     role = db.Column(db.String(120), default='user')
     password_hash = db.Column(db.String(128))
+    user_id = db.relationship('Rate', backref='user', lazy=True)
 
     # JSON OBJECT
     def user_obj(self):
@@ -148,6 +149,7 @@ class Book(db.Model):
                              backref=db.backref('books', lazy=True))
     library = db.relationship('User', secondary=library, lazy='subquery',
                               backref=db.backref('users', lazy=True))
+    book = db.relationship('Rate', backref='book', lazy=True)
 
     def __init__(self, username):
         """initialize with name."""
@@ -200,3 +202,13 @@ class Genre(db.Model):
     def delete(self):
         db.session.delete(self)
         db.session.commit()
+
+
+class Rate(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String(120), nullable=False)
+    rate = db.Column(db.Integer, nullable=False)
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
+                          nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+                          nullable=False)
