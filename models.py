@@ -114,6 +114,19 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
+    @classmethod
+    def seed(cls, fake):
+        user = User(
+            username=fake.username(),
+            email=fake.email(),
+            password_hash=fake.password(),
+            role='user',
+            firstname=fake.firstname(),
+            lastname=fake.lastname(),
+            phone=fake.phone()
+        )
+        user.save()
+
     @staticmethod
     def get_all():
         return User.query.all()
