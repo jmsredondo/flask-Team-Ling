@@ -1,7 +1,16 @@
+import os
+
+from flask_login import LoginManager
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import *
-from models import User
+from models import User, app
+
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+# Login
+login = LoginManager(app)
+login.login_view = 'login'
 
 
 class LoginForm(FlaskForm):
@@ -65,12 +74,10 @@ class RegistrationForm(FlaskForm):
 
 class BookForm(FlaskForm):
     bookName = StringField('Book Name',
-                            validators=[DataRequired()])
+                           validators=[DataRequired()])
 
     image = StringField('Image')
 
     description = StringField('Description')
 
     submit = SubmitField('Add Book')
-
-

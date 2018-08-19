@@ -7,16 +7,16 @@ import json
 class BucketlistTestCase(unittest.TestCase):
     """This class represents the bucketlist test case"""
 
-    def setUp(self):
-        """Define test variables and initialize app."""
-        self.app = create_app(config_name="testing")
-        self.client = self.app.test_client
-        self.bucketlist = {'name': 'Go to Borabora for vacation'}
-
-        # binds the app to the current context
-        with self.app.app_context():
-            # create all tables
-            db.create_all()
+    # def setUp(self):
+    #     """Define test variables and initialize app."""
+    #     self.app = create_app(config_name="testing")
+    #     self.client = self.app.test_client
+    #     self.bucketlist = {'name': 'Go to Borabora for vacation'}
+    #
+    #     # binds the app to the current context
+    #     with self.app.app_context():
+    #         # create all tables
+    #         db.create_all()
 
     def test_bucketlist_creation(self):
         """Test ebook_api can create a bucketlist (POST request)"""

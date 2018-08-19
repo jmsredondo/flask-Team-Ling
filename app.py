@@ -1,10 +1,11 @@
 # app/__init__.py
-from flask import request, Flask
+import os
+from flask import request, Flask, render_template, url_for
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
-
 from config import app_config
 from controllers import user, book, genre
+from services.controllers import Users_Controller as uc
 from forms import RegistrationForm
 
 # initialize sql-alchemy
@@ -15,11 +16,20 @@ app.config.from_object(app_config['development'])
 app.config.from_pyfile('config.py')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
 db = SQLAlchemy()
 db.init_app(app)
 
 
 # # ----------- User API URI -----------
+
+# Users Index
+@app.route('/')
+@app.route('/index')
+def index():
+    return uc.index()
+
 # User login
 class Login(Resource):
     # @app.route('/users/login', methods=['GET', 'POST'])

@@ -2,10 +2,11 @@
 
 import os
 
+from faker import Faker
 from flask import Flask
 from flask_login import UserMixin, LoginManager
 from flask_migrate import Migrate, MigrateCommand
-from flask_script import Manager # class for handling a set of commands
+from flask_script import Manager  # class for handling a set of commands
 from flask_sqlalchemy import SQLAlchemy
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
@@ -114,18 +115,18 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
-    @classmethod
-    def seed(cls, fake):
-        user = User(
-            username=fake.username(),
-            email=fake.email(),
-            password_hash=fake.password(),
-            role='user',
-            firstname=fake.firstname(),
-            lastname=fake.lastname(),
-            phone=fake.phone()
-        )
-        user.save()
+    # @classmethod
+    # def seed(cls, fake):
+    #     user = User(
+    #         username=fake.user_name(),
+    #         email=fake.email(),
+    #         password_hash=fake.password(),
+    #         role='user',
+    #         firstname=fake.first_name(),
+    #         lastname=fake.last_name(),
+    #         phone=fake.phone_number()
+    #     )
+    #     user.save()
 
     @staticmethod
     def get_all():
@@ -235,9 +236,9 @@ class Rate(db.Model):
     comment = db.Column(db.String(120), nullable=False)
     rate = db.Column(db.Integer, nullable=False)
     book_id = db.Column(db.Integer, db.ForeignKey('book.id'),
-                          nullable=False)
+                        nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-                          nullable=False)
+                        nullable=False)
 
 
 if __name__ == '__main__':

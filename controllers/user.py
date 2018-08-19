@@ -63,14 +63,14 @@ def users_list():
 def create_user(form):
     # if form.validate_on_submit():
     user = User(
-                username=form.username.data,
-                lastname=form.lastname.data,
-                firstname=form.firstname.data,
-                email=form.email.data,
-                password_hash=form.password.data,
-                phone=form.phone.data,
-                role=''
-                )
+        username=form.username.data,
+        lastname=form.lastname.data,
+        firstname=form.firstname.data,
+        email=form.email.data,
+        password_hash=form.password.data,
+        phone=form.phone.data,
+        role=''
+    )
 
     user.set_password(form.password.data)
     User.save(user)
@@ -78,6 +78,5 @@ def create_user(form):
     response.status_code = 201
 
     return response
-
-
-
+# else:
+#     return "error"

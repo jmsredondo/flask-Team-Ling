@@ -1,10 +1,9 @@
 from flask import render_template, redirect, url_for, flash, request
 from flask_httpauth import HTTPBasicAuth
-from flask_login import current_user, logout_user, LoginManager, login_user
+from flask_login import current_user, logout_user, login_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.urls import url_parse
 
-from app import app
 from forms import *
 
 auth = HTTPBasicAuth()
@@ -18,10 +17,9 @@ login.login_view = 'login'
 # Users Index
 @app.route('/')
 @app.route('/index')
-@auth.login_required
+# @auth.login_required
 def index():
-    user = {'username': 'Miguel'}
-    return render_template('index.html', title='Home', user=user, page='Dashboard')
+    return render_template('index.html', title='Home', user='Hi user!', page='Dashboard')
 
 
 # Register User
@@ -30,6 +28,14 @@ def register_form():
         return redirect(url_for('index'))
     form = RegistrationForm()
     return render_template('registration.html', title='Register', form=form)
+
+
+# Redirect to login page
+def redirect_login(requests):
+    info = requests.post('http://localhost:5000/users')
+    if info is not None:
+        form = LoginForm()
+        return redirect(url_for('index'))
 
 
 def new():
@@ -66,4 +72,3 @@ def login():
         return redirect(next_page)
         # return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
-
