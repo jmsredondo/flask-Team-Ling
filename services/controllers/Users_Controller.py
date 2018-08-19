@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.urls import url_parse
 
 from app import app
-from services.forms import *
+from forms import *
 
 auth = HTTPBasicAuth()
 db = SQLAlchemy()
@@ -32,7 +32,6 @@ def register_form():
     return render_template('registration.html', title='Register', form=form)
 
 
-@app.route('/newregister', methods=['GET'])
 def new():
     form = RegistrationForm()
     return render_template('newregister.html', title='new register', form=form)

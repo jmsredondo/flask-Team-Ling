@@ -19,7 +19,6 @@ db = SQLAlchemy()
 db.init_app(app)
 
 
-
 # # ----------- User API URI -----------
 # User login
 class Login(Resource):
@@ -130,8 +129,6 @@ class Add_Book_Genra(Resource):
 
 
 api.add_resource(Add_Book_Genra, '/genre/addbook/<id>')
-
-
 
 # ---------------------------------------
 

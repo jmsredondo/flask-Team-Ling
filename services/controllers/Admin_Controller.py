@@ -2,9 +2,9 @@ import flask
 from flask import render_template
 from flask_httpauth import HTTPBasicAuth
 from app import app
+from models import User
 
 auth = HTTPBasicAuth()
-from services.models import User
 
 
 # Admin Index

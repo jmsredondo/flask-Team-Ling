@@ -2,7 +2,7 @@ from flask import jsonify, g, render_template
 from flask_httpauth import HTTPBasicAuth
 
 from app import app
-from services.models import User
+from models import User
 
 auth = HTTPBasicAuth()
 
