@@ -2,6 +2,6 @@
     pip install -r requirements.txt
 
 *To create and migrate db *
-    1. python manage.py db init
-    2. python manage.py db migrate
-    3. python manage.py db upgrade
+    1. python models.py db init
+    2. python models.py db migrate
+    3. python models.py db upgrade
