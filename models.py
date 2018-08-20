@@ -2,7 +2,6 @@
 
 import os
 
-from faker import Faker
 from flask import Flask
 from flask_login import UserMixin, LoginManager
 from flask_migrate import Migrate, MigrateCommand
@@ -181,9 +180,11 @@ class Book(db.Model):
                               backref=db.backref('users', lazy=True))
     book = db.relationship('Rate', backref='book', lazy=True)
 
-    def __init__(self, username):
+    def __init__(self, bookName, image, description):
         """initialize with name."""
-        self.username = username
+        self.bookName = bookName
+        self.image = image
+        self.description = description
 
     def save(self):
         db.session.add(self)

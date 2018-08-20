@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config import app_config
 from controllers import user, book, genre
 from services.controllers import Users_Controller as uc
-from forms import RegistrationForm
+from forms import RegistrationForm, BookForm
 
 # initialize sql-alchemy
 
@@ -29,6 +29,7 @@ db.init_app(app)
 @app.route('/index')
 def index():
     return uc.index()
+
 
 # User login
 class Login(Resource):
@@ -82,7 +83,8 @@ class Get_Books(Resource):
         return book.booklist()
 
     def post(self):
-        return book.add_new_book(request)
+        form = BookForm(request.form)
+        return book.add_new_book(form)
 
 
 api.add_resource(Get_Books, '/book')

@@ -72,3 +72,6 @@ def login():
         return redirect(next_page)
         # return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
+
+def users():
+    return render_template('users.html', title='List of Users')

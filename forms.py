@@ -81,3 +81,4 @@ class BookForm(FlaskForm):
     description = StringField('Description')
 
     submit = SubmitField('Add Book')
+
