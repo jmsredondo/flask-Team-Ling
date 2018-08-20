@@ -136,6 +136,9 @@ class User(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    def find_by_username(username):
+        b = User.query.filter_by(username=username).first()
+
     # Login Functions
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -148,12 +151,12 @@ class User(UserMixin, db.Model):
         return User.query.get(int(id))
 
     def generate_auth_token(self, expiration=600):
-        s = Serializer(os.environ.get('SECRET_KEY'), expires_in=expiration)
+        s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)
         return s.dumps({'id': self.id})
 
     @staticmethod
     def verify_auth_token(token):
-        s = Serializer(os.environ.get('SECRET_KEY'))
+        s = Serializer(app.config['SECRET_KEY'])
         try:
             data = s.loads(token)
         except SignatureExpired:

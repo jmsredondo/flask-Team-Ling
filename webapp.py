@@ -1,7 +1,7 @@
 import os
 
 import requests
-from flask import request
+from flask import request, session, redirect, url_for
 from flask_login import LoginManager
 
 from app import app
@@ -21,7 +21,9 @@ def login_user():
         return uc.login()
     else:
         info = requests.get('http://localhost:5000/users/login')
-        return info.text
+        if info.status_code == 200:
+            session['token'] = info
+            return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
