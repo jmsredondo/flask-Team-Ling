@@ -34,22 +34,20 @@ class UserTestCase(unittest.TestCase):
         #     # create all tables
         #     db.create_all()
 
-    def test_user_creation(self):
-        """Test create user (POST request)"""
+    def test_Register_User(self):
+        """Test register user (POST request)"""
         res = requests.post(self.host+'/users', data=self.sampleuser)
         self.assertEqual(res.status_code, 201)
         res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
         self.assertIn('lingling', str(res.text))
 
-    def test_api_can_get_all_users(self):
-        """Test ebook_api can get a bucketlist (GET request)."""
-        # res = self.client().post('/users-list', data=self.bucketlist)
-        # self.assertEqual(res.status_code, 201)
+    def test_api_Get_User_List(self):
+        """Test get user list (GET request)."""
         res = res = requests.get(self.host+'/users-list')
         self.assertEqual(res.status_code, 200)
         self.assertIn('jsmith', str(res.text))
-    #
+
     # def test_api_can_get_bucketlist_by_id(self):
     #     """Test ebook_api can get a single bucketlist by using it's id."""
     #     rv = self.client().post('/bucketlists/', data=self.bucketlist)
