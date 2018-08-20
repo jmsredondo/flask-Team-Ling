@@ -1,8 +1,10 @@
 $(document).ready(function () {
     initgenre();
     initbooks();
+    initusers();
 });
 
+//Book functions
 function initbooks() {
       //request list of all books
     $.ajax({
@@ -24,10 +26,9 @@ function initbooks() {
                   <h1 class="title">${data[i].book_name}</h1>
                   <h2 class="sub_title">${data[i].description}</h2>
                   <p class="description">New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.</p>
-                  <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> 6 mins ago</span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
+                  <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> Rating: 5 </span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
                 </div></div></div>`;
             $('#bookslist').append(html);
-            console.log(data[i])
         }
     });
     //request info of a genre
@@ -39,6 +40,8 @@ function initbooks() {
         console.log(data);
     });
 }
+
+// Genre functions
 function initgenre() {
        //request list of all genres
     $.ajax({
@@ -70,7 +73,6 @@ function initgenre() {
           </div>
         </div>`;
             $('#genreTiles').append(html);
-            console.log(data[i].id,data[i].type)
         }
     });
     //request info of a genre
@@ -81,4 +83,24 @@ function initgenre() {
     }).done(function (data) {
         console.log(data);
     });
+}
+
+//User functions
+
+function initusers() {
+    $.ajax({
+        url: "/users",
+        dataType: "JSON"
+    }).done(function (data) {
+        for(var i = 1; i < data.length; i++){
+            console.log(data);
+        }
+    });
+    var username = "jsmith";
+    $.ajax({
+        url: "/users/"+username,
+        dataType: "JSON"
+    }).done(function (data) {
+        console.log(data);
+    })
 }

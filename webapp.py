@@ -5,7 +5,8 @@ from flask import request, session, redirect, url_for
 from flask_login import LoginManager
 
 from app import app
-from services.controllers import Users_Controller as uc,Genre_Controller as gc,Books_Controller as bc
+from services.controllers import Users_Controller as uc,\
+    Genre_Controller as gc,Books_Controller as bc
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
@@ -48,6 +49,9 @@ def genre():
 def books():
     return bc.books()
 
+@app.route('/users', methods=['GET'])
+def users():
+    return uc.users()
 
 
 if __name__ == '__main__':

@@ -91,6 +91,38 @@ class UserTestCase(unittest.TestCase):
     #         # drop all tables
     #         db.session.remove()
     #         db.drop_all()
+class booksTestCase(unittest.TestCase):
+    app = Flask(__name__)
+    api = Api(app)
+    app.config.from_object(app_config['development'])
+    app.config.from_pyfile('config.py')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db = SQLAlchemy()
+    db.init_app(app)
+
+    def setUp(self):
+        self.host = 'http://localhost:5000'
+        self.samplebook = {'bookName':'booktest',
+                           'image':'URL\URL to image',
+                           'description': 'description'}
+
+    def test_Add_Book(self):
+        res = requests.post(self.host + '/book', data=self.samplebook)
+        self.assertEqual(res.status_code, 201)
+
+    def test_Book_List(self):
+        res = res = requests.get(self.host+'/book')
+        self.assertEqual(res.status_code, 200)
+
+    def test_Get_Book(self):
+        res = requests.get(self.host+'/book/11')
+        self.assertEquals(res.status_code, 200)
+
+
+    def test_remove_Book(self):
+        res = requests.delete(self.host+'/book/11')
+        self.assertEquals(res.status_code, 200)
 
 
 # Make the tests conveniently executable

@@ -18,8 +18,7 @@ def booklist():
     return response
 
 
-def add_new_book(request):
-    form = BookForm(request.form)
+def add_new_book(form):
     b = Book(bookName=form.bookName.data, image=form.image.data, description=form.description.data)
     Book.save(b)
     results = {'book_name': form.bookName.data, 'image': form.image.data, 'description': form.description.data}
