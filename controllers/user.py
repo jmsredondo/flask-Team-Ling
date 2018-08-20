@@ -40,12 +40,13 @@ def get_user(username):
 
 # Return List of Users
 def users_list():
-    userslist = User.get_all()
+    userlist = User.get_all()
     results = []
 
-    for userslist in userslist:
+    for userslist in userlist:
         obj = {
-            'id': userslist.id,
+            "id": userslist.id,
+            "username": userslist.username,
             "firstname": userslist.firstname,
             "lastname": userslist.lastname,
             "email": userslist.email,
@@ -78,5 +79,3 @@ def create_user(form):
     response.status_code = 201
 
     return response
-# else:
-#     return "error"
