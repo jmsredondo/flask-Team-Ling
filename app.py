@@ -30,6 +30,7 @@ db.init_app(app)
 def index():
     return uc.index()
 
+
 # User login
 class Login(Resource):
     # @app.route('/users/login', methods=['GET', 'POST'])
