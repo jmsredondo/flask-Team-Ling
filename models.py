@@ -2,7 +2,6 @@
 
 import os
 
-from faker import Faker
 from flask import Flask
 from flask_login import UserMixin, LoginManager
 from flask_migrate import Migrate, MigrateCommand

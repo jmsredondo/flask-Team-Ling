@@ -5,7 +5,7 @@ from flask import request, session, redirect, url_for
 from flask_login import LoginManager
 
 from app import app
-from services.controllers import Users_Controller as uc
+from services.controllers import Users_Controller as uc,Genre_Controller as gc
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
@@ -39,6 +39,11 @@ def register():
 @app.route('/newregister', methods=['GET'])
 def reg():
     return uc.register_form()
+
+@app.route('/genres', methods=['GET'])
+def genre():
+    return gc.genre()
+
 
 
 if __name__ == '__main__':
