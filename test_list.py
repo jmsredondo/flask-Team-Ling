@@ -154,12 +154,12 @@ class GenreTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_get_genre(self):
-        res = requests.get(self.host+'/genre/19')
+        res = requests.get(self.host+'/genre/21')
         self.assertEquals(res.status_code, 200)
 
 
     def test_delete_genre(self):
-        res = requests.delete(self.host+'/genre/19')
+        res = requests.delete(self.host+'/genre/21')
         self.assertEquals(res.status_code, 200)
 
 

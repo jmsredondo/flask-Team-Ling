@@ -78,7 +78,7 @@ function initgenre() {
 
 function initusers() {
     $.ajax({
-        url: "/users",
+        url: "/users-list",
         dataType: "JSON"
     }).done(function (data) {
         for(var i = 1; i < data.length; i++){
