@@ -4,14 +4,7 @@
 {% endblock %}
 {% block content %}
 
-    <div class="col-md-12">
-        <div class="card">
-            <div class="header">
-                <h4 class="title">Striped Table with Hover</h4>
-                <p class="category">Here is a subtitle for this table</p>
-            </div>
-            <div class="content table-responsive table-full-width">
-                <table id="users" class="table table-hover table-striped">
+    <table id="users" class="table table-hover table-striped">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -34,10 +27,6 @@
                     </tfoot>
                 </table>
 
-            </div>
-        </div>
-    </div>
-
 {% endblock %}
 
 {% block scripts %}
@@ -53,7 +42,7 @@
                    withCredentials: true
                 },
                 success: function(response){
-                     $('#example').DataTable({
+                    $('#users').DataTable({
                 "data": response,
                 "columns": [
                     {"data": "id"},
