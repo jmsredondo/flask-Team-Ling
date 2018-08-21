@@ -13,7 +13,7 @@ function initbooks() {
     }).done(function (data) {
         for (var i = 0; i <data.length; i++){
             var html = `<div class="column">
-              <div class="post-module">
+              <div class="post-module hover">
                 <div class="thumbnail">
                   <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg"/>
                 </div>
