@@ -1,7 +1,6 @@
 # app/models.py
 import datetime
 import os
-import jwt
 
 from flask import Flask
 from flask_login import UserMixin, LoginManager

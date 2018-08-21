@@ -26,9 +26,6 @@ class UserTestCase(unittest.TestCase):
     def setUp(self):
         """Define test variables and initialize app."""
         self.host = 'http://localhost:5000'
-        self.sampleuser = {'username': 'lingling', 'firstname': 'Ling', 'lastname': 'Fama', 'role': 'user',
-                           'phone': '09460292951', 'password_hash': 'N0virus01', 'password2': 'N0virus01',
-                           'email': 'lingfama18@gmail.com'}
         self.sampleuser = {'username': 'jamjam', 'firstname': 'Jamsell', 'lastname': 'Fama', 'role': 'user',
                            'phone': '09163053885', 'password_hash': 'N0virus02', 'password2': 'N0virus02',
                            'email': 'jamfama18@gmail.com'}
@@ -44,13 +41,13 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 201)
         res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
-        self.assertIn('ling11879', str(res.text))
+        self.assertIn('jamjam', str(res.text))
 
     def test_api_Get_User_List(self):
         """Test get user list (GET request)."""
         res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
-        self.assertIn('jsmith', str(res.text))
+        self.assertIn('jamjam', str(res.text))
 
     def test_encode_auth_token(self):
         user = User(
@@ -110,9 +107,7 @@ class UserTestCase(unittest.TestCase):
     #         # drop all tables
     #         db.session.remove()
     #         db.drop_all()
-
-
-class booksTestCase(unittest.TestCase):
+class BooksTestCase(unittest.TestCase):
     app = Flask(__name__)
     api = Api(app)
     app.config.from_object(app_config['development'])
@@ -128,21 +123,56 @@ class booksTestCase(unittest.TestCase):
                            'image': 'URL\URL to image',
                            'description': 'description'}
 
-    def test_Add_Book(self):
+    def test_add_new_book(self):
         res = requests.post(self.host + '/book', data=self.samplebook)
         self.assertEqual(res.status_code, 201)
 
-    def test_Book_List(self):
-        res = res = requests.get(self.host + '/book')
+    def test_booklist(self):
+        res = res = requests.get(self.host+'/book')
         self.assertEqual(res.status_code, 200)
 
-    def test_Get_Book(self):
-        res = requests.get(self.host + '/book/9')
+    def get_book(self):
+        res = requests.get(self.host+'/book/80')
         self.assertEquals(res.status_code, 200)
 
-    def test_remove_Book(self):
-        res = requests.delete(self.host + '/book/11')
+
+    def test_delete_book(self):
+        res = requests.delete(self.host+'/book/11')
         self.assertEquals(res.status_code, 200)
+#
+# class GenreTestCase(unittest.TestCase):
+#     app = Flask(__name__)
+#     api = Api(app)
+#     app.config.from_object(app_config['development'])
+#     app.config.from_pyfile('config.py')
+#     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#
+#     db = SQLAlchemy()
+#     db.init_app(app)
+#
+#     def setUp(self):
+#         self.host = 'http://localhost:5000'
+#         self.samplebook = {'bookName':'booktest',
+#                            'image':'URL\URL to image',
+#                            'description': 'description'}
+#
+#     def test_Add_Book(self):
+#         res = requests.post(self.host + '/book', data=self.samplebook)
+#         self.assertEqual(res.status_code, 201)
+#
+#     def test_Book_List(self):
+#         res = res = requests.get(self.host+'/book')
+#         self.assertEqual(res.status_code, 200)
+#
+#     def test_Get_Book(self):
+#         res = requests.get(self.host+'/book/11')
+#         self.assertEquals(res.status_code, 200)
+#
+#
+#     def test_remove_Book(self):
+#         res = requests.delete(self.host+'/book/11')
+#         self.assertEquals(res.status_code, 200)
+#
 
 
 # Make the tests conveniently executable
