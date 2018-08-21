@@ -1,6 +1,6 @@
 {% extends "layouts/admin_layout.html" %}
 {% block styles %}
-    
+
 {% endblock %}
 {% block content %}
 
@@ -41,5 +41,35 @@
 {% endblock %}
 
 {% block scripts %}
+
+    <script>
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "http://localhost:5000/users-list",
+                dataType: 'json',
+                crossDomain: true,
+                xhrFields: {
+                   withCredentials: true
+                },
+                success: function(response){
+                     $('#example').DataTable({
+                "data": response,
+                "columns": [
+                    {"data": "id"},
+                    {"data": "username"},
+                    {"data": "firstname"},
+                    {"data": "lastname"},
+                    {"data": "email"},
+                    {"data": "phone"}
+                ]
+            });
+                    console.log(response)
+                }
+            });
+
+        });
+
+    </script>
 
 {% endblock %}
