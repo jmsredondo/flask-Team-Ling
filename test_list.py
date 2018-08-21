@@ -35,7 +35,7 @@ class UserTestCase(unittest.TestCase):
         #     # create all tables
         #     db.create_all()
 
-    def test_Register_User(self):
+    def test_create_user(self):
         """Test register user (POST request)"""
         res = requests.post(self.host + '/users', json=self.sampleuser)
         self.assertEqual(res.status_code, 201)
@@ -43,12 +43,15 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertIn('jamjam', str(res.text))
 
-    def test_api_Get_User_List(self):
+    def test_users_list(self):
         """Test get user list (GET request)."""
         res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
         self.assertIn('jamjam', str(res.text))
 
+    def test_get_user(self):
+        res = requests.get(self.host + '/users/jsmith')
+        self.assertEquals(res.status_code, 200)
 
     # def test_api_can_get_bucketlist_by_id(self):
     #     """Test ebook_api can get a single bucketlist by using it's id."""
@@ -125,40 +128,40 @@ class BooksTestCase(unittest.TestCase):
     def test_delete_book(self):
         res = requests.delete(self.host+'/book/11')
         self.assertEquals(res.status_code, 200)
-#
-# class GenreTestCase(unittest.TestCase):
-#     app = Flask(__name__)
-#     api = Api(app)
-#     app.config.from_object(app_config['development'])
-#     app.config.from_pyfile('config.py')
-#     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#
-#     db = SQLAlchemy()
-#     db.init_app(app)
-#
-#     def setUp(self):
-#         self.host = 'http://localhost:5000'
-#         self.samplebook = {'bookName':'booktest',
-#                            'image':'URL\URL to image',
-#                            'description': 'description'}
-#
-#     def test_Add_Book(self):
-#         res = requests.post(self.host + '/book', data=self.samplebook)
-#         self.assertEqual(res.status_code, 201)
-#
-#     def test_Book_List(self):
-#         res = res = requests.get(self.host+'/book')
-#         self.assertEqual(res.status_code, 200)
-#
-#     def test_Get_Book(self):
-#         res = requests.get(self.host+'/book/11')
-#         self.assertEquals(res.status_code, 200)
-#
-#
-#     def test_remove_Book(self):
-#         res = requests.delete(self.host+'/book/11')
-#         self.assertEquals(res.status_code, 200)
-#
+
+
+class GenreTestCase(unittest.TestCase):
+    app = Flask(__name__)
+    api = Api(app)
+    app.config.from_object(app_config['development'])
+    app.config.from_pyfile('config.py')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db = SQLAlchemy()
+    db.init_app(app)
+
+    def setUp(self):
+        self.host = 'http://localhost:5000'
+        self.samplegenre = {'type':'genreType',
+                           'genre':'genre'}
+
+    def test_add_new_genre(self):
+        res = requests.post(self.host + '/genre', data=self.samplegenre)
+        self.assertEqual(res.status_code, 200)
+
+    def test_genrelist(self):
+        res = res = requests.get(self.host+'/genre')
+        self.assertEqual(res.status_code, 200)
+
+    def test_get_genre(self):
+        res = requests.get(self.host+'/genre/19')
+        self.assertEquals(res.status_code, 200)
+
+
+    def test_delete_genre(self):
+        res = requests.delete(self.host+'/genre/19')
+        self.assertEquals(res.status_code, 200)
+
 
 
 # Make the tests conveniently executable
