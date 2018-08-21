@@ -9,6 +9,7 @@ from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 from config import app_config
+from models import User
 
 
 class UserTestCase(unittest.TestCase):
@@ -26,8 +27,11 @@ class UserTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.host = 'http://localhost:5000'
         self.sampleuser = {'username': 'lingling', 'firstname': 'Ling', 'lastname': 'Fama', 'role': 'user',
-                           'phone': '09460292951', 'password': 'N0virus01', 'password2': 'N0virus01',
+                           'phone': '09460292951', 'password_hash': 'N0virus01', 'password2': 'N0virus01',
                            'email': 'lingfama18@gmail.com'}
+        self.sampleuser = {'username': 'jamjam', 'firstname': 'Jamsell', 'lastname': 'Fama', 'role': 'user',
+                           'phone': '09163053885', 'password_hash': 'N0virus02', 'password2': 'N0virus02',
+                           'email': 'jamfama18@gmail.com'}
 
         # # binds the app to the current context
         # with self.app.app_context():
@@ -36,17 +40,32 @@ class UserTestCase(unittest.TestCase):
 
     def test_Register_User(self):
         """Test register user (POST request)"""
-        res = requests.post(self.host+'/users', data=self.sampleuser)
+        res = requests.post(self.host + '/users', json=self.sampleuser)
         self.assertEqual(res.status_code, 201)
         res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
-        self.assertIn('lingling', str(res.text))
+        self.assertIn('ling11879', str(res.text))
 
     def test_api_Get_User_List(self):
         """Test get user list (GET request)."""
-        res = res = requests.get(self.host+'/users-list')
+        res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
         self.assertIn('jsmith', str(res.text))
+
+    def test_encode_auth_token(self):
+        user = User(
+            username='jam11879',
+            firstname='Jamsell',
+            lastname='Keseya',
+            role='user',
+            password_hash='N0virus01',
+            email='jamfama18@gmail.com',
+            phone='09163053885'
+        )
+        user.set_password('N0virus01')
+        User.save(user)
+        auth_token = user.encode_auth_token(self, user.id, user.username)
+        self.assertTrue(isinstance(auth_token, bytes))
 
     # def test_api_can_get_bucketlist_by_id(self):
     #     """Test ebook_api can get a single bucketlist by using it's id."""
@@ -91,6 +110,39 @@ class UserTestCase(unittest.TestCase):
     #         # drop all tables
     #         db.session.remove()
     #         db.drop_all()
+
+
+class booksTestCase(unittest.TestCase):
+    app = Flask(__name__)
+    api = Api(app)
+    app.config.from_object(app_config['development'])
+    app.config.from_pyfile('config.py')
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    db = SQLAlchemy()
+    db.init_app(app)
+
+    def setUp(self):
+        self.host = 'http://localhost:5000'
+        self.samplebook = {'bookName': 'booktest',
+                           'image': 'URL\URL to image',
+                           'description': 'description'}
+
+    def test_Add_Book(self):
+        res = requests.post(self.host + '/book', data=self.samplebook)
+        self.assertEqual(res.status_code, 201)
+
+    def test_Book_List(self):
+        res = res = requests.get(self.host + '/book')
+        self.assertEqual(res.status_code, 200)
+
+    def test_Get_Book(self):
+        res = requests.get(self.host + '/book/9')
+        self.assertEquals(res.status_code, 200)
+
+    def test_remove_Book(self):
+        res = requests.delete(self.host + '/book/11')
+        self.assertEquals(res.status_code, 200)
 
 
 # Make the tests conveniently executable

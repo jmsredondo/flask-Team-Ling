@@ -1,7 +1,8 @@
-from flask import jsonify, g, render_template
+from flask import jsonify, g, render_template, session
 from flask_api import FlaskAPI
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
+from forms import LoginForm
 
 from models import User
 
@@ -12,14 +13,18 @@ auth = HTTPBasicAuth()
 
 
 # Users Login
-def get_auth_token():
-    token = g.user.generate_auth_token()
-    token = {'token': token.decode('ascii')}
+def get_auth_token(request):
+    user = User.query.filter_by(username=request.json['username']).first()
+    auth_token = user.encode_auth_token(user.id, user.username)
+    if auth_token:
+        token = {
+            'token': str(auth_token)
+        }
+        response = jsonify(token)
+        response.status_code = 200
 
-    response = jsonify(token)
-    response.status_code = 200
+        return response
 
-    return response
 
 
 # Get User Profile
@@ -61,21 +66,20 @@ def users_list():
 
 
 # User Create User
-def create_user(form):
-    # if form.validate_on_submit():
-    user = User(
-        username=form.username.data,
-        lastname=form.lastname.data,
-        firstname=form.firstname.data,
-        email=form.email.data,
-        password_hash=form.password.data,
-        phone=form.phone.data,
-        role=''
+def create_user(request):
+
+    users = User(
+        username=request.json['username'],
+        lastname=request.json['lastname'],
+        firstname=request.json['firstname'],
+        email=request.json['email'],
+        password_hash=request.json['password_hash'],
+        phone=request.json['phone'],
+        role=request.json['role']
     )
+    users.set_password(request.json['password_hash'])
 
-    user.set_password(form.password.data)
-    User.save(user)
-    response = jsonify(user.user_obj())
+    User.save(users)
+    response = jsonify(users.user_obj())
     response.status_code = 201
-
     return response

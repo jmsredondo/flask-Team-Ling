@@ -5,10 +5,11 @@ from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 from config import app_config
 from controllers import user, book, genre
-from services.controllers import Users_Controller as uc
-from forms import RegistrationForm
+
+from forms import RegistrationForm, BookForm
 
 # initialize sql-alchemy
+from models import User
 
 app = Flask(__name__)
 api = Api(app)
@@ -24,18 +25,11 @@ db.init_app(app)
 
 # # ----------- User API URI -----------
 
-# Users Index
-@app.route('/')
-@app.route('/index')
-def index():
-    return uc.index()
-
 # User login
 class Login(Resource):
     # @app.route('/users/login', methods=['GET', 'POST'])
-    def get(self):
-        return user.get_auth_token()
-
+    def post(self):
+        return user.get_auth_token(request)
 
 api.add_resource(Login, '/users/login')
 
@@ -61,10 +55,10 @@ api.add_resource(Get_User_List, '/users-list')
 
 # Create new User
 class Register_User(Resource):
-    # @app.route('/users', methods=['POST'])
     def post(self):
-        form = RegistrationForm()
-        return user.create_user(form)
+        # if form.validate_on_submit():
+        return user.create_user(request)
+        # return content
 
 
 api.add_resource(Register_User, '/users')
@@ -82,7 +76,8 @@ class Get_Books(Resource):
         return book.booklist()
 
     def post(self):
-        return book.add_new_book(request)
+        form = BookForm(request.form)
+        return book.add_new_book(form)
 
 
 api.add_resource(Get_Books, '/book')

@@ -1,0 +1,25 @@
+{% extends "layouts/admin_layout.html" %}
+
+{# style content #}
+{% block styles %}
+
+
+{% endblock %}
+
+
+
+{# main content #}
+{% block content %}
+    <h1> ADDING GENRE TO THE DATABASE</h1>
+    {#    form for adding of books #}
+    <form action="/genre" method="POST">
+        <input type="text" id="genre" name="genre" placeholder="Genre">
+        <select name="type" id="type">
+            <option value=" " selected> </option>
+            <option value="Fiction">Fiction</option>
+            <option value="Non-Fiction">Non-Fiction</option>
+        </select>
+        {#        save data to folder lcoation #}
+        <input type="submit">
+    </form>
+{% endblock %}

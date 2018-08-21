@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo+Bhai');
 
 .fx-wrap {
   display: inline-block;
@@ -123,24 +124,6 @@
   z-index: 2;
   transform: rotateY(0deg);
 }
-.fx-wrap .card>.back {
-  z-index: 1;
-  transform: rotateY(180deg);
-}
-.fx-wrap .card>.back header,
-.fx-wrap .card>.back .text {
-  width: 100%;
-}
-.fx-wrap .card>.back header b,
-.fx-wrap .card>.back .text b {
-  color: #0098a6;
-  width: 80%;
-  margin: 0 auto;
-}
-.fx-wrap .card>.back header p,
-.fx-wrap .card>.back .text p {
-  margin: 20px auto;
-}
 .fx-wrap .card.flip-it>.front {
   transform: rotateY(-180deg);
   z-index: 1;
@@ -152,4 +135,13 @@
 .fx-wrap .card.flip-it>.front:before,
 .fx-wrap .card.flip-it>.back:before {
   background-position: -324px 0;
+}
+
+.image {
+    background: url("/static/images/genre-card-bg.png");
+}
+
+.text > p {
+    font-family: 'Baloo Bhai', cursive !important;
+    font-size: 3vh;
 }
