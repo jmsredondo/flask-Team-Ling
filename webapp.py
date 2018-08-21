@@ -43,6 +43,11 @@ def login_user():
         return uc.post_login()
 
 
+@app.route('/ulist', methods=['GET'])
+def users_list():
+    return uc.users_list()
+
+
 # session.pop('username', None)
 
 @app.route('/register', methods=['GET', 'POST'])
