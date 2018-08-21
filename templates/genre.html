@@ -1,41 +1,114 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/css/cat-view.css">
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/img/apple-icon.png">
+
+    <link rel="icon" type="image/png" href="assets/img/favicon.png">
+    <!-- change icons  -->
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        BookLib \\ Categories-Genres
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+
+    <!-- CSS Files -->
+    <link href="/static/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
+
+    <link href="/static/css/bookview.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/cat-view.css"/>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
 </head>
-<body>
-<div class="content ">
-    <div id='genreTiles' class="fx-wrap">
+<body class="">
+<div class="wrapper ">
+    <div class="main-panel">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
+            <div class="container-fluid">
+                <div class="navbar-wrapper">
+                    <a class="navbar-brand" href="#">\\Name</a>
+                </div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon icon-bar"></span>
+                    <span class="navbar-toggler-icon icon-bar"></span>
+                    <span class="navbar-toggler-icon icon-bar"></span>
+                </button>
 
-    </div>
-
-    <!-- end content -->
-    <footer class="footer">
-        <div class="container-fluid">
-            <nav class="float-left">
-                <ul>
-                    <li>
-                        <a href="https://www.creative-tim.com">
-                            Creative Tim
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-            <div class="copyright float-right">
-                &copy;
-                <script>
-                    document.write(new Date().getFullYear())
-                </script>
-                , made with <i class="material-icons">favorite</i> by
-                <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a> for a better web.
+                <div class="collapse navbar-collapse justify-content-end">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            </a>
+                        </li>
+                        <!-- your navbar here -->
+                    </ul>
+                </div>
             </div>
-            <!-- your footer here -->
+        </nav>
+        <!-- End Navbar -->
+        <div class="content ">
+
+            <!-- start content -->
+
+
+            <div id="genreTiles">
+                <div class="fx-wrap">
+                    <div class="card" data-href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZIbTuWRSqUVqo_Qdo4O9PKBwhRuwHBcmDdJlDez5oSwdXel-7pw">
+                        <div class="front">
+                            <div class="image">
+                                <p class="heading">Fiction</p>
+                            </div>
+                            <div class="text">
+                                <header class="clearfix">
+                                    <button class="flip"><span class="zmdi zmdi-replay"></span></button>
+                                </header>
+                                <p>
+                                    Genres inside the category
+                                </p>
+                            </div>
+                        </div>
+                        <div class="back">
+                            <div class="text">
+                                <header class="clearfix">
+                                    <button class="flip"><span class="zmdi zmdi-replay"></span></button>
+                                </header><b>"Categories under FICTION"</b>
+                                <p>I have flexbox with fallbacks, I'm not browser prefixed (so watch out, this is a prototype) but my animations are pure css if your into that sort of thing.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- end content -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <!-- your footer here -->
+                </div>
+            </footer>
         </div>
-    </footer>
-</div>
-</div>
-</body>
-<footer>
-    <script src="/static/js/jquery.min.js"></script>
+    </div>
+    <!--   Core JS Files   -->
+{#    <script src="/static/js/core/popper.min.js" type="text/javascript"></script>#}
+{#    <script src="/static/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>#}
+{#    <script src="/static/js/plugins/perfect-scrollbar.jquery.min.js"></script>#}
+{#    <!-- Chartist JS -->#}
+{#    <script src="/static/js/plugins/chartist.min.js"></script>#}
+{#    <!--  Notifications Plugin    -->#}
+{#    <script src="/static/js/plugins/bootstrap-notify.js"></script>#}
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="/static/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
     <script src="/static/js/admin.js"></script>
-</footer>
+
+
+</body>
 </html>

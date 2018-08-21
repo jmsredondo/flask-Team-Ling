@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 //Book functions
 function initbooks() {
-      //request list of all books
+    //request list of all books
     $.ajax({
         url: "/book",
         dataType: "JSON"
@@ -22,7 +22,10 @@ function initbooks() {
                   <h1 class="title">${data[i].book_name}</h1>
                   <h2 class="sub_title">${data[i].description}</h2>
                   <p class="description">New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.</p>
-                  <div class="post-meta"><span class="timestamp"><i class="fa fa-clock-">o</i> Rating: 5 </span><span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span></div>
+                  <div class="post-meta">
+                  <span class="timestamp"><i class="fa fa-clock-"></i> Rating: 4 </span>
+                  <span class="comments"><i class="fa fa-comments"></i><a href="#"> 39 comments</a></span>
+                 </div>
                 </div></div></div>`;
             $('#bookslist').append(html);
         }
@@ -39,13 +42,14 @@ function initbooks() {
 
 // Genre functions
 function initgenre() {
-       //request list of all genres
+    //request list of all genres
     $.ajax({
         url: "/genre",
         dataType: "JSON"
     }).done(function (data) {
-        for (var i = 0; i <data.length; i++){
-            var html = `<div class="card"
+        for (var i = 0; i < data.length; i++){
+            var html = `<div class="fx-wrap"> 
+                <div class="card"
              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZIbTuWRSqUVqo_Qdo4O9PKBwhRuwHBcmDdJlDez5oSwdXel-7pw">
             <div class="front">
                 <div class="image">
@@ -67,6 +71,7 @@ function initgenre() {
               </div>
             </div>
           </div>
+        </div> 
         </div>`;
             $('#genreTiles').append(html);
         }
@@ -100,3 +105,6 @@ function initusers() {
         console.log(data);
     })
 }
+
+
+
