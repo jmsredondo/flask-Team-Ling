@@ -1,8 +1,6 @@
 {% extends "layouts/admin_layout.html" %}
 {% block styles %}
-    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://code.jquery.com/jquery-3.3.1.js" rel="script">
-    <link href="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js">
+
     {#    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>#}
 {% endblock %}
 {% block content %}
@@ -49,20 +47,31 @@
 
 {% block scripts %}
     <script>
+
         $(document).ready(function () {
-            $('#example').DataTable({
-                "ajax": {
-                    "sAjaxSource": "/users-list"
+            $.ajax({
+                url: "http://localhost:5000/users-list",
+                dataType: 'json',
+                crossDomain: true,
+                xhrFields: {
+                   withCredentials: true
                 },
+                success: function(response){
+                     $('#example').DataTable({
+                "data": response,
                 "columns": [
                     {"data": "id"},
                     {"data": "username"},
-                    {"data": "First Name"},
-                    {"data": "Last Name"},
-                    {"data": "Email"},
-                    {"data": "Phone"}
+                    {"data": "firstname"},
+                    {"data": "lastname"},
+                    {"data": "email"},
+                    {"data": "phone"}
                 ]
             });
+                    console.log(response)
+                }
+            });
+
         });
 
     </script>
