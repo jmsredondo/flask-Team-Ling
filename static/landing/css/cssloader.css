@@ -1,0 +1,15 @@
+/* Loading CSS Stylesheet */
+/* Bootstrap */
+@import url(bootstrap.min.css);
+/* Responsive */
+@import url(bootstrap-responsive.min.css);
+/* Font Awesome */
+@import url(font-awesome.min.css);
+/* prettyPhoto */
+@import url(prettyPhoto.css);
+/* Camera Slideshow */
+@import url(camera/camera.css);
+/* flexslider */
+@import url(flexslider/flexslider.css);
+/* Google Fonts */
+@import url(http://fonts.googleapis.com/css?family=Bilbo+Swash+Caps|Bitter|Open+Sans:300italic,400italic,600italic,700italic,800italic,400,600,700,800);
