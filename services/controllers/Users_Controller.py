@@ -1,9 +1,11 @@
-from flask import render_template, redirect, url_for, flash, request
+import requests
+from flask import render_template, redirect, url_for, flash, request, session, make_response, jsonify
 from flask_httpauth import HTTPBasicAuth
-from flask_login import current_user, logout_user, login_user
+from flask_login import current_user, logout_user, login_user, LoginManager, login_required
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.urls import url_parse
 
+from app import app
 from forms import *
 
 auth = HTTPBasicAuth()
@@ -15,10 +17,7 @@ login.login_view = 'login'
 
 
 # Users Index
-@app.route('/')
-@app.route('/index')
-# @auth.login_required
-def index():
+def user_index():
     return render_template('index.html', title='Home', user='Hi user!', page='Dashboard')
 
 
@@ -32,10 +31,18 @@ def register_form():
 
 # Redirect to login page
 def redirect_login(requests):
-    info = requests.post('http://localhost:5000/users')
-    if info is not None:
-        form = LoginForm()
-        return redirect(url_for('index'))
+    form = RegistrationForm()
+    json = {
+        'username': form.username.data,
+        'lastname': form.lastname.data,
+        'firstname': form.firstname.data,
+        'email': form.email.data,
+        'password_hash': form.password.data,
+        'phone': form.phone.data,
+        'role': 'user'
+    }
+    requests.post('http://localhost:5000/users', json=json)
+    return redirect('/login')
 
 
 def new():
@@ -45,33 +52,40 @@ def new():
 
 # Logout User
 @app.route('/users/logout')
-def logout():
+def user_logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect('/login')
 
 
 # User Login
 def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     form = LoginForm()
-    if form.validate_on_submit():
+    return render_template('login.html', title='Sign In', form=form)
+
+# User Login
+def post_login():
+    form = LoginForm()
+    try:
+        # fetch the user data
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('login'))
+            return redirect('/login')
 
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
+        json_user = {
+            'username': user.username
+        }
+        info = requests.post('http://localhost:5000/users/login', json=json_user)
+        session['token'] = info.text
+        return redirect('/index')
+    except Exception as e:
+        print(e)
+        responseObject = {
+            'status': 'fail',
+            'message': 'Try again'
+        }
+        return make_response(jsonify(responseObject)), 500
 
-        if not next_page or url_parse(next_page).netloc != '':
-            if user.role == "admin":
-                next_page = url_for('dashboard')
-            else:
-                next_page = url_for('index')
-        return redirect(next_page)
-        # return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
 
 def users():
     return render_template('users.html', title='List of Users')

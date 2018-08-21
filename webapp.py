@@ -1,31 +1,49 @@
 import os
 
 import requests
-from flask import request, session, redirect, url_for
+from flask import request, session, redirect, url_for, render_template, make_response, jsonify
 from flask_login import LoginManager
 
 from app import app
-from services.controllers import Users_Controller as uc,\
-    Genre_Controller as gc,Books_Controller as bc
+from forms import RegistrationForm, LoginForm
+from services.controllers import Users_Controller as uc, \
+    Genre_Controller as gc, Books_Controller as bc
+from models import User
 
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 
 # Login
 login = LoginManager(app)
 login.login_view = 'login'
 
 
+@app.route('/index', methods=['GET'])
+def index():
+    if 'token' in session:
+        return render_template('index.html', title='Dashboard')
+    else:
+        return redirect('/login')
+
+@app.route('/logout')
+def logout():
+    # remove the username from the session if it is there
+    session.pop('token', None)
+    return redirect('/login')
+
+
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
     if request.method == "GET":
-        return uc.login()
+        if 'token' not in session:
+            return uc.login()
+        else:
+            return redirect('/index')
     else:
-        info = requests.get('http://localhost:5000/users/login')
-        if info.status_code == 200:
-            session['token'] = info
-            return redirect(url_for('index'))
+        return uc.post_login()
 
+
+# session.pop('username', None)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -41,13 +59,16 @@ def register():
 def reg():
     return uc.register_form()
 
+
 @app.route('/genres', methods=['GET'])
 def genre():
     return gc.genre()
 
+
 @app.route('/books', methods=['GET'])
 def books():
     return bc.books()
+
 
 @app.route('/users', methods=['GET'])
 def users():
