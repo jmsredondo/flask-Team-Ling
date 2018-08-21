@@ -49,20 +49,6 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertIn('jamjam', str(res.text))
 
-    def test_encode_auth_token(self):
-        user = User(
-            username='jam11879',
-            firstname='Jamsell',
-            lastname='Keseya',
-            role='user',
-            password_hash='N0virus01',
-            email='jamfama18@gmail.com',
-            phone='09163053885'
-        )
-        user.set_password('N0virus01')
-        User.save(user)
-        auth_token = user.encode_auth_token(self, user.id, user.username)
-        self.assertTrue(isinstance(auth_token, bytes))
 
     # def test_api_can_get_bucketlist_by_id(self):
     #     """Test ebook_api can get a single bucketlist by using it's id."""

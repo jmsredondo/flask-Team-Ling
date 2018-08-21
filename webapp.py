@@ -16,11 +16,22 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 login = LoginManager(app)
 login.login_view = 'login'
 
+@app.route('/')
+def landing():
+    return render_template('landing/landing.html')
 
 @app.route('/index', methods=['GET'])
 def index():
     if 'token' in session:
         return render_template('index.html', title='Dashboard')
+    else:
+        return redirect('/login')
+
+
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    if 'token' in session:
+        return render_template('admin/index.html', title='Home', user='Hi Admin!', page='Dashboard')
     else:
         return redirect('/login')
 
@@ -41,6 +52,11 @@ def login_user():
             return redirect('/index')
     else:
         return uc.post_login()
+
+
+@app.route('/ulist', methods=['GET'])
+def users_list():
+    return uc.users_list()
 
 
 # session.pop('username', None)
@@ -76,4 +92,4 @@ def users():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=80)
+    app.run(debug=True, host='localhost', port=80)

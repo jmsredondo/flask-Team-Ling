@@ -3,22 +3,60 @@
 <head>
     <link rel="icon" type="image/png" href="/static/images/icon.png">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/login.css') }}">
-    <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='login/login.js') }}"></script>
+    <script language="JavaScript" type="text/javascript"
+            src="{{ url_for('static', filename='login/login.js') }}"></script>
 
     <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="/static/landing/css/loader.css">
 </head>
 
 <body>
+
+<table class="doc-loader">
+    <tr>
+        <td>
+            <div class="windows8"> <!-- windows8 -->
+                <div class="wBall" id="wBall_1">
+                    <div class="wInnerBall">
+                    </div>
+                </div>
+                <div class="wBall" id="wBall_2">
+                    <div class="wInnerBall">
+                    </div>
+                </div>
+                <div class="wBall" id="wBall_3">
+                    <div class="wInnerBall">
+                    </div>
+                </div>
+                <div class="wBall" id="wBall_4">
+                    <div class="wInnerBall">
+                    </div>
+                </div>
+                <div class="wBall" id="wBall_5">
+                    <div class="wInnerBall">
+                    </div>
+                </div>
+            </div> <!-- End windows8 -->
+        </td>
+    </tr>
+</table>
+
 <div class='brand'>
-    <a href='https://www.jamiecoulter.co.uk' target='_blank'>
-        <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/logo.png'>
+    <a href='/'>
+        <img src='/static/images/icon.png'>
     </a>
 </div>
 <div class='login'>
     <div class='login_title'>
         <span>Login to your account</span>
+        {% block messages %}
+            {% include 'layouts/flash.html' %}
+        {% endblock %}
     </div>
-    <form class='login_fields' action="/login" method="post" novalidate>
+
+    <form class='login_fields' action="/login" method="post">
+        {{ form.csrf_token }}
+
         <div class='login_fields__user'>
             <div class='icon'>
                 <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/user_icon_copy.png'>
@@ -53,18 +91,17 @@
         <p>Welcome back</p>
     </div>
     <div class='disclaimer'>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce semper laoreet placerat. Nullam semper auctor
-            justo, rutrum posuere odio vulputate nec.</p>
+        <p>Have a good time reading!</p>
     </div>
 </div>
 <div class='authent'>
     <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/puff.svg'>
     <p>Authenticating...</p>
 </div>
-<div class='love'>
-    <p>Made with <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/love_copy.png"/> by <a
-            href='https://www.jamiecoulter.co.uk' target='_blank'> Jcoulterdesign </a></p>
-</div>
+<script type="text/javascript" src="/static/landing/js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="/static/landing/js/jquery-migrate-1.2.1.min.js"></script>
+
+<script src="/static/landing/js/main.js" type="application/javascript" rel="script"></script>
 
 </body>
 </html>

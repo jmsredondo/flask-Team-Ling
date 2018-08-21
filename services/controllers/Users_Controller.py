@@ -16,11 +16,6 @@ login = LoginManager(app)
 login.login_view = 'login'
 
 
-# Users Index
-def user_index():
-    return render_template('index.html', title='Home', user='Hi user!', page='Dashboard')
-
-
 # Register User
 def register_form():
     if current_user.is_authenticated:
@@ -37,10 +32,12 @@ def redirect_login(requests):
         'lastname': form.lastname.data,
         'firstname': form.firstname.data,
         'email': form.email.data,
-        'password_hash': form.password.data,
+        'password': form.password.data,
+        'password2': form.password2.data,
         'phone': form.phone.data,
         'role': 'user'
     }
+
     requests.post('http://localhost:5000/users', json=json)
     return redirect('/login')
 
@@ -62,6 +59,7 @@ def login():
     form = LoginForm()
     return render_template('login.html', title='Sign In', form=form)
 
+
 # User Login
 def post_login():
     form = LoginForm()
@@ -69,7 +67,7 @@ def post_login():
         # fetch the user data
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+            flash('Invalid username/password supplied'), 400
             return redirect('/login')
 
         json_user = {
@@ -77,7 +75,11 @@ def post_login():
         }
         info = requests.post('http://localhost:5000/users/login', json=json_user)
         session['token'] = info.text
-        return redirect('/index')
+
+        if user.role == "admin":
+            return redirect('/dashboard')
+        else:
+            return redirect('/index')
     except Exception as e:
         print(e)
         responseObject = {
@@ -86,6 +88,10 @@ def post_login():
         }
         return make_response(jsonify(responseObject)), 500
 
+
+def users_list():
+    requests.get('http://localhost:5000/users-list')
+    return render_template('admin/table.html', title='List of Users')
 
 def users():
     return render_template('users.html', title='List of Users')
