@@ -1,0 +1,182 @@
+.portfolio-holder{line-height: 0}
+#portfolio-filter li{display:inline-block;margin-left:-3px;}
+#portfolio-items{width:100%;clear:both;display:inline-block;margin:auto;padding:0; margin-top: 30px;}
+.filterable-item{float:left;max-height:300px;max-width:400px;overflow:hidden;}
+.primary {
+	width: auto;
+	display: table;
+	margin: auto;
+}
+.inner-filters li {
+	list-style: none;
+	float: left;
+	letter-spacing: 1px;
+	margin: 5px;
+	padding: 10px 15px 10px 15px;
+	line-height: 20px;
+	text-transform: uppercase;
+	background: #f22836;
+	border: 2px solid #f22836;
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-ms-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+}
+.inner-filters li:hover{ background: transparent; }
+.inner-filters li.active {
+	background: transparent
+}
+.inner-filters li.active a,.inner-filters li:hover a{ color: #f22836; }
+.inner-filters li a {color: #fff;}
+.filterable-item {
+	position: relative;
+	overflow: hidden;
+}
+
+.filterable-item a + img {
+	width: 100%;	
+}
+
+.filterable-item .hover-wrap {
+	position: absolute;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	
+	opacity: 0;
+	filter: alpha(opacity=0);
+	
+	-webkit-transition: all 450ms ease-out 0s;	
+	   -moz-transition: all 450ms ease-out 0s;
+		 -o-transition: all 450ms ease-out 0s;
+		    transition: all 450ms ease-out 0s;
+		  
+	-webkit-transform: rotateX(25deg) scale(0.5,0.5);
+	   -moz-transform: rotateX(25deg) scale(0.5,0.5);
+		-ms-transform: rotateX(25deg) scale(0.5,0.5);
+		 -o-transform: rotateX(25deg) scale(0.5,0.5);
+			transform: rotateX(25deg) scale(0.5,0.5);	
+}
+
+.filterable-item:hover .hover-wrap,
+.filterable-item.active .hover-wrap {
+	opacity: 1;
+	filter: alpha(opacity=100);
+	
+	-webkit-transform: rotateX(0deg) scale(1,1);
+	   -moz-transform: rotateX(0deg) scale(1,1);
+		-ms-transform: rotateX(0deg) scale(1,1);
+		 -o-transform: rotateX(0deg) scale(1,1);
+		    transform: rotateX (0deg) scale(1,1);
+}
+
+.filterable-item .hover-wrap .overlay-img {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: #f22836;
+	
+	opacity: 0.80;
+	filter: alpha(opacity=80);
+}
+
+.filterable-item .hover-wrap .overlay-img-thumb {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -16px 0 0 -16px;
+	color: #FFFFFF;
+	font-size: 32px;
+	line-height: 1em;
+	
+	opacity: 1;
+	filter: alpha(opacity=100);
+}
+
+.filterable-item figure {
+	margin: 0;
+	position: relative;
+}
+.filterable-item figure img {
+	position: relative;
+}
+.filterable-item figcaption {
+	position: absolute;
+	top: -8px;
+	background: #f22836;
+	color: #fff;
+}
+.filterable-item figcaption h3 {
+	margin: 0;
+	padding: 0;
+	color: #fff;
+	text-transform: uppercase;
+	margin-top: 30px;
+}
+.look {
+	text-decoration: none;
+	text-align: center;
+	padding: 10px 15px 10px 15px;
+	margin-top: 30px;
+	display: inline-block;
+	color: #fff;
+	text-transform: uppercase;
+	border: 3px solid #fff;
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-ms-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+}
+.look:hover {
+	color: #f22836;
+	border: 3px solid #fff;
+	background: #fff;
+	-webkit-transition: all .3s ease-in-out;
+}
+figcaption {
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	text-align: center;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s;
+	-moz-transition: -moz-transform 0.3s, opacity 0.3s;
+	transition: transform 0.3s, opacity 0.3s;
+}
+.filterable-item figure:hover figcaption,
+.filterable-item figure.cs-hover figcaption {
+	opacity: 1;
+	-webkit-transform: translate(0px, 8px);
+	-moz-transform: translate(0px, 8px);
+	-ms-transform: translate(0px, 8px);
+	transform: translate(0px, 8px);
+}
+.filterable-item figcaption span {
+	display: block;
+}
+@media(min-width:1600px) and (max-width:2399px){
+.filterable-item{width:20%;}
+}
+
+@media(min-width:1200px) and (max-width:1599px){
+.filterable-item{width: 25%;}
+}
+
+@media(min-width:800px) and (max-width:1199px){
+.filterable-item{width:33.29%;}
+} 
+
+@media (min-width: 768px) and (max-width: 979px) { 
+.filterable-item{width:50%;} 
+} 
+
+@media (max-width: 767px) { 
+.filterable-item{width:50%;} 
+} 
+
+@media (max-width: 480px) { 
+.filterable-item{width:100%;}.view-larger{left:5px; bottom:10px;} .view-larger a{font-size:12px; padding:6px 8px;} 
+
+} 
