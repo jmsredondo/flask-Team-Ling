@@ -11,7 +11,7 @@ function initbooks() {
         url: "/book",
         dataType: "JSON"
     }).done(function (data) {
-        for (var i = 0; i <data.length; i++){
+        for (var i = 0; i < data.length; i++) {
             var html = `<div class="column">
               <div class="post-module hover">
                 <div class="thumbnail">
@@ -47,7 +47,7 @@ function initgenre() {
         url: "/genre",
         dataType: "JSON"
     }).done(function (data) {
-        for (var i = 0; i < data.length; i++){
+        for (var i = 0; i < data.length; i++) {
             var html = `<div class="fx-wrap"> 
                 <div class="card">
             <div class="front">
@@ -81,18 +81,59 @@ function initusers() {
         url: "/users-list",
         dataType: "JSON"
     }).done(function (data) {
-        for(var i = 1; i < data.length; i++){
+        for (var i = 1; i < data.length; i++) {
             console.log(data);
         }
     });
     var username = "jsmith";
     $.ajax({
-        url: "/users/"+username,
+        url: "/users/" + username,
         dataType: "JSON"
     }).done(function (data) {
         console.log(data);
     })
 }
 
+function create_book() {
+    $.ajax({
+        type: "POST",
+        url: '/addbook',
+        data: {'bookName':'book','image':'description'},
+        success: function () {
+
+        },
+        dataType: 'JSON'
+    });
+}
+function remove_book() {
+    $.ajax({
+        type: "DELETE",
+        url: '/deletebook/11',
+        success: function () {
+
+        },
+    });
+}
 
 
+function create_genre() {
+    $.ajax({
+        type: "POST",
+        url: '/addGenre',
+        data: {'type':'typegenre','genre':'genre'},
+        success: function () {
+
+        },
+        dataType: 'JSON'
+    });
+}
+
+function remove_genre() {
+    $.ajax({
+        type: "DELETE",
+        url: '/deleteGenre/21',
+        success: function () {
+
+        },
+    });
+}

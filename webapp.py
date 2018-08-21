@@ -75,20 +75,40 @@ def register():
 def reg():
     return uc.register_form()
 
-
+# Books
 @app.route('/genres', methods=['GET'])
 def genre():
     return gc.genre()
 
+@app.route('/addgenre', methods=['POST'])
+def addbook():
+    return gc.addgenre()
 
+
+@app.route('/deletegenre/<id>', methods=['POST'])
+def deletegenre(id):
+    return gc.deletegenre(id)
+
+# Genre
 @app.route('/books', methods=['GET'])
 def books():
     return bc.books()
+
+@app.route('/addbook', methods=['POST'])
+def addbook():
+    return bc.addbook()
+
+@app.route('/deletebook/<id>', methods=['POST'])
+def deletebook(id):
+    return bc.deletebook(id)
 
 
 @app.route('/users', methods=['GET'])
 def users():
     return uc.users()
+
+
+
 
 
 if __name__ == '__main__':

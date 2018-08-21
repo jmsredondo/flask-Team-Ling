@@ -6,7 +6,20 @@ from werkzeug.urls import url_parse
 
 from forms import *
 
+
 def books():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     return render_template('book_view.html', title='Genre')
+
+
+def addbook():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    # return render_template('book_view.html', title='Genre')
+
+def deletebook(id):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    # return render_template('book_view.html', title='Genre')
