@@ -144,6 +144,7 @@ class GenreTestCase(unittest.TestCase):
         self.host = 'http://localhost:5000'
         self.samplegenre = {'type':'genreType',
                            'genre':'genre'}
+        self.samplebookgenre = {'book_id': '1'}
 
     def test_add_new_genre(self):
         res = requests.post(self.host + '/genre', data=self.samplegenre)
@@ -161,6 +162,11 @@ class GenreTestCase(unittest.TestCase):
     def test_delete_genre(self):
         res = requests.delete(self.host+'/genre/21')
         self.assertEquals(res.status_code, 200)
+
+    def add_book_genre(self):
+        res = requests.post(self.host + '/genre/addbook/<id>',data=self.samplebookgenre)
+        self.assertEquals(res.status_code, 200)
+
 
 
 
