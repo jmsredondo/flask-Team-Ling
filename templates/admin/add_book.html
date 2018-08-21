@@ -1,0 +1,22 @@
+{% extends "layouts/admin_layout.html" %}
+
+{# style content #}
+{% block styles %}
+
+
+{% endblock %}
+
+
+
+{# main content #}
+{% block content %}
+    <h1> ADDING BOOKS TO THE DATABASE</h1>
+{#    form for adding of books #}
+    <form action="/book" method="POST">
+        <input type="text" name="Book Name" placeholder="Book Name">
+        <input type="text" name="Book Descriptioon" placeholder="Book Name">
+{#        save data to folder lcoation #}
+        <input type="file" name="image" accept="image/*">
+        <input type="submit">
+    </form>
+{% endblock %}
