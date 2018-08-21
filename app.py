@@ -1,6 +1,7 @@
 # app/__init__.py
 import os
 from flask import request, Flask, render_template, url_for
+from flask_cors import CORS
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 from config import app_config
@@ -12,6 +13,7 @@ from forms import RegistrationForm, BookForm
 from models import User
 
 app = Flask(__name__)
+CORS(app, resources={r"/users-list": {"origins": "*"}}, supports_credentials=True)
 api = Api(app)
 app.config.from_object(app_config['development'])
 app.config.from_pyfile('config.py')
@@ -30,6 +32,7 @@ class Login(Resource):
     # @app.route('/users/login', methods=['GET', 'POST'])
     def post(self):
         return user.get_auth_token(request)
+
 
 api.add_resource(Login, '/users/login')
 

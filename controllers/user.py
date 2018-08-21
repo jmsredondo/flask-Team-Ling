@@ -26,7 +26,6 @@ def get_auth_token(request):
         return response
 
 
-
 # Get User Profile
 def get_user(username):
     user = User.query.filter_by(username=username).first()
@@ -68,18 +67,32 @@ def users_list():
 # User Create User
 def create_user(request):
 
+    if request.json['password'] != request.json['password2']:
+        invalid = {
+            "invalid_fields": [
+                {
+                    "field": "password2",
+                    "reason": "Your password did not matched!"
+                }
+            ]
+        }
+        response = jsonify(invalid)
+        response.status_code = 400
+        return response
+
     users = User(
         username=request.json['username'],
         lastname=request.json['lastname'],
         firstname=request.json['firstname'],
         email=request.json['email'],
-        password_hash=request.json['password_hash'],
+        password_hash=request.json['password'],
         phone=request.json['phone'],
         role=request.json['role']
     )
+
     users.set_password(request.json['password_hash'])
 
     User.save(users)
     response = jsonify(users.user_obj())
-    response.status_code = 201
+    response.status_code = 200
     return response
