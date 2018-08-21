@@ -62,6 +62,7 @@ def login():
     form = LoginForm()
     return render_template('login.html', title='Sign In', form=form)
 
+
 # User Login
 def post_login():
     form = LoginForm()
@@ -86,6 +87,10 @@ def post_login():
         }
         return make_response(jsonify(responseObject)), 500
 
+
+def users_list():
+    requests.get('http://localhost:5000/users-list')
+    return render_template('admin/table.html', title='List of Users')
 
 def users():
     return render_template('users.html', title='List of Users')

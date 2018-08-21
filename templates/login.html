@@ -3,7 +3,8 @@
 <head>
     <link rel="icon" type="image/png" href="/static/images/icon.png">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login/login.css') }}">
-    <script language="JavaScript" type="text/javascript" src="{{ url_for('static', filename='login/login.js') }}"></script>
+    <script language="JavaScript" type="text/javascript"
+            src="{{ url_for('static', filename='login/login.js') }}"></script>
 
     <title>{{ title }}</title>
 </head>
@@ -17,6 +18,11 @@
 <div class='login'>
     <div class='login_title'>
         <span>Login to your account</span>
+    </div>
+    <div>
+        {% block messages %}
+            {% include 'layouts/flash.html' %}
+        {% endblock %}
     </div>
     <form class='login_fields' action="/login" method="post" novalidate>
         <div class='login_fields__user'>
