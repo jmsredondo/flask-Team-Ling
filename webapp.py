@@ -16,6 +16,9 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 login = LoginManager(app)
 login.login_view = 'login'
 
+@app.route('/')
+def landing():
+    return render_template('landing/landing.html')
 
 @app.route('/index', methods=['GET'])
 def index():
