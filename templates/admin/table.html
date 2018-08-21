@@ -1,71 +1,45 @@
 {% extends "layouts/admin_layout.html" %}
 {% block styles %}
-    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://code.jquery.com/jquery-3.3.1.js" rel="script">
-    <link href="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js">
-    {#    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>#}
+    
 {% endblock %}
 {% block content %}
 
-{#    <div class="col-md-12">#}
-{#        <div class="card">#}
-{#            <div class="header">#}
-{#                <h4 class="title">Striped Table with Hover</h4>#}
-{#                <p class="category">Here is a subtitle for this table</p>#}
-{#            </div>#}
-{#            <div class="content table-responsive table-full-width">#}
-{#                <table id="users" class="table table-hover table-striped">#}
-{#                    <thead>#}
-{#                    <tr>#}
-{#                        <th>ID</th>#}
-{#                        <th>Username</th>#}
-{#                        <th>First Name</th>#}
-{#                        <th>Last Name</th>#}
-{#                        <th>Email</th>#}
-{#                        <th>Phone</th>#}
-{#                    </tr>#}
-{#                    </thead>#}
-{##}
-{#                </table>#}
-{##}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Striped Table with Hover</h4>
+                <p class="category">Here is a subtitle for this table</p>
+            </div>
+            <div class="content table-responsive table-full-width">
+                <table id="users" class="table table-hover table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Us</th>
+                        <th>Office</th>
+                        <th>Extn.</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Extn.</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                    </tr>
+                    </tfoot>
+                </table>
 
-    <table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-            </tr>
-        </thead>
-    </table>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
 {% block scripts %}
-    <script>
-        $(document).ready(function () {
-            $('#example').DataTable({
-                "ajax": {
-                    "sAjaxSource": "/users-list"
-                },
-                "columns": [
-                    {"data": "id"},
-                    {"data": "username"},
-                    {"data": "First Name"},
-                    {"data": "Last Name"},
-                    {"data": "Email"},
-                    {"data": "Phone"}
-                ]
-            });
-        });
-
-    </script>
-
 
 {% endblock %}

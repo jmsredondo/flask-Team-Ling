@@ -31,6 +31,7 @@ class Login(Resource):
     def post(self):
         return user.get_auth_token(request)
 
+
 api.add_resource(Login, '/users/login')
 
 

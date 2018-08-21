@@ -18,13 +18,14 @@
 <div class='login'>
     <div class='login_title'>
         <span>Login to your account</span>
-    </div>
-    <div>
         {% block messages %}
             {% include 'layouts/flash.html' %}
         {% endblock %}
     </div>
-    <form class='login_fields' action="/login" method="post" novalidate>
+
+    <form class='login_fields' action="/login" method="post">
+        {{ form.csrf_token }}
+
         <div class='login_fields__user'>
             <div class='icon'>
                 <img src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/217233/user_icon_copy.png'>
@@ -59,8 +60,7 @@
         <p>Welcome back</p>
     </div>
     <div class='disclaimer'>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce semper laoreet placerat. Nullam semper auctor
-            justo, rutrum posuere odio vulputate nec.</p>
+        <p>Have a good time reading!</p>
     </div>
 </div>
 <div class='authent'>

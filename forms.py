@@ -1,7 +1,7 @@
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Regexp, Email, InputRequired, EqualTo, ValidationError, Length
 from models import User
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, csrf
 
 
 # app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')

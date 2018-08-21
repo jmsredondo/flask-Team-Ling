@@ -24,6 +24,14 @@ def index():
     else:
         return redirect('/login')
 
+
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    if 'token' in session:
+        return render_template('admin/index.html', title='Home', user='Hi Admin!', page='Dashboard')
+    else:
+        return redirect('/login')
+
 @app.route('/logout')
 def logout():
     # remove the username from the session if it is there
