@@ -155,22 +155,6 @@ def create_user(request):
         response.status_code = 400
         response.headers = headers
         return response
-    elif request.json['balance'] in alphabet:
-        headers = {
-            "Description": "Invalid Input"
-        }
-        invalid = {
-            "invalid_fields": [
-                {
-                    "field": "balance",
-                    "reason": "Should only contain numbers"
-                }
-            ]
-        }
-        response = jsonify(invalid)
-        response.status_code = 400
-        response.headers = headers
-        return response
     else:
         users = User(
             username=request.json['username'],
@@ -179,8 +163,7 @@ def create_user(request):
             email=request.json['email'],
             password_hash=request.json['password'],
             phone=request.json['phone'],
-            role=request.json['role'],
-            balance=request.json['balance']
+            role=request.json['role']
         )
 
         users.set_password(request.json['password'])

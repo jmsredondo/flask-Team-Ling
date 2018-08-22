@@ -98,13 +98,12 @@ class User(UserMixin, db.Model):
             'email': self.email,
             'password': self.password_hash,
             'phone': self.phone,
-            'role': self.role,
-            'balance': self.balance
+            'role': self.role
         }
 
         return user_data
 
-    def __init__(self, username, firstname, lastname, email, phone, role, password_hash, balance):
+    def __init__(self, username, firstname, lastname, email, phone, role, password_hash):
         """initialize with name."""
         self.username = username
         self.firstname = firstname
@@ -113,7 +112,6 @@ class User(UserMixin, db.Model):
         self.phone = phone
         self.role = role
         self.password_hash = password_hash
-        self.balance = balance
 
     def save(self):
         db.session.add(self)
