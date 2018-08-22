@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 from config import app_config
-from controllers import user, book, genre
+from controllers import user, book, genre,library
 
 from forms import RegistrationForm, BookForm
 
@@ -185,6 +185,11 @@ api.add_resource(Add_Book_Genra, '/genre/addbook/<id>')
 # api.add_resource(Get_Ratings, '/rate/<book_id>')
 
 # --------------------------------
+class Library_List(Resource):
+    def get(self):
+        return library.get_all_library()
+
+api.add_resource(Library_List, '/library')
 
 if __name__ == '__main__':
     app.run(debug=True)
