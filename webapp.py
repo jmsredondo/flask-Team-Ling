@@ -1,7 +1,7 @@
 import os
 
 import requests
-from flask import request, session, redirect, url_for, render_template, make_response, jsonify
+from flask import request, session, redirect, url_for, render_template, make_response, jsonify, send_from_directory
 from flask_login import LoginManager, logout_user, login_user
 
 from app import app
@@ -25,7 +25,11 @@ def landing():
 @app.route('/index', methods=['GET'])
 def index():
     if 'token' in session:
+        # return render_template('index.html', title='Dashboard')
+        resp = make_response(render_template('index.html'))
+        resp.set_cookie('userID', session['token'])
         return render_template('index.html', title='Dashboard')
+
     else:
         return redirect('/login')
 
@@ -40,7 +44,7 @@ def dashboard():
 
 @app.route('/logout')
 def out():
-
+    session.pop('token', None)
     session.clear()
     requests.post('http://localhost:5000/users/logout')
     return redirect('/login')
@@ -92,9 +96,10 @@ def genre():
         return redirect('/login')
 
 
-@app.route('/addgenre', methods=['POST'])
+@app.route('/addgenre', methods=['GET'])
 def addgenre():
-    return gc.addgenre()
+    if request.method == 'GET':
+        return send_from_directory("templates", "admin/add_genre_form.html")
 
 
 @app.route('/deletegenre/<id>', methods=['POST'])
@@ -132,4 +137,4 @@ def users():
 def library():
     return render_template('my_library.html')
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=8000)
+    app.run(debug=True, host='localhost', port=80)

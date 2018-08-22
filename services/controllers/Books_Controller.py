@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, send_from_directory
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user, login_user
 from flask_sqlalchemy import SQLAlchemy
@@ -10,7 +10,12 @@ from forms import *
 def books():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+<<<<<<< HEAD
     return render_template('book_view.html', title='Books')
+=======
+    # return render_template('book_view.html', title='Genre')
+    return send_from_directory("templates", "admin/genrelist.html")
+>>>>>>> 4ca69c9a195e0bb0c8f158bfe8e76d9e8e82e814
 
 
 def post_books(requests):
