@@ -85,7 +85,7 @@ def post_login():
 
 def users_list():
     requests.get('http://localhost:5000/users-list')
-    return render_template('admin/table.html', title='List of Users')
+    return render_template('admin/userslist.html', title='List of Users')
 
 def users():
     return render_template('users.html', title='List of Users')

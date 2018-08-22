@@ -6,10 +6,10 @@ from werkzeug.urls import url_parse
 
 from forms import *
 
+
 def genre():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    return render_template('genre.html', title='Genre')
+    return render_template('admin/genrelist.html', title='Genre')
+
 
 def addgenre():
     if current_user.is_authenticated:
@@ -17,8 +17,8 @@ def addgenre():
 
     # return render_template('book_view.html', title='Genre')
 
+
 def deletegenre(id):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     # return render_template('book_view.html', title='Genre')
-
