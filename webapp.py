@@ -59,7 +59,10 @@ def login_user():
 
 @app.route('/ulist', methods=['GET'])
 def users_list():
-    return uc.users_list()
+    if 'token' in session:
+        return uc.users_list()
+    else:
+        return redirect('/login')
 
 
 # session.pop('username', None)
@@ -82,7 +85,10 @@ def reg():
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
-    return gc.genre()
+    if 'token' in session:
+        return gc.genre()
+    else:
+        return redirect('/login')
 
 
 @app.route('/addgenre', methods=['POST'])
@@ -97,10 +103,13 @@ def deletegenre(id):
 
 @app.route('/books', methods=['GET', 'POST'])
 def books():
-    if request.method == 'GET':
-        return bc.books()
+    if 'token' in session:
+        if request.method == 'GET':
+            return bc.books()
+        else:
+            return bc.post_books(requests)
     else:
-        return bc.post_books(requests)
+        return redirect('/login')
 
 
 @app.route('/deletebook/<id>', methods=['POST'])
@@ -110,7 +119,10 @@ def deletebook(id):
 
 @app.route('/users', methods=['GET'])
 def users():
-    return uc.users()
+    if 'token' in session:
+        return uc.users()
+    else:
+        return redirect('/login')
 
 
 if __name__ == '__main__':

@@ -114,7 +114,6 @@ api.add_resource(Get_Book, '/book/<id>')
 
 # Get Genre List
 class Genre_List(Resource):
-    # @app.route('/genre', methods=['GET', 'POST'])
     def get(self):
         return genre.genrelist()
 

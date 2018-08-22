@@ -100,7 +100,7 @@ def users_list():
             "lastname": userslist.lastname,
             "email": userslist.email,
             "password": userslist.password_hash,
-            "balance": userlist.balance,
+            "balance": userslist.balance,
             "phone": userslist.phone
         }
         results.append(obj)
