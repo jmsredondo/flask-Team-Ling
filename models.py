@@ -196,8 +196,7 @@ class Book(db.Model):
     bookName = db.Column(db.String(120))
     image = db.Column(db.String(120), nullable=True)
     description = db.Column(db.String(250), nullable=True)
-    genres = db.relationship('Genre', secondary=book_category, lazy='subquery',
-                             backref=db.backref('books', lazy=True))
+    genres = db.relationship('Genre', secondary=book_category, backref=db.backref('books'))
     library = db.relationship('User', secondary=library, lazy='subquery',
                               backref=db.backref('users', lazy=True))
     book = db.relationship('Rate', backref='book', lazy=True)

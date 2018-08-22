@@ -38,7 +38,7 @@ def redirect_login(requests):
         'role': 'user'
     }
 
-    requests.post('http://localhost:5000/users', json=json)
+    requests.post('/users', json=json)
     return redirect('/login')
 
 
@@ -51,7 +51,6 @@ def new():
 def login():
     form = LoginForm()
     return render_template('login.html', title='Sign In', form=form)
-
 
 # User Login
 def post_login():
@@ -69,7 +68,7 @@ def post_login():
         }
         info = requests.post('http://localhost:5000/users/login', json=json_user)
         session['token'] = info.text
-
+        session['userid'] = user.id
         if user.role == "admin":
             return redirect('/dashboard')
         else:
@@ -84,7 +83,7 @@ def post_login():
 
 
 def users_list():
-    requests.get('http://localhost:5000/users-list')
+    requests.get('/users-list')
     return render_template('admin/userslist.html', title='List of Users')
 
 def users():
