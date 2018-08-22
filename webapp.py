@@ -2,7 +2,7 @@ import os
 
 import requests
 from flask import request, session, redirect, url_for, render_template, make_response, jsonify
-from flask_login import LoginManager
+from flask_login import LoginManager, logout_user, login_user
 
 from app import app
 from forms import RegistrationForm, LoginForm
@@ -16,9 +16,11 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 login = LoginManager(app)
 login.login_view = 'login'
 
+
 @app.route('/')
 def landing():
     return render_template('landing/landing.html')
+
 
 @app.route('/index', methods=['GET'])
 def index():
@@ -35,10 +37,11 @@ def dashboard():
     else:
         return redirect('/login')
 
+
 @app.route('/logout')
-def logout():
-    # remove the username from the session if it is there
+def out():
     session.pop('token', None)
+    requests.post('http://localhost:5000/users/logout')
     return redirect('/login')
 
 
@@ -75,10 +78,12 @@ def register():
 def reg():
     return uc.register_form()
 
+
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
     return gc.genre()
+
 
 @app.route('/addgenre', methods=['POST'])
 def addgenre():
@@ -89,14 +94,19 @@ def addgenre():
 def deletegenre(id):
     return gc.deletegenre(id)
 
-# Genre
-@app.route('/books', methods=['GET'])
+
+@app.route('/books', methods=['GET', 'POST'])
 def books():
-    return bc.books()
+    if request.method == 'GET':
+        return bc.books()
+    else:
+        return bc.post_books(requests)
+
 
 @app.route('/addbook', methods=['POST'])
 def addbook():
     return bc.addbook()
+
 
 @app.route('/deletebook/<id>', methods=['POST'])
 def deletebook(id):
@@ -106,9 +116,6 @@ def deletebook(id):
 @app.route('/users', methods=['GET'])
 def users():
     return uc.users()
-
-
-
 
 
 if __name__ == '__main__':

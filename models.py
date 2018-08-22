@@ -1,6 +1,7 @@
 # app/models.py
 import datetime
 import os
+import jwt
 
 from flask import Flask
 from flask_login import UserMixin, LoginManager
@@ -84,6 +85,7 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(11), nullable=True)
     role = db.Column(db.String(120), default='user')
     password_hash = db.Column(db.String(128))
+    balance = db.Column(db.Float, nullable=True, default=0)
     user_id = db.relationship('Rate', backref='user', lazy=True)
 
     # JSON OBJECT
@@ -95,12 +97,13 @@ class User(UserMixin, db.Model):
             'email': self.email,
             'password': self.password_hash,
             'phone': self.phone,
-            'role': self.role
+            'role': self.role,
+            'balance': self.balance
         }
 
         return user_data
 
-    def __init__(self, username, firstname, lastname, email, phone, role, password_hash):
+    def __init__(self, username, firstname, lastname, email, phone, role, password_hash, balance):
         """initialize with name."""
         self.username = username
         self.firstname = firstname
@@ -109,6 +112,7 @@ class User(UserMixin, db.Model):
         self.phone = phone
         self.role = role
         self.password_hash = password_hash
+        self.balance = balance
 
     def save(self):
         db.session.add(self)
