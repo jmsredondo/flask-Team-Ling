@@ -124,6 +124,8 @@ def users():
     else:
         return redirect('/login')
 
-
+@app.route('/my_library', methods=['GET'])
+def library():
+    return render_template('my_library.html')
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port=80)
