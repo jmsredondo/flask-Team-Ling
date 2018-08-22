@@ -27,8 +27,8 @@ class UserTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.host = 'http://localhost:5000'
         self.sampleuser = {'username': 'jamjam', 'firstname': 'Jamsell', 'lastname': 'Fama', 'role': 'user',
-                           'phone': '09163053885', 'password_hash': 'N0virus02', 'password2': 'N0virus02',
-                           'email': 'jamfama18@gmail.com'}
+                           'phone': '09163053885', 'password': 'N0virus02', 'password2': 'N0virus02',
+                           'email': 'jamfama18@gmail.com','balance':"0"}
 
         # # binds the app to the current context
         # with self.app.app_context():
@@ -38,7 +38,7 @@ class UserTestCase(unittest.TestCase):
     def test_create_user(self):
         """Test register user (POST request)"""
         res = requests.post(self.host + '/users', json=self.sampleuser)
-        self.assertEqual(res.status_code, 201)
+        self.assertEqual(res.status_code, 200)
         res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
         self.assertIn('jamjam', str(res.text))
@@ -50,52 +50,9 @@ class UserTestCase(unittest.TestCase):
         self.assertIn('jamjam', str(res.text))
 
     def test_get_user(self):
-        res = requests.get(self.host + '/users/jsmith')
+        res = requests.get(self.host + '/users/jamjam')
         self.assertEquals(res.status_code, 200)
 
-    # def test_api_can_get_bucketlist_by_id(self):
-    #     """Test ebook_api can get a single bucketlist by using it's id."""
-    #     rv = self.client().post('/bucketlists/', data=self.bucketlist)
-    #     self.assertEqual(rv.status_code, 201)
-    #     result_in_json = json.loads(rv.data.decode('utf-8').replace("'", "\""))
-    #     result = self.client().get(
-    #         '/bucketlists/{}'.format(result_in_json['id']))
-    #     self.assertEqual(result.status_code, 200)
-    #     self.assertIn('Go to Borabora', str(result.data))
-    #
-    # def test_bucketlist_can_be_edited(self):
-    #     """Test ebook_api can edit an existing bucketlist. (PUT request)"""
-    #     rv = self.client().post(
-    #         '/bucketlists/',
-    #         data={'name': 'Eat, pray and love'})
-    #     self.assertEqual(rv.status_code, 201)
-    #     rv = self.client().put(
-    #         '/bucketlists/1',
-    #         data={
-    #             "name": "Dont just eat, but also pray and love :-)"
-    #         })
-    #     self.assertEqual(rv.status_code, 200)
-    #     results = self.client().get('/bucketlists/1')
-    #     self.assertIn('Dont just eat', str(results.data))
-    #
-    # def test_bucketlist_deletion(self):
-    #     """Test ebook_api can delete an existing bucketlist. (DELETE request)."""
-    #     rv = self.client().post(
-    #         '/bucketlists/',
-    #         data={'name': 'Eat, pray and love'})
-    #     self.assertEqual(rv.status_code, 201)
-    #     res = self.client().delete('/bucketlists/1')
-    #     self.assertEqual(res.status_code, 200)
-    #     # Test to see if it exists, should return a 404
-    #     result = self.client().get('/bucketlists/1')
-    #     self.assertEqual(result.status_code, 404)
-    #
-    # def tearDown(self):
-    #     """teardown all initialized variables."""
-    #     with self.app.app_context():
-    #         # drop all tables
-    #         db.session.remove()
-    #         db.drop_all()
 class BooksTestCase(unittest.TestCase):
     app = Flask(__name__)
     api = Api(app)
@@ -108,13 +65,13 @@ class BooksTestCase(unittest.TestCase):
 
     def setUp(self):
         self.host = 'http://localhost:5000'
-        self.samplebook = {'bookName': 'booktest',
-                           'image': 'URL\URL to image',
-                           'description': 'description'}
+        self.samplebook = {"bookname": "booktest",
+                           "image": "URL to image",
+                           "description": "description"}
 
     def test_add_new_book(self):
-        res = requests.post(self.host + '/book', data=self.samplebook)
-        self.assertEqual(res.status_code, 201)
+        res = requests.post(self.host + '/book', json=self.samplebook)
+        self.assertEqual(res.status_code, 200)
 
     def test_booklist(self):
         res = res = requests.get(self.host+'/book')
@@ -142,12 +99,12 @@ class GenreTestCase(unittest.TestCase):
 
     def setUp(self):
         self.host = 'http://localhost:5000'
-        self.samplegenre = {'type':'genreType',
-                           'genre':'genre'}
-        self.samplebookgenre = {'book_id': '1'}
+        self.samplegenre = {"type":"genreType",
+                           "genre":"genre"}
+        self.samplebookgenre = {"book_id": "1"}
 
     def test_add_new_genre(self):
-        res = requests.post(self.host + '/genre', data=self.samplegenre)
+        res = requests.post(self.host + '/genre', json=self.samplegenre)
         self.assertEqual(res.status_code, 200)
 
     def test_genrelist(self):
