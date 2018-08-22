@@ -53,7 +53,6 @@ def login():
     form = LoginForm()
     return render_template('login.html', title='Sign In', form=form)
 
-
 # User Login
 def post_login():
     form = LoginForm()
@@ -71,7 +70,7 @@ def post_login():
 
         info = requests.post('http://localhost:5000/users/login', json=json_user)
         session['token'] = info.text
-
+        session['userid'] = user.id
         if user.role == "admin":
             return redirect('/dashboard')
         else:

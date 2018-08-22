@@ -109,13 +109,13 @@ def deletegenre(id):
 
 @app.route('/books', methods=['GET', 'POST'])
 def books():
-    if 'token' in session:
+    # if 'token' in session:
         if request.method == 'GET':
             return bc.books()
         else:
             return bc.post_books(requests)
-    else:
-        return redirect('/login')
+    # else:
+    #     return redirect('/login')
 
 
 @app.route('/deletebook/<id>', methods=['POST'])
@@ -130,6 +130,8 @@ def users():
     else:
         return redirect('/login')
 
-
+@app.route('/my_library', methods=['GET'])
+def library():
+    return render_template('my_library.html')
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=80)
+    app.run(debug=True, host='localhost', port=8000)
