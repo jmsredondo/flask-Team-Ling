@@ -27,12 +27,14 @@
                 <th>ID</th>
                 <th>Genre</th>
                 <th>Type</th>
+                <th></th>
                 </thead>
                 <tfoot>
                 <tr>
                     <th>ID</th>
                     <th>Genre</th>
                     <th>Type</th>
+                    <th></th>
                 </tr>
                 </tfoot>
             </table>
@@ -44,6 +46,7 @@
 <script>
 
     $(document).ready(function () {
+        var count = 0;
         $.ajax({
             url: "http://localhost:5000/genre",
             dataType: 'json',
@@ -57,7 +60,15 @@
                     "columns": [
                         {"data": "id"},
                         {"data": "genre"},
-                        {"data": "type"}
+                        {"data": "type"},
+                        {"defaultContent": "<div class=\"row\">\n" +
+                            "    <div class=\"col-md-2\">\n" +
+                            "        <button class=\"btn btn-info btn-fill\" value=\"\">View</button>\n" +
+                            "    </div>\n" +
+                            "    <div class=\"col-md-2\">\n" +
+                            "        <button class=\"btn btn-danger btn-fill\" value=\"\">Delete</button>\n" +
+                            "    </div>\n" +
+                            "</div>"}
                     ],
                 });
             }
