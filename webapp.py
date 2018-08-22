@@ -81,7 +81,7 @@ def genre():
     return gc.genre()
 
 @app.route('/addgenre', methods=['POST'])
-def addbook():
+def addgenre():
     return gc.addgenre()
 
 

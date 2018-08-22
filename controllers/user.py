@@ -90,7 +90,7 @@ def create_user(request):
         role=request.json['role']
     )
 
-    users.set_password(request.json['password_hash'])
+    users.set_password(request.json['password'])
 
     User.save(users)
     response = jsonify(users.user_obj())
