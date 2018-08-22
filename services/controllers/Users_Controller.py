@@ -1,5 +1,6 @@
 import requests
-from flask import render_template, redirect, url_for, flash, request, session, make_response, jsonify
+from flask import render_template, redirect, url_for, flash, request, session, make_response, jsonify, \
+    send_from_directory
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user, login_user, LoginManager, login_required
 from flask_sqlalchemy import SQLAlchemy
@@ -66,6 +67,7 @@ def post_login():
             'username': user.username,
             'password': user.password_hash
         }
+
         info = requests.post('http://localhost:5000/users/login', json=json_user)
         session['token'] = info.text
         session['userid'] = user.id
@@ -83,8 +85,10 @@ def post_login():
 
 
 def users_list():
-    requests.get('/users-list')
-    return render_template('admin/userslist.html', title='List of Users')
+    # requests.get('http://localhost:5000/users-list')
+    # return render_template('admin/userslist.html', title='List of Users')
+    return send_from_directory("templates", "admin/userslist.html")
+
 
 def users():
     return render_template('users.html', title='List of Users')

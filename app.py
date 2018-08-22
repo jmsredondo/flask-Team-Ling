@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 from config import app_config
+from forms import RegistrationForm, BookForm
 from controllers import user, book, genre,library
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
@@ -178,6 +179,7 @@ class Add_Book_Genra(Resource):
 
 api.add_resource(Add_Book_Genra, '/genre/addbook/<id>')
 
+
 # ---------------------------------------
 
 # ----------- Library API URI -----------
@@ -221,6 +223,7 @@ class Library_List(Resource):
         return library.get_all_library(session['userid'])
     def post(selfs):
         return library.add_book_to_library(request,session['userid'])
+
 
 api.add_resource(Library_List, '/library')
 

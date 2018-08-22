@@ -1,4 +1,6 @@
 from flask import jsonify
+from flask_restful.representations import json
+
 from models import Genre
 from models import Book
 
@@ -22,15 +24,7 @@ def genrelist():
 
 
 def add_new_genre(request):
-    # if request.is_json:
-    #     converted_request = request.get_json()
-    #     if "type" in converted_request.keys() and "genre" in converted_request.keys():
-    #
-    #     else:
-    #         return jsonify({'message': 'Invalid Request'})
-    # else:
-    #     return jsonify({'message': 'Invalid Request'})
-
+    # return jsonify(request.get_json())
     type = request.json['type']
     genre = request.json['genre']
 
