@@ -3,7 +3,6 @@ from flask import jsonify, session
 
 def get_all_library(userid):
     user_logged_in = User.query.get(userid)
-
     booklist = user_logged_in.user_library
     response = []
 
