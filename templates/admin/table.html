@@ -5,27 +5,28 @@
 {% block content %}
 
     <table id="users" class="table table-hover table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Us</th>
-                        <th>Office</th>
-                        <th>Extn.</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Extn.</th>
-                        <th>Start date</th>
-                        <th>Salary</th>
-                    </tr>
-                    </tfoot>
-                </table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Balance</th>
+        </tr>
+        </tfoot>
+    </table>
 
 {% endblock %}
 
@@ -39,20 +40,21 @@
                 dataType: 'json',
                 crossDomain: true,
                 xhrFields: {
-                   withCredentials: true
+                    withCredentials: true
                 },
-                success: function(response){
+                success: function (response) {
                     $('#users').DataTable({
-                "data": response,
-                "columns": [
-                    {"data": "id"},
-                    {"data": "username"},
-                    {"data": "firstname"},
-                    {"data": "lastname"},
-                    {"data": "email"},
-                    {"data": "phone"}
-                ]
-            });
+                        "data": response,
+                        "columns": [
+                            {"data": "id"},
+                            {"data": "username"},
+                            {"data": "firstname"},
+                            {"data": "lastname"},
+                            {"data": "email"},
+                            {"data": "phone"},
+                            {"data": "balance"}
+                        ]
+                    });
                     console.log(response)
                 }
             });

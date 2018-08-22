@@ -2,7 +2,7 @@ import os
 
 import requests
 from flask import request, session, redirect, url_for, render_template, make_response, jsonify
-from flask_login import LoginManager
+from flask_login import LoginManager, logout_user, login_user
 
 from app import app
 from forms import RegistrationForm, LoginForm
@@ -32,10 +32,11 @@ def dashboard():
     else:
         return redirect('/login')
 
+
 @app.route('/logout')
-def logout():
-    # remove the username from the session if it is there
+def out():
     session.pop('token', None)
+    requests.post('http://localhost:5000/users/logout')
     return redirect('/login')
 
 
@@ -78,9 +79,12 @@ def genre():
     return gc.genre()
 
 
-@app.route('/books', methods=['GET'])
+@app.route('/books', methods=['GET', 'POST'])
 def books():
-    return bc.books()
+    if request.method == 'GET':
+        return bc.books()
+    else:
+        return bc.post_books(requests)
 
 
 @app.route('/users', methods=['GET'])

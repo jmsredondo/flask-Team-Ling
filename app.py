@@ -37,6 +37,16 @@ class Login(Resource):
 api.add_resource(Login, '/users/login')
 
 
+# User login
+class Logout(Resource):
+    # @app.route('/users/login', methods=['GET', 'POST'])
+    def post(self):
+        return user.log_out()
+
+
+api.add_resource(Logout, '/users/logout')
+
+
 # Get Specific User
 class Get_User(Resource):
     def get(self, username):
@@ -79,8 +89,7 @@ class Get_Books(Resource):
         return book.booklist()
 
     def post(self):
-        form = BookForm(request.form)
-        return book.add_new_book(form)
+        return book.add_new_book(request)
 
 
 api.add_resource(Get_Books, '/book')

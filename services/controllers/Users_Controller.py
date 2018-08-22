@@ -47,13 +47,6 @@ def new():
     return render_template('newregister.html', title='new register', form=form)
 
 
-# Logout User
-@app.route('/users/logout')
-def user_logout():
-    logout_user()
-    return redirect('/login')
-
-
 # User Login
 def login():
     form = LoginForm()
@@ -71,7 +64,8 @@ def post_login():
             return redirect('/login')
 
         json_user = {
-            'username': user.username
+            'username': user.username,
+            'password': user.password_hash
         }
         info = requests.post('http://localhost:5000/users/login', json=json_user)
         session['token'] = info.text
