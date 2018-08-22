@@ -13,7 +13,7 @@ from forms import RegistrationForm, BookForm
 from models import User
 
 app = Flask(__name__)
-CORS(app, resources={r"/users-list": {"origins": "*"}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 api = Api(app)
 app.config.from_object(app_config['development'])
 app.config.from_pyfile('config.py')
