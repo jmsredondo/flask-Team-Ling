@@ -22,25 +22,45 @@ def genrelist():
 
 
 def add_new_genre(request):
-    if request.is_json:
-        converted_request = request.get_json()
-        if "type" in converted_request.keys() and "genre" in converted_request.keys():
-            type = converted_request['type']
-            genre = converted_request['genre']
+    # if request.is_json:
+    #     converted_request = request.get_json()
+    #     if "type" in converted_request.keys() and "genre" in converted_request.keys():
+    #
+    #     else:
+    #         return jsonify({'message': 'Invalid Request'})
+    # else:
+    #     return jsonify({'message': 'Invalid Request'})
 
-            new_genre = Genre(type=type, genre=genre)
-            Genre.save(new_genre)
-            headers = {
-                "Description": "OK"
-            }
-            response = jsonify({'id': new_genre.id, 'type': new_genre.type, 'genre': new_genre.genre})
-            response.status_code = 200
-            response.headers = headers
-            return response
-        else:
-            return jsonify({'message': 'Invalid Request'})
+    type = request.json['type']
+    genre = request.json['genre']
+
+    if type is not None:
+        new_genre = Genre(type=type, genre=genre)
+        Genre.save(new_genre)
+        headers = {
+            "Description": "OK"
+        }
+        result = {'id': new_genre.id, 'type': new_genre.type, 'genre': new_genre.genre}
+        response = jsonify(result)
+        response.status_code = 200
+        response.headers = headers
+        return response
     else:
-        return jsonify({'message': 'Invalid Request'})
+        headers = {
+            "Description": "Invalid input"
+        }
+        result = {
+            "invalid_fields": [
+                {
+                    "field": "type",
+                    "reason": "Type field is required"
+                }
+            ]
+        }
+        response = jsonify(result)
+        response.status_code = 400
+        response.headers = headers
+        return response
 
 
 def get_genre(id):
@@ -52,6 +72,14 @@ def get_genre(id):
         }
         response = jsonify(result)
         response.status_code = 200
+        response.headers = headers
+        return response
+    else:
+        headers = {
+            "Description": "Genre not found"
+        }
+        response = jsonify("Genre not found")
+        response.status_code = 404
         response.headers = headers
         return response
 
@@ -88,14 +116,23 @@ def add_book_genre(request, id):
         return response
 
 
-
 def delete_genre(id):
     genre_object = Genre().query.get(id)
     if genre_object is not None:
         obj = {'id': genre_object.id, 'type': genre_object.type, 'genre': genre_object.genre}
+        headers = {
+            "Description": "OK"
+        }
         Genre.delete(genre_object)
         response = jsonify(obj)
         response.status_code = 200
+        response.headers = headers
         return response
     else:
-        return jsonify({'message': 'Cannot Find Specified Genre'})
+        headers = {
+            "Description": "Category not found"
+        }
+        response = jsonify("Category not found")
+        response.status_code = 404
+        response.headers = headers
+        return response
