@@ -40,7 +40,8 @@ def dashboard():
 
 @app.route('/logout')
 def out():
-    session.pop('token', None)
+
+    session.clear()
     requests.post('http://localhost:5000/users/logout')
     return redirect('/login')
 
@@ -126,4 +127,4 @@ def users():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=80)
+    app.run(debug=True, host='localhost', port=8000)
