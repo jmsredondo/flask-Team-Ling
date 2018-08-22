@@ -15,7 +15,7 @@ def get_all_library(userid):
 def add_book_to_library(request,userid):
     user_logged_in = User.query.get(userid)
     book_id = request.get_json()
-    book_object = Book.query.get(book_id['book_id'])
+    book_object = Book.query.get(book_id['bookid'])
     if book_object:
         user_logged_in.user_library.append(book_object)
         db.session.add(user_logged_in)

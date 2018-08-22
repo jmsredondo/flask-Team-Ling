@@ -130,11 +130,11 @@ function addToLibrary(id) {
     alert(id);
     $.ajax({
         type: "POST",
-        url: '/addGenre',
-        data: {'type':'typegenre','genre':'genre'},
-        success: function () {
-
+        url: '/library',
+        data: JSON.stringify({'bookid': id}),
+        success: function (data) {
+          console.log(data)
         },
-        dataType: 'JSON'
+        contentType: 'application/JSON'
     });
 }

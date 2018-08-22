@@ -38,7 +38,7 @@ def redirect_login(requests):
         'role': 'user'
     }
 
-    requests.post('/users', json=json)
+    requests.post('http://localhost:5000/users', json=json)
     return redirect('/login')
 
 

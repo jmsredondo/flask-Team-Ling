@@ -61,11 +61,10 @@ class Login(Resource):
     # @app.route('/users/login', methods=['GET', 'POST'])
     def post(self):
         #return user.get_auth_token(request)
-        session['userid'] = request.get_json()['userid']
         return session['userid']
 
 
-api.add_resource(Login, '/users/login')
+api.add_resource(Login, '/users/loginapi')
 
 
 # User login
