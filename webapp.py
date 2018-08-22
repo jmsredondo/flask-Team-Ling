@@ -101,6 +101,9 @@ def addgenre():
 def deletegenre(id):
     return gc.deletegenre(id)
 
+@app.route('/admin-books', methods=['GET'])
+def books_view():
+    return render_template('books/book_list2.html')
 
 @app.route('/books', methods=['GET', 'POST'])
 def books():

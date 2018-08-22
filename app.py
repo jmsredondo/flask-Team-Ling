@@ -27,31 +27,9 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy()
 db.init_app(app)
+# ------------- Authentication --------
 SESSION_TYPE = 'redis'
 app.secret_key = 'teamling'
-# ------------- Authentication --------
-# Configure application to store JWTs in cookies
-app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-
-# Only allow JWT cookies to be sent over https. In production, this
-# should likely be True
-app.config['JWT_COOKIE_SECURE'] = False
-
-# Set the cookie paths, so that you are only sending your access token
-# cookie to the access endpoints, and only sending your refresh token
-# to the refresh endpoint. Technically this is optional, but it is in
-# your best interest to not send additional cookies in the request if
-# they aren't needed.
-app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
-app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
-
-# Enable csrf double submit protection. See this for a thorough
-# explanation: http://www.redotheweb.com/2015/11/09/api-security.html
-app.config['JWT_COOKIE_CSRF_PROTECT'] = True
-
-# Set the secret key to sign the JWTs with
-app.config['JWT_SECRET_KEY'] = 'TeamLing'  # Change this!
-
 jwt = JWTManager(app)
 
 # # ----------- User API URI -----------
@@ -60,9 +38,7 @@ jwt = JWTManager(app)
 class Login(Resource):
     # @app.route('/users/login', methods=['GET', 'POST'])
     def post(self):
-        #return user.get_auth_token(request)
-        return session['userid']
-
+        return user.login(request)
 
 api.add_resource(Login, '/users/loginapi')
 

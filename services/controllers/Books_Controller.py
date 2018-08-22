@@ -10,7 +10,7 @@ from forms import *
 def books():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    return render_template('book_view.html', title='Genre')
+    return render_template('book_view.html', title='Books')
 
 
 def post_books(requests):
