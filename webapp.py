@@ -17,6 +17,11 @@ login = LoginManager(app)
 login.login_view = 'login'
 
 
+@app.route('/')
+def landing():
+    return render_template('landing/landing.html')
+
+
 @app.route('/index', methods=['GET'])
 def index():
     if 'token' in session:
@@ -74,9 +79,20 @@ def reg():
     return uc.register_form()
 
 
+# Books
 @app.route('/genres', methods=['GET'])
 def genre():
     return gc.genre()
+
+
+@app.route('/addgenre', methods=['POST'])
+def addbook():
+    return gc.addgenre()
+
+
+@app.route('/deletegenre/<id>', methods=['POST'])
+def deletegenre(id):
+    return gc.deletegenre(id)
 
 
 @app.route('/books', methods=['GET', 'POST'])
@@ -85,6 +101,16 @@ def books():
         return bc.books()
     else:
         return bc.post_books(requests)
+
+
+@app.route('/addbook', methods=['POST'])
+def addbook():
+    return bc.addbook()
+
+
+@app.route('/deletebook/<id>', methods=['POST'])
+def deletebook(id):
+    return bc.deletebook(id)
 
 
 @app.route('/users', methods=['GET'])

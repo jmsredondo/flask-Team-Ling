@@ -10,3 +10,15 @@ def genre():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     return render_template('genre.html', title='Genre')
+
+def addgenre():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+
+    # return render_template('book_view.html', title='Genre')
+
+def deletegenre(id):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    # return render_template('book_view.html', title='Genre')
+
