@@ -103,11 +103,6 @@ def books():
         return bc.post_books(requests)
 
 
-@app.route('/addbook', methods=['POST'])
-def addbook():
-    return bc.addbook()
-
-
 @app.route('/deletebook/<id>', methods=['POST'])
 def deletebook(id):
     return bc.deletebook(id)

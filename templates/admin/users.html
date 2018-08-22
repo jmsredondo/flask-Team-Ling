@@ -1,54 +1,58 @@
 {% extends "layouts/admin_layout.html" %}
 
+{% block page %}
+    USERS
+{% endblock %}
+
 <!--{% block styles %}-->
-<!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">-->
-<!--{% endblock %}-->
+    <!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">-->
+    <!--{% endblock %}-->
 
 {% block content %}
-<table class="table" id="clients_list">
-    <thead>
+    <table class="table" id="clients_list">
+        <thead>
         <tr>
             <th>Id</th>
             <th>User name</th>
             <th>Address</th>
         </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
-<script>
-    $("#clients_list").dataTable({
-        serverSide: true,
-        processing: true,
-        ajax: "{{ request.route_url("users_list") }}",
-        columns: [
-            {
-                data: "id",
-                "render": function(data, type, row){
-                    return $("<div>").append($("<a/>").attr("href", row.DT_RowData.link).text(data)).html();
-                }
-            },
-            { data: "name" },
-            { data: "address" }
-        ]
-</script>
+    <script>
+        $("#clients_list").dataTable({
+            serverSide: true,
+            processing: true,
+            ajax: "{{ request.route_url("users_list") }}",
+            columns: [
+                {
+                    data: "id",
+                    "render": function (data, type, row) {
+                        return $("<div>").append($("<a/>").attr("href", row.DT_RowData.link).text(data)).html();
+                    }
+                },
+                {data: "name"},
+                {data: "address"}
+            ]
+    </script>
 {% endblock %}
 
 <!--{% block scripts %}-->
-<!--<script>-->
+    <!--<script>-->
     <!--$(document).ready(function () {-->
-        <!--$('#example').DataTable({-->
-            <!--"url": "data.json",-->
-            <!--"contentType": "application/json",-->
-            <!--"type": "GET",-->
-            <!--"data": function (d) {-->
-                <!--document.getElementById('ulist').innerHTML-->
-            <!--}-->
-        <!--});-->
+    <!--$('#example').DataTable({-->
+    <!--"url": "data.json",-->
+    <!--"contentType": "application/json",-->
+    <!--"type": "GET",-->
+    <!--"data": function (d) {-->
+    <!--document.getElementById('ulist').innerHTML-->
+    <!--}-->
     <!--});-->
-<!--</script>-->
-<!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
-<!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
-<!--{% endblock %}-->
+    <!--});-->
+    <!--</script>-->
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
+    <!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
+    <!--{% endblock %}-->
 
