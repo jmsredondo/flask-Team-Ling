@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %}
 
-    <table id="users" class="table table-hover table-striped">
+    <table id="genrelist" class="table table-hover table-striped">
         <thead>
         <tr>
             <th>ID</th>
@@ -32,26 +32,21 @@
 
         $(document).ready(function () {
             $.ajax({
-                url: "http://localhost:5000/users-list",
+                url: "http://localhost:5000/genre",
                 dataType: 'json',
                 crossDomain: true,
                 xhrFields: {
                     withCredentials: true
                 },
                 success: function (response) {
-                    $('#users').DataTable({
+                    $('#genrelist').DataTable({
                         "data": response,
                         "columns": [
                             {"data": "id"},
-                            {"data": "username"},
-                            {"data": "firstname"},
-                            {"data": "lastname"},
-                            {"data": "email"},
-                            {"data": "phone"},
-                            {"data": "balance"}
+                            {"data": "genre"},
+                            {"data": "type"}
                         ]
                     });
-                    console.log(response)
                 }
             });
 
