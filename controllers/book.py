@@ -13,7 +13,7 @@ def booklist():
 
     for b in books:
         obj = {
-            'book_name': b.bookName, 'image': b.image, 'description': b.description
+            'id': b.id,'book_name': b.bookName, 'image': b.image, 'description': b.description
         }
         results.append(obj)
 

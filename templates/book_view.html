@@ -14,6 +14,9 @@
     <link rel="stylesheet" type="text/css" href="/static/landing/css/loader.css">
     <link rel="stylesheet" type="text/css" href="/static/css/bookview.css">
     <link rel="icon" type="image/png" href="/static/images/icon.png">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+          crossorigin="anonymous">
 
     <style>
 
@@ -163,8 +166,9 @@
                     <ul class="nav pull-right">
                         <li><a href="/">Home</a></li>
                         <li><a href="/books">Books</a></li>
-                        <li><a href="/login">Login</a></li>
+                        <li><a href="/library">My Library</a></li>
                         <li><a href="#">Contact</a></li>
+                        <li><a href="/login">Login</a></li>
                     </ul>
                 </div>
             </div>
@@ -199,8 +203,8 @@
 
             {#             search bar #}
             <div class="search-group v2">
-                <input class="search-input inactive" type="text" placeholder="I'm looking for..."/>
-                <button class="button button-brand-primary button-search">Search</button>
+                <input id="inputValueH" class="search-input inactive" type="text" placeholder="I'm looking for..."/>
+                <button  id="bookSearchH" class="button button-brand-primary button-search">Search</button>
             </div>
 
             <div id="bookslist" class="main">
@@ -208,11 +212,7 @@
             </div>
 
         </div>
-        <footer class="footer">
-
-        </footer>
     </div>
-
 </section>
 
 <footer>
@@ -251,5 +251,6 @@
 <!-- Main Script -->
 <script type="text/javascript" src="/static/landing/js/main.js"></script>
 <script type="text/javascript" src="/static/js/admin.js"></script>
+<script type="text/javascript" src="/static/js/userFunction-flask.js"></script>
 </body>
 </html>
