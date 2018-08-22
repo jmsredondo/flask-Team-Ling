@@ -6,7 +6,6 @@ from flask import jsonify, g, render_template, session
 from flask_api import FlaskAPI
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
-from forms import LoginForm
 
 from models import User
 
@@ -46,10 +45,15 @@ def get_auth_token(request):
 
 # Get User Profile
 def get_user(username):
-    alphabet = set(string.ascii_lowercase)
-    allowed = ['_', alphabet]
+    # alphabet = list(string.ascii_lowercase)
+    # allowed = ['_', alphabet]
+    valid = True
+    for i in username:
+        if i.isupper():
+            valid = False
+            break
     user = User.query.filter_by(username=username).first()
-    if username not in allowed:
+    if valid is False:
         headers = {
             "Description": "Invalid username supplied",
         }
@@ -100,7 +104,7 @@ def users_list():
             "lastname": userslist.lastname,
             "email": userslist.email,
             "password": userslist.password_hash,
-            "balance": userlist.balance,
+            "balance": userslist.balance,
             "phone": userslist.phone
         }
         results.append(obj)
@@ -111,8 +115,14 @@ def users_list():
 
 # User Create User
 def create_user(request):
-    alphabet = set(string.ascii_lowercase)
-    allowed = ['_', alphabet]
+    alphabet = list(string.ascii_lowercase)
+    # allowed = ['_', alphabet]
+    valid = True
+    for i in request.json['username']:
+        if i.isupper():
+            valid = False
+            break
+
     if request.json['password'] != request.json['password2']:
         headers = {
             "Description": "Invalid Input"
@@ -129,7 +139,7 @@ def create_user(request):
         response.status_code = 400
         response.headers = headers
         return response
-    elif request.json['username'] not in allowed or request.json['username'][0] not in alphabet:
+    elif valid is False:
         headers = {
             "Description": "Invalid Input"
         }

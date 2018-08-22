@@ -28,7 +28,7 @@ class UserTestCase(unittest.TestCase):
         self.host = 'http://localhost:5000'
         self.sampleuser = {'username': 'jamjam', 'firstname': 'Jamsell', 'lastname': 'Fama', 'role': 'user',
                            'phone': '09163053885', 'password': 'N0virus02', 'password2': 'N0virus02',
-                           'email': 'jamfama18@gmail.com'}
+                           'email': 'jamfama18@gmail.com','balance':"0"}
 
         # # binds the app to the current context
         # with self.app.app_context():
@@ -42,8 +42,6 @@ class UserTestCase(unittest.TestCase):
         res = res = requests.get(self.host + '/users-list')
         self.assertEqual(res.status_code, 200)
         self.assertIn('jamjam', str(res.text))
-        user = User.query.filter_by(username='jamjam').first()
-        User.delete(user)
 
     def test_users_list(self):
         """Test get user list (GET request)."""
@@ -52,7 +50,7 @@ class UserTestCase(unittest.TestCase):
         self.assertIn('jamjam', str(res.text))
 
     def test_get_user(self):
-        res = requests.get(self.host + '/users/jsmith')
+        res = requests.get(self.host + '/users/jamjam')
         self.assertEquals(res.status_code, 200)
 
 class BooksTestCase(unittest.TestCase):
@@ -67,13 +65,13 @@ class BooksTestCase(unittest.TestCase):
 
     def setUp(self):
         self.host = 'http://localhost:5000'
-        self.samplebook = {'bookName': 'booktest',
-                           'image': 'URL\URL to image',
-                           'description': 'description'}
+        self.samplebook = {"bookname": "booktest",
+                           "image": "URL to image",
+                           "description": "description"}
 
     def test_add_new_book(self):
-        res = requests.post(self.host + '/book', data=self.samplebook)
-        self.assertEqual(res.status_code, 201)
+        res = requests.post(self.host + '/book', json=self.samplebook)
+        self.assertEqual(res.status_code, 200)
 
     def test_booklist(self):
         res = res = requests.get(self.host+'/book')
@@ -101,12 +99,12 @@ class GenreTestCase(unittest.TestCase):
 
     def setUp(self):
         self.host = 'http://localhost:5000'
-        self.samplegenre = {'type':'genreType',
-                           'genre':'genre'}
-        self.samplebookgenre = {'book_id': '1'}
+        self.samplegenre = {"type":"genreType",
+                           "genre":"genre"}
+        self.samplebookgenre = {"book_id": "1"}
 
     def test_add_new_genre(self):
-        res = requests.post(self.host + '/genre', data=self.samplegenre)
+        res = requests.post(self.host + '/genre', json=self.samplegenre)
         self.assertEqual(res.status_code, 200)
 
     def test_genrelist(self):
