@@ -41,7 +41,7 @@
                 withCredentials: true
             },
             success: function (response) {
-                $('#users').DataTable({
+                var table = $('#users').DataTable({
                     "data": response,
                     "columns": [
                         {"data": "id"},
@@ -53,15 +53,20 @@
                             "defaultContent": "<div class=\"row\">\n" +
                                 "    <div class=\"col-md-3\">\n" +
                                 "        <button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
-                                "    </div>\n" +
-                                "    <div class=\"col-md-3\">\n" +
-                                "        <button class=\"pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n" +
-                                "    </div>\n" +
-                                "</div>"
+                                "    </div>\n"
                         }
                     ]
                 });
-                console.log(response)
+                $('#users tbody').on('click', 'button', function () {
+                    var data = table.row($(this).parents('tr')).data();
+                    sessionStorage.setItem('id',data.id);
+                    sessionStorage.setItem('fn',data.firstname);
+                    sessionStorage.setItem('ln',data.lastname);
+                    sessionStorage.setItem('ph',data.phone);
+                    sessionStorage.setItem('us',data.username);
+                    sessionStorage.setItem('emad',data.email);
+                    ulist('/view-user/'+data.id);
+                });
             }
         });
 
