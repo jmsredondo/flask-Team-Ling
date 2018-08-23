@@ -148,6 +148,11 @@ def view_genre(id):
     return send_from_directory("templates", "admin/view_genre_form.html")
 
 
+@app.route('/view-user/<id>', methods=['GET'])
+def view_user(id):
+    return send_from_directory("templates", "admin/view_users_form.html")
+
+
 @app.route('/my_library', methods=['GET'])
 def library():
     return render_template('my_library.html')

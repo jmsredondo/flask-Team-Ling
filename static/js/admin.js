@@ -1,4 +1,3 @@
-
 function create_book() {
     $.ajax({
         type: "POST",
