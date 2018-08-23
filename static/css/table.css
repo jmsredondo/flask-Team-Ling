@@ -2,7 +2,6 @@
 .blog-card {
   display: flex;
   flex-direction: column;
-  margin: 1rem auto;
   box-shadow: 0 3px 7px -1px rgba(0, 0, 0, 0.1);
   margin-bottom: 1.6%;
   background: #fff;
@@ -150,17 +149,22 @@
 .blog-card:hover .details {
   left: 0%;
 }
-@media (min-width: 640px) {
+@media (min-width: 640px) and (min-width: 1024pxf){
+    #myLibraryDivH {
+        max-height: 500px;
+    }
   .blog-card {
     flex-direction: row;
     max-width: 700px;
+    max-height: 500px !important;
   }
   .blog-card .meta {
     flex-basis: 40%;
-    height: auto;
+    max-height: 500px !important;
   }
   .blog-card .description {
     flex-basis: 60%;
+    max-height: 500px !important;
   }
   .blog-card .description:before {
     -webkit-transform: skewX(-3deg);
@@ -173,6 +177,7 @@
     top: 0;
     bottom: 0;
     z-index: -1;
+    max-height: 500px;
   }
   .blog-card.alt {
     flex-direction: row-reverse;
