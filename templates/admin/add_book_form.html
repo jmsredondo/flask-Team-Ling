@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-info btn-fill pull-right" onclick="ulist('/admin-books')" >Submit
+            <button type="submit" class="btn btn-info btn-fill pull-right" onclick="ulist('/admin-books')">Submit
             </button>
             <div class="clearfix"></div>
         </form>
@@ -39,11 +39,11 @@
         // process the form
         $('form').submit(function (event) {
 
-            var file = document.getElementById("type");
+            var file = document.getElementById("file");
 
             // Take action when the image has loaded
             file.addEventListener("load", function () {
-                var imgCanvas = document.createElement("canvas"),
+                const imgCanvas = document.createElement("canvas"),
                     imgContext = imgCanvas.getContext("2d");
 
                 // Make sure canvas is as big as the picture
@@ -54,24 +54,30 @@
                 imgContext.drawImage(file, 0, 0, file.width, file.height);
 
                 // Get canvas contents as a data URL
-                var imgAsDataURL = imgCanvas.toDataURL("image/png");
+                const imgAsDataURL = imgCanvas.toDataURL("image/png");
+
 
                 // Save image into localStorage
                 try {
-                    localStorage.setItem($('#genre').val(), imgAsDataURL);
+                    localStorage.setItem($('#bookname').val(), imgAsDataURL);
                 } catch (e) {
                     console.log("Storage failed: " + e);
                 }
             }, false);
 
+
             // get the form data
             // there are many ways to get this data using jQuery (you can use the class or id also)
-            var formData = JSON.stringify({
-                "bookname": $('#bookname').val(),
-                "description": $('#description').val(),
-                "image": imgAsDataURL.toString(),
+
+            const bookname = $('#bookname').val();
+            const description = $('#description').val();
+            const formData = JSON.stringify({
+                "bookname": bookname,
+                "description":description ,
+                "image": localStorage.getItem(bookname),
             });
 
+            console.log(formData);
 
             // process the form
             $.ajax({

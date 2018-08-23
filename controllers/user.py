@@ -73,18 +73,21 @@ def get_auth_token(request):
 
         return response
 
-#User Login ver 2
+
+# User Login ver 2
 def login(request):
     user = User.query.filter_by(username=request.json['username']).first()
     if user and user.check_password(request.json['password']):
         access_token = create_access_token(identity=user.id)
         refresh_token = create_refresh_token(identity=user.id)
 
-        resp = jsonify({'login':True})
+        resp = jsonify({'login': True})
         set_access_cookies(resp, access_token)
         set_refresh_cookies(resp, access_token)
     else:
         return "auth response"
+
+
 # Get User Profile
 def get_user(username):
     # alphabet = list(string.ascii_lowercase)
@@ -223,7 +226,6 @@ def create_user(request):
 
 # User Logout
 def log_out():
-
     headers = {
         "Description": "OK",
     }
