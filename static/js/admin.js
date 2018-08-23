@@ -67,6 +67,20 @@ function genreAction(action, data) {
 
 }
 
+
+function bookAction(action, data) {
+    if (action === 'view') {
+        sessionStorage.setItem("bookname", data.bookName);
+        sessionStorage.setItem("image", data.image);
+        sessionStorage.setItem("description", data.description);
+        ulist('/view-book/' + data.id)
+    } else {
+        $('#deleteGenreConfirm').modal();
+        $('#deleteGenre').val(data.id);
+    }
+
+}
+
 function deleteGenre(id) {
     $.ajax({
         url: "/genre/" + id,

@@ -118,7 +118,7 @@ def books_view():
 
 @app.route('/admin-books', methods=['GET'])
 def admin_books():
-    return send_from_directory("templates", "books/book_list2.html")
+    return send_from_directory("templates", "books/book_list.html")
     # return render_template('books/book_list2.html')
 
 

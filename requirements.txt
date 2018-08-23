@@ -7,6 +7,7 @@ datatables==0.4.9
 Faker==0.9.0
 Flask==1.0.2
 Flask-API==1.0
+Flask-Cors==3.0.6
 Flask-DotEnv==0.1.1
 Flask-HTTPAuth==3.2.4
 Flask-JWT==0.3.2
