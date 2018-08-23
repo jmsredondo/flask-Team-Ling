@@ -42,14 +42,6 @@ def dashboard():
         return redirect('/login')
 
 
-@app.route('/logout')
-def out():
-    session.pop('token', None)
-    session.clear()
-    requests.post('http://localhost:5000/users/logout')
-    return redirect('/login')
-
-
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
@@ -60,6 +52,14 @@ def login_user():
             return redirect('/index')
     else:
         return uc.post_login()
+
+
+@app.route('/logout')
+def out():
+    session.pop('token', None)
+    session.clear()
+    requests.post('http://localhost:5000/users/logout')
+    return redirect('/login')
 
 
 @app.route('/ulist', methods=['GET'])
