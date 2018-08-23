@@ -9,10 +9,41 @@ from flask_sqlalchemy import SQLAlchemy
 
 from models import User
 
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    jwt_refresh_token_required, create_refresh_token,
+    get_jwt_identity, set_access_cookies,
+    set_refresh_cookies, unset_jwt_cookies
+)
+
 # app and db initiation
 app = FlaskAPI(__name__, instance_relative_config=True)
 db = SQLAlchemy()
 auth = HTTPBasicAuth()
+
+# JWT Auth
+# Configure application to store JWTs in cookies. Whenever you make
+# a request to a protected endpoint, you will need to send in the
+# access or refresh JWT via a cookie.
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+
+# Set the cookie paths, so that you are only sending your access token
+# cookie to the access endpoints, and only sending your refresh token
+# to the refresh endpoint. Technically this is optional, but it is in
+# your best interest to not send additional cookies in the request if
+# they aren't needed.
+app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/token/refresh'
+
+# Disable CSRF protection for this example. In almost every case,
+# this is a bad idea. See examples/csrf_protection_with_cookies.py
+# for how safely store JWTs in cookies
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+
+# Set the secret key to sign the JWTs with
+app.config['JWT_SECRET_KEY'] = 'TeamLing'  # Change this!
+
+jwt = JWTManager(app)
 
 
 # Users Login
@@ -42,7 +73,18 @@ def get_auth_token(request):
 
         return response
 
+#User Login ver 2
+def login(request):
+    user = User.query.filter_by(username=request.json['username']).first()
+    if user and user.check_password(request.json['password']):
+        access_token = create_access_token(identity=user.id)
+        refresh_token = create_refresh_token(identity=user.id)
 
+        resp = jsonify({'login':True})
+        set_access_cookies(resp, access_token)
+        set_refresh_cookies(resp, access_token)
+    else:
+        return "auth response"
 # Get User Profile
 def get_user(username):
     # alphabet = list(string.ascii_lowercase)

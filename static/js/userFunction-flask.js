@@ -26,9 +26,9 @@ $(document).ready(function () {
 
                     }
                 }
-                if(html){
+                if (html) {
                     $('#bookslist').html(html);
-                }else{
+                } else {
                     $('#bookslist').html("<span>Sorry, We don't have what you're looking for.</span>")
                 }
             } else {
@@ -40,6 +40,7 @@ $(document).ready(function () {
     initgenre();
     getallbooks();
     initusers();
+    viewMyLibrary();
 });
 
 //Book functions
@@ -127,12 +128,52 @@ function initusers() {
 
 
 function addToLibrary(id) {
-    alert(id);
     $.ajax({
         type: "POST",
-        url: '/addGenre',
-        data: {'type':'typegenre','genre':'genre'},
-        success: function () {
+        url: '/library',
+        data: JSON.stringify({'bookid': id}),
+        success: function (data) {
+
+
+        },
+        contentType: 'application/JSON'
+    });
+}
+
+function viewMyLibrary() {
+    $.ajax({
+        type: "GET",
+        url: '/library',
+        success: function (data) {
+            var html = "";
+            for (var i = 0; i < data.length; i++) {
+                html += ` <div class="blog-card alt">
+                <div class="meta">
+                    <div class="photo"
+                         style="background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-2.jpg)"></div>
+                    <ul class="details">
+                        <li class="author"><a href="#">Jane Doe</a></li>
+                        <li class="date">July. 15, 2015</li>
+                        <li class="tags">
+                            <ul>
+                                <li><a href="#">Learn</a></li>
+                                <li><a href="#">Code</a></li>
+                                <li><a href="#">JavaScript</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="description">
+                    <h1>${data[i].bookName}</h1>
+                    <h2>Java is not the same as JavaScript</h2>
+                    <p>${data[i].description}</p>
+                    <p class="read-more">
+                        <a href="#">Read More</a>
+                    </p>
+                </div>
+            </div>`;
+            }
+            $('#myLibraryDivH').html(html);
 
         },
         dataType: 'JSON'

@@ -87,39 +87,49 @@
         .rwd-table th, .rwd-table td:before {
             color: #dd5;
         }
-
+<!-- DataTables -->
+<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     </style>
     <script src="{{ url_for('static', filename='admin/assets/js/jquery.3.2.1.min.js') }}" ></script>
-
-
-    {#    <script>#}
-    {#        $( document ).ready(function() {#}
-    {#            $.ajax({#}
-    {#                url: "/book",#}
-    {#                success: function(result){#}
-    {#                    console.log(result)#}
-    {#                }});#}
-    {#        });#}
-    {#    </script>#}
-
 </head>
 
 
 <body>
 <h1>Book List</h1>
-<table class="rwd-table">
+<table id="bookList" class="rwd-table">
     <tr>
-        <th>Book Title</th>
-        <th>Genre</th>
+        <th>Id</th>
+        <th>Book Name</th>
+        <th>Image</th>
         <th>Description</th>
     </tr>
-    {% for book in books %}
-        <tr>
-            <td data-th="Book Title">{{ book['book_name'] }}</td>
-            <td data-th="Genre">{{ book['book_name'] }}</td>
-            <td data-th="Genre">{{ book['description'] }}</td>
-        </tr>
-    {% endfor %}
 </table>
 </body>
+    <script>
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "http://localhost:5000/book",
+                dataType: 'json',
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+                    $('#bookList').DataTable({
+                        "data": response,
+                        "columns": [
+                            {"data": "id"},
+                            {"data": "book_name"},
+                            {"data": "image"},
+                            {"data": "description"}
+                        ]
+                    });
+                }
+            });
+
+        });
+
+    </script>
 </html>
