@@ -42,6 +42,11 @@ def dashboard():
         return redirect('/login')
 
 
+@app.route('/ad-dashboard', methods=['GET'])
+def ad_dashboard():
+    return send_from_directory("templates", "admin/dashboard.html")
+
+
 @app.route('/admin', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
