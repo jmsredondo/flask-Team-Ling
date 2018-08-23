@@ -74,7 +74,7 @@ def post_login():
         if user.role == "admin":
             return redirect('/dashboard')
         else:
-            return redirect('/index')
+            return redirect('/')
     except Exception as e:
         print(e)
         responseObject = {

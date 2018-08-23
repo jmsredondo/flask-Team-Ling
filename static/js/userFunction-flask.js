@@ -134,7 +134,7 @@ function addToLibrary(id) {
         url: '/library',
         data: JSON.stringify({'bookid': id}),
         success: function (data) {
-
+            alert('Book added to your library.')
 
         },
         contentType: 'application/JSON'

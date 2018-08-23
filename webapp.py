@@ -19,7 +19,9 @@ login.login_view = 'login'
 
 @app.route('/')
 def landing():
-    return render_template('landing/landing.html')
+    if 'token' in session:
+        token = session['token']
+        return render_template('landing/landing.html', token=token)
 
 
 @app.route('/index', methods=['GET'])
