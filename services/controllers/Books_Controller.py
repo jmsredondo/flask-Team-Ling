@@ -11,11 +11,8 @@ def books():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     return render_template('book_view.html', title='Books')
-<<<<<<< HEAD
     # return render_template('book_view.html', title='Genre')
     # return send_from_directory("templates", "admin/genrelist.html")
-=======
->>>>>>> 4db96b764ee4d2b182b8f3257d794af69be96b02
 
 
 def post_books(requests):
