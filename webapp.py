@@ -70,8 +70,6 @@ def users_list():
         return redirect('/login')
 
 
-# session.pop('username', None)
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == "GET":
@@ -106,19 +104,30 @@ def addgenre():
 def deletegenre(id):
     return gc.deletegenre(id)
 
-@app.route('/admin-books', methods=['GET'])
+
+@app.route('/add-book', methods=['GET'])
 def books_view():
-    return render_template('books/book_list2.html')
+    return send_from_directory("templates", "admin/add_book_form.html")
+    # return render_template('books/book_list2.html')
+
+
+@app.route('/admin-books', methods=['GET'])
+def admin_books():
+    return send_from_directory("templates", "books/book_list2.html")
+    # return render_template('books/book_list2.html')
+
 
 @app.route('/books', methods=['GET', 'POST'])
 def books():
     # if 'token' in session:
-        if request.method == 'GET':
-            return bc.books()
-        else:
-            return bc.post_books(requests)
-    # else:
-    #     return redirect('/login')
+    if request.method == 'GET':
+        return bc.books()
+    else:
+        return bc.post_books(requests)
+
+
+# else:
+#     return redirect('/login')
 
 
 @app.route('/deletebook/<id>', methods=['POST'])
@@ -133,8 +142,16 @@ def users():
     else:
         return redirect('/login')
 
+
+@app.route('/view-genre/<id>', methods=['POST'])
+def view_genre(id):
+    return send_from_directory("templates", "admin/view_genre_form.html")
+
+
 @app.route('/my_library', methods=['GET'])
 def library():
     return render_template('my_library.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port=80)
