@@ -52,9 +52,20 @@
 
         var genre = sessionStorage.getItem('genre');
         var type = sessionStorage.getItem('type');
+        var id = sessionStorage.getItem('id');
+        var firstname = sessionStorage.getItem('fn');
+        var lastname = sessionStorage.getItem('ln');
+        var phone = sessionStorage.getItem('ph');
+        var username = sessionStorage.getItem('us');
+        var emailaddress = sessionStorage.getItem('emad');
 
         $('#genre').val(genre);
         $('#type').val(type);
+        $('#firstname').val(firstname);
+        $('#lastname').val(lastname);
+        $('#phone').val(phone);
+        $('#email').val(emailaddress);
+        $('#username').val(username);
 
         // process the form
         $('form').submit(function (event) {
