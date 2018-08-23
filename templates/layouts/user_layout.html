@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+    <!-- Site Title -->
+    <title>BookLib</title>
+    <meta name="description" content="RGBA's idea - Responsive One Page Template Documentation">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+          crossorigin="anonymous">
+    <!-- Load Css -->
+    <link rel="stylesheet" type="text/css" href="/static/landing/css/cssloader.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/landing/css/grid.css"/>
+    <!-- Main Style -->
+    <link rel="stylesheet" type="text/css" href="/static/landing/css/main.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/landing/css/loader.css">
+    <link rel="icon" type="image/png" href="/static/images/icon.png">
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+<!-- loader  -->
+
+{% include "loader.html" %}
+
+<nav>
+    <!-- ==================== Navbar ==================== -->
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner from-top">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="/"><h1 class="text-center">B</h1></a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav pull-right">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/books">Books</a></li>
+                        <li><a href="/my_library">My Library</a></li>
+                        <li><a href="#">Contact</a></li>
+
+                        {% if token is none %}
+                            <li><a href="/login">Login</a></li>
+                        {% else %}
+                            <li><a href="/logout">Logout</a></li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="top-soc hidden-phone">
+            <div class="container">
+                <div class="row">
+                    <div class="span6 from-right">
+                        <ul class="address">
+                            <li><span><i class="fa fa-phone"></i></span>+62 123-456-7890</li>
+                            <li><span><i class="fa fa-envelope"></i></span>support@email.com</li>
+                        </ul>
+                    </div>
+                    <div class="span6 from-left">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ==================== /Navbar ==================== -->
+</nav>
+
+{% block pre_main %}
+
+{% endblock %}
+<section id="content">
+    <div class="content ">
+        {% block main_content %}
+
+        {% endblock %}
+    </div>
+</section>
+
+{% block after_main %}
+
+{% endblock %}
+<footer>
+    <div class="footer fade-in">
+        <!-- ==================== Footer Top ==================== -->
+        <div class="subfooter fade-in">
+            <div class="container">
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript" src="/static/landing/js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="/static/landing/js/jquery-migrate-1.2.1.min.js"></script>
+<!-- Bootstrap -->
+<script type="text/javascript" src="/static/landing/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/landing/js/jquery.easing.min.js"></script>
+<!-- Modernizr -->
+<script src="/static/landing/js/modernizr.custom.js"></script>
+<!-- prettyPhoto -->
+<script type="text/javascript" src="/static/landing/js/jquery.prettyPhoto.js"></script>
+<!-- slider camera -->
+<script type="text/javascript" src="/static/landing/js/jquery.mobile.customized.min.js"></script>
+<script type="text/javascript" src="/static/landing/js/camera.js"></script>
+<!-- Flexslider -->
+<script type="text/javascript" src="/static/landing/js/jquery.flexslider.js"></script>
+<!-- Navbar -->
+<script type="text/javascript" src="/static/landing/js/classie.js"></script>
+<script type="text/javascript" src="/static/landing/js/cbpAnimatedHeader.js"></script>
+<!-- jquery-ui -->
+<script type="text/javascript" src="/static/landing/js/jquery-ui.js"></script>
+<!-- appear -->
+<script type="text/javascript" src="/static/landing/js/appear.js"></script>
+<!-- Main Script -->
+<script type="text/javascript" src="/static/landing/js/main.js"></script>
+<script type="text/javascript" src="/static/js/userFunction-flask.js"></script>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

@@ -1,23 +1,7 @@
-<!DOCTYPE html>
-<html class="no-js">
-<head>
-    <meta charset="utf-8">
-    <!-- Site Title -->
-    <title>BookLib</title>
-    <meta name="description" content="RGBA's idea - Responsive One Page Template Documentation">
-    <meta name="viewport" content="width=device-width">
-    <!-- Load Css -->
-    <link rel="stylesheet" type="text/css" href="/static/landing/css/cssloader.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/landing/css/grid.css"/>
-    <!-- Main Style -->
-    <link rel="stylesheet" type="text/css" href="/static/landing/css/main.css"/>
-    <link rel="stylesheet" type="text/css" href="/static/landing/css/loader.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/bookview.css">
-    <link rel="icon" type="image/png" href="/static/images/icon.png">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
-          crossorigin="anonymous">
+{% extends "layouts/user_layout.html" %}
 
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="/static/css/bookview.css"/>
     <style>
 
         .search-group {
@@ -118,143 +102,25 @@
             color: #fff;
         }
     </style>
+{% endblock %}
 
-</head>
-<body>
-<!-- loader  -->
-<table class="doc-loader">
-    <tr>
-        <td>
-            <div class="windows8"> <!-- windows8 -->
-                <div class="wBall" id="wBall_1">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_2">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_3">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_4">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_5">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-            </div> <!-- End windows8 -->
-        </td>
-    </tr>
-</table>
 
-<nav>
-    <!-- ==================== Navbar ==================== -->
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner from-top">
-            <div class="container">
-                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="brand" href="/"><h1 class="text-center">B</h1></a>
-                <div class="nav-collapse collapse">
-                    <ul class="nav pull-right">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/books">Books</a></li>
-                        <li><a href="/my_library">My Library</a></li>
-                        <li><a href="#">Contact</a></li>
-                        {% if token is none %}
-                        <li><a href="/login">Login</a></li>
-                        {% else %}
-                        <li><a href="/logout">Logout</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
+{% block main_content %}
+    <div class="container">
+        <div class="info">
+            <h1>Books List </h1>
         </div>
-        <div class="top-soc hidden-phone">
-            <div class="container">
-                <div class="row">
-                    <div class="span6 from-right">
-                        <ul class="address">
-                            <li><span><i class="fa fa-phone"></i></span>+62 123-456-7890</li>
-                            <li><span><i class="fa fa-envelope"></i></span>support@email.com</li>
-                        </ul>
-                    </div>
-                    <div class="span6 from-left">
 
-                    </div>
-                </div>
-            </div>
+        {#             search bar #}
+        <div class="search-group v2">
+            <input id="inputValueH" class="search-input inactive" type="text" placeholder="I'm looking for..."/>
+            <button  id="bookSearchH" class="button button-brand-primary button-search">Search</button>
         </div>
+
+        <div id="bookslist" class="main">
+
+        </div>
+
     </div>
-    <!-- ==================== /Navbar ==================== -->
-</nav>
+{% endblock %}
 
-
-<section id="content">
-    <div class="content ">
-
-        <div class="container">
-            <div class="info">
-                <h1>Books List </h1>
-            </div>
-
-            {#             search bar #}
-            <div class="search-group v2">
-                <input id="inputValueH" class="search-input inactive" type="text" placeholder="I'm looking for..."/>
-                <button  id="bookSearchH" class="button button-brand-primary button-search">Search</button>
-            </div>
-
-            <div id="bookslist" class="main">
-
-            </div>
-
-        </div>
-    </div>
-</section>
-
-<footer>
-    <div class="footer fade-in">
-        <!-- ==================== Footer Top ==================== -->
-        <div class="subfooter fade-in">
-            <div class="container">
-                <div class="row">
-
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<script type="text/javascript" src="/static/landing/js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="/static/landing/js/jquery-migrate-1.2.1.min.js"></script>
-<!-- Bootstrap -->
-<script type="text/javascript" src="/static/landing/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/static/landing/js/jquery.easing.min.js"></script>
-<!-- Modernizr -->
-<script src="/static/landing/js/modernizr.custom.js"></script>
-<!-- prettyPhoto -->
-<script type="text/javascript" src="/static/landing/js/jquery.prettyPhoto.js"></script>
-<!-- slider camera -->
-<script type="text/javascript" src="/static/landing/js/jquery.mobile.customized.min.js"></script>
-<script type="text/javascript" src="/static/landing/js/camera.js"></script>
-<!-- Flexslider -->
-<script type="text/javascript" src="/static/landing/js/jquery.flexslider.js"></script>
-<!-- Navbar -->
-<script type="text/javascript" src="/static/landing/js/classie.js"></script>
-<script type="text/javascript" src="/static/landing/js/cbpAnimatedHeader.js"></script>
-<!-- jquery-ui -->
-<script type="text/javascript" src="/static/landing/js/jquery-ui.js"></script>
-<!-- appear -->
-<script type="text/javascript" src="/static/landing/js/appear.js"></script>
-<!-- Main Script -->
-<script type="text/javascript" src="/static/landing/js/main.js"></script>
-<script type="text/javascript" src="/static/js/admin.js"></script>
-<script type="text/javascript" src="/static/js/userFunction-flask.js"></script>
-</body>
-</html>
