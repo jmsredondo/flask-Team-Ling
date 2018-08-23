@@ -56,12 +56,14 @@ function ulist(x) {
 }
 
 
-function genreAction(action, id) {
+function genreAction(action, data) {
     if (action === 'view') {
-        ulist('/view-genre/' + id)
+        sessionStorage.setItem("genre", data.genre);
+        sessionStorage.setItem("type", data.type);
+        ulist('/view-genre/' + data.id)
     } else {
         $('#deleteGenreConfirm').modal();
-        $('#deleteGenre').val(id);
+        $('#deleteGenre').val(data.id);
     }
 
 }

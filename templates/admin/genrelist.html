@@ -76,8 +76,7 @@
                 $('#genrelist tbody').on('click', 'button', function () {
                     var data = table.row($(this).parents('tr')).data();
                     var action = $(this).val();
-                    var id = data.id;
-                    genreAction(action, id);
+                    genreAction(action, data);
                 });
             }
         });

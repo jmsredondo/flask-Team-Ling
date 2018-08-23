@@ -143,7 +143,7 @@ def users():
         return redirect('/login')
 
 
-@app.route('/view-genre/<id>', methods=['POST'])
+@app.route('/view-genre/<id>', methods=['GET'])
 def view_genre(id):
     return send_from_directory("templates", "admin/view_genre_form.html")
 
