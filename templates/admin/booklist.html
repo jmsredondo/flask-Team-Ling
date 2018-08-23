@@ -1,0 +1,56 @@
+<div class="card" style="padding: 15px;">
+    <div class="header">
+        <h4 class="title">Striped Table with Hover</h4>
+        <p class="category">Here is a subtitle for this table</p>
+    </div>
+    <div class="content table-responsive table-full-width">
+        <table id="users" class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Book Name</th>
+                <th>Image</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Book Name</th>
+                <th>Image</th>
+                <th>Description</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "http://localhost:5000/books",
+            dataType: 'json',
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                $('#users').DataTable({
+                    "data": response,
+                    "columns": [
+                        {"data": "id"},
+                        {"data": "bookName"},
+                        {"data": "image"},
+                        {"data": "description"}
+                    ]
+                });
+                console.log(response)
+            }
+        });
+
+    });
+
+</script>
+
