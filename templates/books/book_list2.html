@@ -65,28 +65,13 @@
                 $('#genrelist tbody').on('click', 'button', function () {
                     var data = table.row($(this).parents('tr')).data();
                     var action = $(this).val();
-                    var id = data.id;
-                    genreAction(action, id);
+                    genreAction(action, data);
                 });
             }
         });
 
     });
-
-    function genreAction(action, id) {
-        if (action === 'view') {
-
-        } else {
-            $.ajax({
-                url: "/genre/"+id,
-                method:"DELETE",
-                dataType: "JSON"
-            }).done(function (data) {
-                ulist("/genres")
-            })
-        }
-    }
-
+    
 
 </script>
 

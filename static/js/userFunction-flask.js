@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     //Search function for book
     $('#bookSearchH').click(function () {
         var searchValue = $('#inputValueH').val();
