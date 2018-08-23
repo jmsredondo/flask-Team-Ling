@@ -1,3 +1,6 @@
+
+
+
 <div class="card" style="padding: 15px;">
     <div class="header">
         <h4 class="title">
@@ -32,10 +35,18 @@
 </div>
 
 
+
+
+
 <script>
 
     $(document).ready(function () {
-        var count = 0;
+                //Delete Genre
+        $('#deleteGenre').click(function () {
+            var id = $(this).val();
+            deleteGenre(id);
+        });
+            var count = 0;
         $.ajax({
             url: "http://localhost:5000/genre",
             dataType: 'json',
@@ -72,21 +83,5 @@
         });
 
     });
-
-    function genreAction(action, id) {
-        if (action === 'view') {
-
-        } else {
-            $.ajax({
-                url: "/genre/"+id,
-                method:"DELETE",
-                dataType: "JSON"
-            }).done(function (data) {
-                ulist("/genres")
-            })
-        }
-
-    }
-
 
 </script>
