@@ -1,0 +1,99 @@
+<div class="col-md-2"></div>
+<div class="col-md-8 card">
+    <div class="header">
+        <h4 class="title">Add Book</h4>
+    </div>
+    <div class="content">
+        <form>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Book Name</label>
+                        <input required id="bookname" type="text" class="form-control" placeholder="e.g. Fantasy">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input required id="description" type="text" class="form-control" placeholder="e.g. Fiction">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input id="file" type="file" class="form-control" placeholder="e.g. Fiction">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="ulist('/admin-books')" type="submit" class="btn btn-info btn-fill pull-right">Submit
+            </button>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        // process the form
+        $('form').submit(function (event) {
+
+            var file = document.getElementById("type");
+
+            // Take action when the image has loaded
+            file.addEventListener("load", function () {
+                var imgCanvas = document.createElement("canvas"),
+                    imgContext = imgCanvas.getContext("2d");
+
+                // Make sure canvas is as big as the picture
+                imgCanvas.width = file.width;
+                imgCanvas.height = file.height;
+
+                // Draw image into canvas element
+                imgContext.drawImage(file, 0, 0, file.width, file.height);
+
+                // Get canvas contents as a data URL
+                var imgAsDataURL = imgCanvas.toDataURL("image/png");
+
+                // Save image into localStorage
+                try {
+                    localStorage.setItem($('#genre').val(), imgAsDataURL);
+                } catch (e) {
+                    console.log("Storage failed: " + e);
+                }
+            }, false);
+
+            // get the form data
+            // there are many ways to get this data using jQuery (you can use the class or id also)
+            var formData = JSON.stringify({
+                "bookname": $('#bookname').val(),
+                "description": $('#description').val(),
+                "image": imgAsDataURL.toString(),
+            });
+
+
+            // process the form
+            $.ajax({
+                type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                url: '/book', // the url where we want to POST
+                data: formData, // our data object
+                contentType: 'application/json', // what type of data do we expect back from the server
+                dataType: 'json', // what type of data do we expect back from the server
+
+            })
+            // using the done promise callback
+                .done(function (data) {
+
+                    // log data to the console so we can see
+                    console.log(data);
+
+                    // here we will handle errors and validation messages
+                });
+
+            // stop the form from submitting the normal way and refreshing the page
+            event.preventDefault();
+        });
+
+    });
+</script>
