@@ -152,6 +152,10 @@ def users():
 def view_genre(id):
     return send_from_directory("templates", "admin/view_genre_form.html")
 
+@app.route('/view-book/<id>', methods=['GET'])
+def view_book(id):
+    return send_from_directory("templates", "admin/view_book_form.html")
+
 
 @app.route('/view-user/<id>', methods=['GET'])
 def view_user(id):

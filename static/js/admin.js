@@ -75,8 +75,8 @@ function bookAction(action, data) {
         sessionStorage.setItem("description", data.description);
         ulist('/view-book/' + data.id)
     } else {
-        $('#deleteGenreConfirm').modal();
-        $('#deleteGenre').val(data.id);
+        $('#deleteBookConfirm').modal();
+        $('#deleteBook').val(data.id);
     }
 
 }

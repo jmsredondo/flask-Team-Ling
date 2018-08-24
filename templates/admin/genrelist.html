@@ -14,7 +14,7 @@
     </div>
     <div id="body">
         <div class="content table-responsive table-full-width">
-            <table id="genrelist" class="table table-hover">
+            <table id="genrelist" class="table table-hover" style="table-layout: fixed">
                 <thead>
                 <th>ID</th>
                 <th>Genre</th>
@@ -62,14 +62,8 @@
                         {"data": "genre"},
                         {"data": "type"},
                         {
-                            "defaultContent": "<div class=\"row\">\n" +
-                                "    <div class=\"col-md-2\">\n" +
-                                "        <button class=\"btnViewGenre pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
-                                "    </div>\n" +
-                                "    <div class=\"col-md-2\">\n" +
-                                "        <button class=\"btnDeleteGenre pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n" +
-                                "    </div>\n" +
-                                "</div>"
+                            "defaultContent": "        <button class=\"btnViewGenre pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
+                                "<button class=\"btnDeleteGenre pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
                         }
                     ],
                 });
