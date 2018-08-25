@@ -3,6 +3,7 @@
 {% block styles %}
     <link href="/static/css/library_books.css" rel="stylesheet" type="text/css">
     <link href="/static/css/bookview.css" rel="stylesheet" type="text/css">
+    <link href="/static/css/rating.css" rel="stylesheet" type="text/css">
     <style>
 
         .search-group {
@@ -103,6 +104,19 @@
             background: #000;
             color: #fff;
         }
+
+        .animated {
+            -webkit-transition: height 0.2s;
+            -moz-transition: height 0.2s;
+            transition: height 0.2s;
+        }
+
+        .stars
+        {
+            margin: 20px 0;
+            font-size: 24px;
+            color: #d17581;
+        }
     </style>
 {% endblock %}
 
@@ -115,8 +129,8 @@
 
         {#             search bar #}
         <div class="search-group v2">
-            <input class="search-input inactive" type="text" placeholder="I'm looking for..."/>
-            <button class="button button-brand-primary button-search">Search</button>
+            <input id="inputValueH" class="search-input inactive" type="text" placeholder="I'm looking for..."/>
+            <button id="librarySearchH" class="button button-brand-primary button-search">Search</button>
         </div>
         <div id="myLibraryDivH" class="main">
             <div class="blog-card alt">
@@ -136,12 +150,8 @@
                     </ul>
                 </div>
 
-                <div class="description">
-                    <h1>Mastering the Language</h1>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad eum dolorum architecto obcaecati
-                        enim dicta praesentium, quam nobis! Neque ad aliquam facilis numquam. Veritatis, sit.</p>
-                    <p class="read-more">
-                        <a href="#">Read More</a>
+
+                    <a href="#">Read More</a>
                     </p>
                 </div>
             </div>
@@ -150,3 +160,10 @@
     </div>
 {% endblock %}
 
+{% block scripts %}
+    <script type="text/javascript">
+        $( "#open-review-box" ).click(function() {
+            $( "#post-review-box" ).toggle();
+        });
+    </script>
+{% endblock %}

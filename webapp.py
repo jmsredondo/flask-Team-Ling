@@ -22,6 +22,8 @@ def landing():
     if 'token' in session:
         token = session['token']
         return render_template('landing/landing.html', token=token)
+    else:
+        return render_template('landing/landing.html', token=None)
 
 
 @app.route('/index', methods=['GET'])
