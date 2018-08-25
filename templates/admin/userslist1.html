@@ -1,0 +1,76 @@
+<div class="card" style="padding: 15px;">
+    <div class="header">
+        <h4 class="title">Users List</h4>
+        <p class="category">Here is a subtitle for this table</p>
+    </div>
+    <div class="content table-responsive table-full-width">
+        <table id="users" class="table table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Balance</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Balance</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "http://localhost:5000/users-list",
+            dataType: 'json',
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                var table = $('#users').DataTable({
+                    "data": response,
+                    "columns": [
+                        {"data": "id"},
+                        {"data": "username"},
+                        {"data": "firstname"},
+                        {"data": "lastname"},
+                        {"data": "balance"},
+                        {
+                            "defaultContent": "<div class=\"row\">\n" +
+                                "    <div class=\"col-md-3\">\n" +
+                                "        <button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
+                                "    </div>\n"
+                        }
+                    ]
+                });
+                $('#users tbody').on('click', 'button', function () {
+                    var data = table.row($(this).parents('tr')).data();
+                    sessionStorage.setItem('id',data.id);
+                    sessionStorage.setItem('fn',data.firstname);
+                    sessionStorage.setItem('ln',data.lastname);
+                    sessionStorage.setItem('ph',data.phone);
+                    sessionStorage.setItem('us',data.username);
+                    sessionStorage.setItem('emad',data.email);
+                    ulist('/view-user/'+data.id);
+                });
+            }
+        });
+
+    });
+
+</script>
+

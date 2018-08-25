@@ -8,14 +8,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Genre</label>
-                        <input disabled required id="genre" type="text" class="form-control" placeholder="e.g. Fantasy">
+                        <label for="genre">Genre</label>
+                        <input disabled id="genre" type="text" class="form-control" placeholder="e.g. Fantasy">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Type</label>
-                        <input disabled required id="type" type="text" class="form-control" placeholder="e.g. Fiction">
+                        <label for="type">Type</label>
+                        <input disabled id="type" type="text" class="form-control" placeholder="e.g. Fiction">
                     </div>
                 </div>
             </div>
@@ -27,46 +27,5 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-
-        var genre = sessionStorage.getItem('genre');
-        var type = sessionStorage.getItem('type');
-
-        $('#genre').val(genre);
-        $('#type').val(type);
-
-        // process the form
-        $('form').submit(function (event) {
-
-            // get the form data
-            // there are many ways to get this data using jQuery (you can use the class or id also)
-            var formData = JSON.stringify({
-                "genre": $('#genre').val(),
-                "type": $('#type').val()
-            });
-
-
-            // process the form
-            $.ajax({
-                type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-                url: '/genre', // the url where we want to POST
-                data: formData, // our data object
-                contentType: 'application/json', // what type of data do we expect back from the server
-                dataType: 'json', // what type of data do we expect back from the server
-
-            })
-            // using the done promise callback
-                .done(function (data) {
-
-                    // log data to the console so we can see
-                    console.log(data);
-
-                    // here we will handle errors and validation messages
-                });
-
-            // stop the form from submitting the normal way and refreshing the page
-            event.preventDefault();
-        });
-
-    });
+    view_genre_form()
 </script>

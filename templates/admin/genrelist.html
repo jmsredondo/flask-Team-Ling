@@ -34,47 +34,6 @@
     </div>
 </div>
 
-
-
-
-
 <script>
-
-    $(document).ready(function () {
-                //Delete Genre
-        $('#deleteGenre').click(function () {
-            var id = $(this).val();
-            deleteGenre(id);
-        });
-            var count = 0;
-        $.ajax({
-            url: "http://localhost:5000/genre",
-            dataType: 'json',
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (response) {
-                var table = $('#genrelist').DataTable({
-                    "data": response,
-                    "columns": [
-                        {"data": "id"},
-                        {"data": "genre"},
-                        {"data": "type"},
-                        {
-                            "defaultContent": "        <button class=\"btnViewGenre pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
-                                "<button class=\"btnDeleteGenre pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
-                        }
-                    ],
-                });
-                $('#genrelist tbody').on('click', 'button', function () {
-                    var data = table.row($(this).parents('tr')).data();
-                    var action = $(this).val();
-                    genreAction(action, data);
-                });
-            }
-        });
-
-    });
-
+   genrelist()
 </script>

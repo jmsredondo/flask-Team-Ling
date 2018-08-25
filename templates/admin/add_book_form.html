@@ -49,7 +49,7 @@
             reader.onload = function (e) {
                 console.log(reader.result + '->' + typeof reader.result);
                 var thisImage = reader.result;
-                localStorage.setItem("imgData", thisImage);
+                sessionStorage.setItem("imgData", thisImage);
             };
             reader.readAsDataURL(this.files[0]);
         });
@@ -63,7 +63,7 @@
             const formData = JSON.stringify({
                 "bookname": bookname,
                 "description": description,
-                "image": localStorage.getItem("imgData"),
+                "image": sessionStorage.getItem("imgData")
             });
 
             console.log(formData);

@@ -123,7 +123,7 @@ def get_user(username):
                 "firstname": user.firstname,
                 "lastname": user.lastname,
                 "email": user.email,
-                # "balance": user.balance,
+                "balance": user.balance,
                 "phone": user.phone}
         headers = {
             "Description": "successful operation",

@@ -120,7 +120,7 @@ def books_view():
 
 @app.route('/admin-books', methods=['GET'])
 def admin_books():
-    return send_from_directory("templates", "books/book_list.html")
+    return send_from_directory("templates", "admin/booklist.html")
     # return render_template('books/book_list2.html')
 
 
@@ -150,17 +150,18 @@ def users():
         return redirect('/login')
 
 
-@app.route('/view-genre/<id>', methods=['GET'])
-def view_genre(id):
+@app.route('/view-genre', methods=['GET'])
+def view_genre():
     return send_from_directory("templates", "admin/view_genre_form.html")
 
-@app.route('/view-book/<id>', methods=['GET'])
-def view_book(id):
+
+@app.route('/view-book', methods=['GET'])
+def view_book():
     return send_from_directory("templates", "admin/view_book_form.html")
 
 
-@app.route('/view-user/<id>', methods=['GET'])
-def view_user(id):
+@app.route('/view-user', methods=['GET'])
+def view_user():
     return send_from_directory("templates", "admin/view_users_form.html")
 
 

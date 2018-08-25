@@ -1,56 +1,48 @@
+<style>
+    td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
 <div class="card" style="padding: 15px;">
     <div class="header">
-        <h4 class="title">Striped Table with Hover</h4>
+        <h4 class="title">
+            Book List
+            <button type="submit" onclick="ulist('/add-book')" class="btn btn-success btn-fill pull-right" value="">Add
+                Book
+            </button>
+        </h4>
+
         <p class="category">Here is a subtitle for this table</p>
     </div>
-    <div class="content table-responsive table-full-width">
-        <table id="users" class="table table-hover">
-            <thead>
-            <tr>
+    <div id="body">
+        <div class="content table-responsive table-full-width">
+            <table id="booklist" class="table table-hover" style="table-layout: fixed">
+                <thead>
                 <th>ID</th>
                 <th>Book Name</th>
                 <th>Image</th>
                 <th>Description</th>
-            </tr>
-            </thead>
-            <tfoot>
-            <tr>
-                <th>ID</th>
-                <th>Book Name</th>
-                <th>Image</th>
-                <th>Description</th>
-            </tr>
-            </tfoot>
-        </table>
+                <th></th>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Book Name</th>
+                    <th>Image</th>
+                    <th>Description</th>
+                    <th></th>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 </div>
 
-
 <script>
-
-    $(document).ready(function () {
-        $.ajax({
-            url: "http://localhost:5000/books",
-            dataType: 'json',
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (response) {
-                $('#users').DataTable({
-                    "data": response,
-                    "columns": [
-                        {"data": "id"},
-                        {"data": "bookName"},
-                        {"data": "image"},
-                        {"data": "description"}
-                    ]
-                });
-                console.log(response)
-            }
-        });
-
-    });
-
+    booklist()
 </script>
+
+
 
