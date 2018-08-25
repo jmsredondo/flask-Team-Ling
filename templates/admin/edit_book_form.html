@@ -1,0 +1,50 @@
+<div class="col-md-2"></div>
+<div class="col-md-8 card">
+    <div class="header">
+        <h4 class="title">Book Details</h4>
+    </div>
+    <div class="content">
+        <form>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="bookname">Book Name</label>
+                        <input id="bookname" type="text" class="form-control" placeholder="e.g. Fantasy">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="file">Image</label>
+                        <input id="file" type="file" class="form-control" placeholder="e.g. Fiction">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" type="text" class="form-control" placeholder="e.g. Fiction"/>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="genreSelect">Genre</label>
+                    <select id="genreSelect" class="form-control" size="5" multiple></select>
+                </div>
+            </div>
+
+            <div class="row pull-right">
+                <input class="btn btn-warning btn-fill" onclick="ulist('/admin-books')" value="Back"
+                       style="max-width: 80px">
+                <button type="submit" class="btn btn-success btn-fill" onclick="ulist('/admin-books')">
+                    Update
+                </button>
+
+            </div>
+
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    view_book_form();
+    add_book_genre_form()
+</script>

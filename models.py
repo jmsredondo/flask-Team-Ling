@@ -41,38 +41,6 @@ book_category = db.Table('book_category',
                          )
 
 
-class Bucketlist(db.Model):
-    """This class represents the bucketlist table."""
-
-    __tablename__ = 'bucketlists'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(
-        db.DateTime, default=db.func.current_timestamp(),
-        onupdate=db.func.current_timestamp())
-
-    def __init__(self, name):
-        """initialize with name."""
-        self.name = name
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    @staticmethod
-    def get_all():
-        return Bucketlist.query.all()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    def __repr__(self):
-        return "<Bucketlist: {}>".format(self.name)
-
-
 class User(UserMixin, db.Model):
     """This class represents the users table."""
     __tablename__ = 'user'
@@ -116,19 +84,6 @@ class User(UserMixin, db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
-
-    # @classmethod
-    # def seed(cls, fake):
-    #     user = User(
-    #         username=fake.user_name(),
-    #         email=fake.email(),
-    #         password_hash=fake.password(),
-    #         role='user',
-    #         firstname=fake.first_name(),
-    #         lastname=fake.last_name(),
-    #         phone=fake.phone_number()
-    #     )
-    #     user.save()
 
     @staticmethod
     def get_all():
@@ -265,6 +220,7 @@ class Rate(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
                         nullable=False)
 
+
 class TokenBlacklist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     jti = db.Column(db.String(36), nullable=False)
@@ -282,6 +238,7 @@ class TokenBlacklist(db.Model):
             'revoked': self.revoked,
             'expires': self.expires
         }
+
 
 if __name__ == '__main__':
     manager.run()

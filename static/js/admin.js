@@ -204,14 +204,18 @@ function bookAction(action, data) {
     if (action === 'view') {
         sessionStorage.setItem("b_id", data.id);
         ulist('/view-book')
-    } else {
+    }
+    else if (action === 'addbook') {
+        ulist('/book-genre')
+    }
+    else {
         $('#deleteBookConfirm').modal();
         $('#deleteBook').val(data.id);
     }
 }
 
 function booklist() {
-    var count = 0;
+    const count = 0;
     $.ajax({
         url: "/book",
         dataType: 'json',
@@ -220,16 +224,18 @@ function booklist() {
             withCredentials: true
         },
         success: function (response) {
-            var table = $('#booklist').DataTable({
+            const table = $('#booklist').DataTable({
                 "data": response,
                 "columns": [
                     {"data": "id"},
                     {"data": "book_name"},
                     {"data": "image"},
-                    {"data": "description"},
                     {
                         "defaultContent": "<button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
-                        "        <button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
+                        "<button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n" +
+                        "<button class=\"pe-7s-ribbon btn btn-rose btn-fill\" value=\"addbook\"></button>\n"
+
+
                     }
                 ]
             });
@@ -251,4 +257,122 @@ function deleteGenre(id) {
         ulist("/genres");
         $('#deleteGenreConfirm').modal('hide');
     })
+}
+
+function add_book() {
+    $('input#file').on('change', function () {
+        console.log(this);
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            console.log(reader.result + '->' + typeof reader.result);
+            var thisImage = reader.result;
+            sessionStorage.setItem("imgData", thisImage);
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+
+
+    // process the form
+    $('form').submit(function (event) {
+
+        const bookname = $('#bookname').val();
+        const description = $('#description').val();
+        const formData = JSON.stringify({
+            "bookname": bookname,
+            "description": description,
+            "image": sessionStorage.getItem("imgData")
+        });
+
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: '/book', // the url where we want to POST
+            data: formData, // our data object
+            contentType: 'application/json', // what type of data do we send to the server
+            dataType: 'json', // what type of data do we expect back from the server
+        })
+        // using the done promise callback
+            .done(function (data) {
+
+                // log data to the console so we can see
+                console.log(data);
+
+                // here we will handle errors and validation messages
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
+
+}
+
+function add_book_genre_form() {
+
+    $.ajax({
+        url: "/genre",
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+
+            console.log(response.length);
+
+            const x = document.getElementById("genreSelect");
+            var i = 0;
+            for (i; i < response.length; i++) {
+                const option = document.createElement("option");
+                option.text = response[i]["genre"];
+                option.value = response[i]["id"];
+                x.add(option);
+            }
+        }
+    });
+
+    $('input#file').on('change', function () {
+        console.log(this);
+
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            console.log(reader.result + '->' + typeof reader.result);
+            var thisImage = reader.result;
+            sessionStorage.setItem("imgData", thisImage);
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    // process the form
+    $('form').submit(function (event) {
+
+        const bookname = $('#bookname').val();
+        const description = $('#description').val();
+        const image = $('#image').val();
+        const formData = JSON.stringify({
+            "bookname": bookname,
+            "description": description,
+            "image": sessionStorage.getItem("imgData")
+        });
+
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: '/editbook', // the url where we want to POST
+            data: formData, // our data object
+            contentType: 'application/json', // what type of data do we send to the server
+            dataType: 'json', // what type of data do we expect back from the server
+        })
+        // using the done promise callback
+            .done(function (data) {
+
+                // log data to the console so we can see
+                console.log(data);
+
+                // here we will handle errors and validation messages
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
 }

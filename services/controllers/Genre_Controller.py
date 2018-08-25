@@ -1,11 +1,12 @@
 import requests
-from flask import render_template, redirect, url_for, flash, request, send_from_directory
+from flask import render_template, redirect, url_for, flash, request, send_from_directory, jsonify
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user, login_user
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.urls import url_parse
 
 from forms import *
+from models import Genre, book_category, Book
 
 
 def genre():
@@ -17,3 +18,8 @@ def deletegenre(id):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     # return render_template('book_view.html', title='Genre')
+
+
+# def book_genre(request):
+
+

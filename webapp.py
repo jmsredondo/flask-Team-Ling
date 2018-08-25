@@ -170,5 +170,14 @@ def library():
     return render_template('my_library.html')
 
 
+@app.route('/book-genre', methods=['GET'])
+def book_gen():
+    return send_from_directory("templates", "admin/edit_book_form.html")
+
+@app.route('/editbook', methods=['POST'])
+def edit_book():
+    return gc.book_genre(request)
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port=80)
