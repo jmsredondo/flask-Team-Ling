@@ -16,7 +16,7 @@ $(document).ready(function () {
                         html += `<div class="column">
                                         <div class="post-module">
                                         <div class="thumbnail">
-                                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg"/>
+                                        <img src="${data[i].image}"/>
                                     </div><div class="post-content">
                                     <h1 class="title">${bookName}</h1>
                                     <h2 class="sub_title shorten">${data[i].description} asdasdzxczc qdcasdcqwedcad</h2>
@@ -57,7 +57,7 @@ function getallbooks() {
             html += `<div class="column">
               <div class="post-module">
                 <div class="thumbnail">
-                  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/169963/photo-1429043794791-eb8f26f44081.jpeg"/>
+                  <img src="${data[i].image}"/>
                 </div>
                 <div class="post-content">
                   <h1 class="title">${bookName}</h1>
@@ -135,7 +135,6 @@ function addToLibrary(id) {
         data: JSON.stringify({'bookid': id}),
         success: function (data) {
             alert('Book added to your library.')
-
         },
         contentType: 'application/JSON'
     });
@@ -151,7 +150,7 @@ function viewMyLibrary() {
                 html += ` <div class="blog-card alt">
                 <div class="meta">
                     <div class="photo"
-                         style="background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-2.jpg)"></div>
+                         style="background-image: url(${data[i].image})"></div>
                     <ul class="details">
                         <li class="author"><a href="#">Jane Doe</a></li>
                         <li class="date">July. 15, 2015</li>
