@@ -1,3 +1,5 @@
+import json
+
 import requests
 from flask import render_template, redirect, url_for, flash, request, session, make_response, jsonify, \
     send_from_directory
@@ -88,7 +90,6 @@ def users_list():
     # requests.get('http://localhost:5000/users-list')
     # return render_template('admin/userslist.html', title='List of Users')
     return send_from_directory("templates", "admin/userslist.html")
-
 
 def users():
     return render_template('users.html', title='List of Users')
