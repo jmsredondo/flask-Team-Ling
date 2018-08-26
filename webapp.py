@@ -135,10 +135,6 @@ def books():
         return bc.post_books(requests)
 
 
-# else:
-#     return redirect('/login')
-
-
 @app.route('/deletebook/<id>', methods=['POST'])
 def deletebook(id):
     return bc.deletebook(id)
@@ -176,9 +172,16 @@ def library():
 def book_gen():
     return send_from_directory("templates", "admin/edit_book_form.html")
 
+
+@app.route('/bg/<id>', methods=['GET'])
+def bg(id):
+    return gc.bg_query(id)
+
+
 @app.route('/editbook', methods=['POST'])
 def edit_book():
-    return gc.book_genre(request)
+    gc.book_genre(request)
+    return send_from_directory("templates", "admin/view_book_form.html")
 
 
 if __name__ == '__main__':
