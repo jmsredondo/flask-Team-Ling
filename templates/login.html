@@ -12,34 +12,7 @@
 
 <body>
 
-<table class="doc-loader">
-    <tr>
-        <td>
-            <div class="windows8"> <!-- windows8 -->
-                <div class="wBall" id="wBall_1">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_2">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_3">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_4">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_5">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-            </div> <!-- End windows8 -->
-        </td>
-    </tr>
-</table>
+{% include "loader.html" %}
 
 <div class='brand'>
     <a href='/'>
@@ -82,7 +55,6 @@
             <!--<input type='submit' value='Log In'>-->
             {{ form.submit }}
             <div class='forgot'>
-                <a href='#'>Forgotten password?</a>
             </div>
         </div>
     </form>
@@ -100,7 +72,6 @@
 </div>
 <script type="text/javascript" src="/static/landing/js/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="/static/landing/js/jquery-migrate-1.2.1.min.js"></script>
-
 <script src="/static/landing/js/main.js" type="application/javascript" rel="script"></script>
 
 </body>
