@@ -106,12 +106,21 @@ def get_book(id):
 
 def delete_book(id):
     b = Book.query.filter_by(id=id).first()
-    book = {'book_name': b.bookName, 'image': b.image, 'description': b.description}
-    headers = {
-        "Description": "OK",
-    }
-    Book.delete(b)
-    response = jsonify(book)
-    response.status_code = 200
-    response.headers = headers
-    return response
+    if b is None:
+        headers = {
+            "Description": 'Book Not Found',
+        }
+        response = jsonify('Book not found')
+        response.status_code = 404
+        response.headers = headers
+        return  response
+    else:
+        book = {'book_name': b.bookName, 'image': b.image, 'description': b.description}
+        headers = {
+            "Description": "OK",
+        }
+        Book.delete(b)
+        response = jsonify(book)
+        response.status_code = 200
+        response.headers = headers
+        return response
