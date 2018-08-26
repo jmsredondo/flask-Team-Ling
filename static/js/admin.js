@@ -90,7 +90,7 @@ function genrelist() {
                     {"data": "genre"},
                     {"data": "type"},
                     {
-                        "defaultContent": "        <button class=\"btnViewGenre pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
+                        "defaultContent": "<button class=\"btnViewGenre pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
                         "<button class=\"btnDeleteGenre pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
                     }
                 ],
@@ -126,6 +126,7 @@ function view_genre_form() {
 }
 
 function view_book_form() {
+    sessionStorage.removeItem("imgData");
     const book_id = sessionStorage.getItem('b_id');
     $.ajax({
         url: "/book/" + book_id,
@@ -260,8 +261,7 @@ function booklist() {
                     },
                     {
                         "defaultContent": "<button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
-                        "<button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n" +
-                        "<button class=\"pe-7s-ribbon btn btn-rose btn-fill\" value=\"addbook\"></button>\n"
+                        "<button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
 
 
                     }
@@ -290,6 +290,30 @@ function deleteGenre(id) {
 }
 
 function add_book() {
+    $.ajax({
+        url: "/genre",
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+
+            console.log(response.length);
+
+            const x = document.getElementById("genreSelect");
+            var i = 0;
+            for (i; i < response.length; i++) {
+                const option = document.createElement("option");
+                option.text = response[i]["genre"];
+                option.value = response[i]["id"];
+                x.add(option);
+            }
+        }
+    });
+
+    sessionStorage.removeItem("imgData");
+
     $('input#file').on('change', function () {
         console.log(this);
 
@@ -302,16 +326,17 @@ function add_book() {
         reader.readAsDataURL(this.files[0]);
     });
 
-
     // process the form
     $('form').submit(function (event) {
 
         const bookname = $('#bookname').val();
         const description = $('#description').val();
+        const genre = $("#genreSelect").val() || [];
         const formData = JSON.stringify({
             "bookname": bookname,
             "description": description,
-            "image": sessionStorage.getItem("imgData")
+            "image": sessionStorage.getItem("imgData"),
+            "genre": genre
         });
 
         // process the form
@@ -327,9 +352,26 @@ function add_book() {
 
                 // log data to the console so we can see
                 console.log(data);
+                // process the form
+                $.ajax({
+                    type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+                    url: '/genre/addbook/'+data.id, // the url where we want to POST
+                    data: formData, // our data object
+                    contentType: 'application/json', // what type of data do we send to the server
+                    dataType: 'json', // what type of data do we expect back from the server
+                })
+                // using the done promise callback
+                    .done(function (data) {
+
+                        // log data to the console so we can see
+                        console.log(data);
+
+                        // here we will handle errors and validation messages
+                    });
 
                 // here we will handle errors and validation messages
             });
+
 
         // stop the form from submitting the normal way and refreshing the page
         event.preventDefault();
@@ -373,6 +415,13 @@ function add_book_genre_form() {
         reader.readAsDataURL(this.files[0]);
     });
 
+    var pic;
+    if (sessionStorage.getItem("imgData") == null) {
+        pic = null
+    } else {
+        pic = sessionStorage.getItem("imgData")
+    }
+
     // process the form
     $('form').submit(function (event) {
 
@@ -384,7 +433,7 @@ function add_book_genre_form() {
             "bid": sessionStorage.getItem('b_id'),
             "bookname": bookname,
             "description": description,
-            "image": sessionStorage.getItem("imgData"),
+            "image": pic,
             "genre": genre
         });
 

@@ -1,3 +1,5 @@
+import json
+
 from flask import redirect, url_for, send_from_directory, jsonify
 from flask_login import current_user
 from sqlalchemy.orm import sessionmaker
@@ -18,16 +20,17 @@ def deletegenre(id):
 
 
 def book_genre(request):
+    bgc = Book_Category.query.filter_by(book_id=request.json['bid']).all()
+    if bgc:
+        for i in bgc:
+            Book_Category.delete(i)
+
     for i in request.json["genre"]:
-        if Book_Category.query.filter_by(genre_id=i).first():
-            pass
-        else:
-            bg = Book_Category(
-                book_id=request.json['bid'],
-                genre_id=i
-            )
-            db.session.add(bg)
-            db.session.commit()
+        bg = Book_Category(
+            book_id=request.json['bid'],
+            genre_id=i
+        )
+        Book_Category.save(bg)
 
     # update row to database
     row = Book.query.filter_by(id=request.json['bid']).first()
@@ -41,8 +44,7 @@ def book_genre(request):
 
 
 def bg_query(id):
-    gen = Genre.get_all()
-    bg = Book_Category.query.filter_by(book_id=id).all()
+    bg = Book_Category.query.filter_by(book_id=id).join(Genre)
     res = []
     genre_obj = []
 
@@ -53,6 +55,7 @@ def bg_query(id):
         i.pop('_sa_instance_state')
         i.pop('book_id')
 
+
     for i in res:
         genre = Genre.query.filter_by(id=i["genre_id"]).first()
         obj = {
@@ -61,6 +64,7 @@ def bg_query(id):
         }
         genre_obj.append(obj)
 
+    print(genre_obj)
     result = jsonify(genre_obj)
     result.status_code = 200
     return result

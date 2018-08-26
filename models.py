@@ -41,6 +41,14 @@ class Book_Category(db.Model):
     genre_id = db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True)
     book_id = db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
 
 class User(UserMixin, db.Model):
     """This class represents the users table."""
@@ -148,6 +156,9 @@ class User(UserMixin, db.Model):
 
 
 class Book(db.Model):
+    """This class represents the book table."""
+    __tablename__ = 'book'
+
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     bookName = db.Column(db.String(120))
     image = db.Column(db.String(120), nullable=True)
@@ -155,6 +166,7 @@ class Book(db.Model):
     library = db.relationship('User', secondary=library, lazy='subquery',
                               backref=db.backref('users', lazy=True))
     book = db.relationship('Rate', backref='book', lazy=True)
+    bookcategory = db.relationship('Book_Category', backref='book', lazy=True, cascade="all, delete-orphan")
 
     def __init__(self, bookName, image, description):
         """initialize with name."""
@@ -180,9 +192,12 @@ class Book(db.Model):
 
 
 class Genre(db.Model):
+    """This class represents the book table."""
+    __tablename__ = 'genre'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     type = db.Column(db.String(120))
     genre = db.Column(db.String(120))
+    bookcategory = db.relationship('Book_Category', backref='genre', lazy=True, cascade="all, delete-orphan")
 
     @staticmethod
     def get_all():

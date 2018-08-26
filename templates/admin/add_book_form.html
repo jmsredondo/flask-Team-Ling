@@ -6,7 +6,7 @@
     <div class="content">
         <form>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label>Book Name</label>
                         <input required id="bookname" type="text" class="form-control" placeholder="e.g. Fantasy">
@@ -14,15 +14,20 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Description</label>
-                        <input required id="description" type="text" class="form-control" placeholder="e.g. Fiction">
+                        <label>Image</label>
+                        <input id="file" type="file" class="form-control" placeholder="e.g. Fiction">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Image</label>
-                        <input id="file" type="file" class="form-control" placeholder="e.g. Fiction">
+                        <label>Description</label>
+                        <textarea required id="description" type="text" class="form-control"
+                                  placeholder="e.g. Fiction"/>
                     </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="genreSelect">Genre</label>
+                    <select id="genreSelect" class="form-control" size="5" multiple></select>
                 </div>
             </div>
 
