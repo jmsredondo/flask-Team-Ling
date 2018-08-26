@@ -8,18 +8,17 @@
           crossorigin="anonymous">
     <link rel="icon" type="image/png" href="/static/images/icon.png">
 
-    <link rel="stylesheet" href="/static/css/validations.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
           crossorigin="anonymous">
-
-    <script type="text/javascript" src="/static/landing/js/jquery-1.10.1.min.js"></script>
-
+    <title> BookLib - Register</title>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/static/landing/css/loader.css">
+    <link rel="stylesheet" type="text/css" href="/static/login/login.css">
     <style rel="stylesheet" type="text/css">
         dt {
             display: none
@@ -43,47 +42,65 @@
             #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%,
             #669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
         }
+
+        .registration-form {
+        {#background-color: whitesmoke;#}
+
+        }
+        .white-text {
+            color: white;
+        }
+        .register-wrap {
+            position: relative;
+            margin-top: 10%;
+            background: #606479;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px #333;
+            padding: 15px;
+        }
+
+        .validation-wrap {
+            position: relative;
+            margin-top: 10%;
+            background-color: #f0776c;
+            width: 50%;
+            text-align: center;
+            z-index: 1;
+            border-radius: 10px;
+        }
+
+        .validation-wrap p {
+            font-size: larger;
+            text-align: center;
+            color: whitesmoke;
+        }
     </style>
 
-    <link rel="stylesheet" type="text/css" href="/static/landing/css/loader.css">
 </head>
 
 <body>
-<table class="doc-loader">
-    <tr>
-        <td>
-            <div class="windows8"> <!-- windows8 -->
-                <div class="wBall" id="wBall_1">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_2">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_3">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_4">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-                <div class="wBall" id="wBall_5">
-                    <div class="wInnerBall">
-                    </div>
-                </div>
-            </div> <!-- End windows8 -->
-        </td>
-    </tr>
-</table>
 {% from "./includes/_formhelpers.html" import render_field %}
-<div class="container">
+{% include "loader.html" %}
+{# remove class hidden #}
+<div class="container validation-wrap hidden">
+    <div class="row">
+        <div class=" col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                <p> Invalid username  </p>
+                <p> Invalid username  </p>
+                <p> Invalid username  </p>
+                <p> Invalid username  </p>
+        </div>
+    </div>
+</div>
+
+<div class="container register-wrap">
+
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-            <form role="form" action="/register" method="POST">
-                <h2>Please Sign Up
-                    <small>It's free and always will be.</small>
+
+            <form role="form" action="/register" method="POST" >
+                <h2 class="white-text">Please Sign Up
+                    <small class="white-text">It's free and always will be.</small>
                 </h2>
                 <hr class="colorgraph">
                 <div class="row">
@@ -102,11 +119,9 @@
                     {{ render_field(form.phone,class_='form-control input-lg', placeholder='Enter Phone number') }}<br>
                 </div>
                 <div class="form-group">
-                    <span></span>
                     {{ render_field(form.username,class_='form-control input-lg', placeholder='Username') }}
                 </div>
                 <div class="form-group">
-                <span></span>
                     {{ render_field(form.email,class_='form-control input-lg', placeholder='Email') }}
                 </div>
                 <div class="row">
@@ -130,8 +145,9 @@
     </div>
 </div>
 
+<script type="text/javascript" src="/static/landing/js/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="/static/landing/js/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="/static/js/validation.js"></script>
+
 <script src="/static/landing/js/main.js" type="application/javascript" rel="script"></script>
 </body>
 </html>
