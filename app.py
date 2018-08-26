@@ -1,21 +1,18 @@
 # app/__init__.py
 import os
-from flask import request, Flask, render_template, url_for,session
+
+from flask import request, Flask, session
 from flask_cors import CORS
+from flask_jwt_extended import (
+    JWTManager
+)
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
+
 from config import app_config
-from forms import RegistrationForm, BookForm
-from controllers import user, book, genre,library
-from flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    jwt_refresh_token_required, create_refresh_token,
-    get_jwt_identity, set_access_cookies,
-    set_refresh_cookies, unset_jwt_cookies
-)
+from controllers import user, book, genre, library
 
 # initialize sql-alchemy
-from models import User
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)

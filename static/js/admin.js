@@ -121,6 +121,8 @@ function view_genre_form() {
             $('#type').val(type);
         }
     });
+
+
 }
 
 function view_book_form() {
@@ -140,6 +142,27 @@ function view_book_form() {
             $('#bookname').val(bookname);
             $('#description').val(description);
             $("#image").attr("src", image);
+        }
+    });
+
+    $.ajax({
+        url: "/bg/" + book_id,
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+            console.log(response.length);
+
+            const x = document.getElementById("genreSelect");
+            var i = 0;
+            for (i; i < response.length; i++) {
+                const option = document.createElement("option");
+                option.text = response[i]["genre_desc"];
+                option.value = response[i]["genre_id"];
+                x.add(option);
+            }
         }
     });
 }
@@ -231,6 +254,11 @@ function booklist() {
                     {"data": "book_name"},
                     {"data": "image"},
                     {
+                        "defaultContent": "<ul class='gen'></ul>"
+
+
+                    },
+                    {
                         "defaultContent": "<button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
                         "<button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n" +
                         "<button class=\"pe-7s-ribbon btn btn-rose btn-fill\" value=\"addbook\"></button>\n"
@@ -244,9 +272,11 @@ function booklist() {
                 const action = $(this).val();
                 bookAction(action, data);
             });
+
         }
     });
 }
+
 
 function deleteGenre(id) {
     $.ajax({
@@ -349,12 +379,16 @@ function add_book_genre_form() {
         const bookname = $('#bookname').val();
         const description = $('#description').val();
         const image = $('#image').val();
+        const genre = $("#genreSelect").val() || [];
         const formData = JSON.stringify({
+            "bid": sessionStorage.getItem('b_id'),
             "bookname": bookname,
             "description": description,
-            "image": sessionStorage.getItem("imgData")
+            "image": sessionStorage.getItem("imgData"),
+            "genre": genre
         });
 
+        console.log(formData);
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)

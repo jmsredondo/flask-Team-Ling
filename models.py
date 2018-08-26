@@ -35,10 +35,11 @@ library = db.Table('library',
                    db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
                    )
 
-book_category = db.Table('book_category',
-                         db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True),
-                         db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
-                         )
+
+class Book_Category(db.Model):
+    __tablename__ = 'book_category'
+    genre_id = db.Column('genre_id', db.Integer, db.ForeignKey('genre.id'), primary_key=True)
+    book_id = db.Column('book_id', db.Integer, db.ForeignKey('book.id'), primary_key=True)
 
 
 class User(UserMixin, db.Model):
@@ -151,7 +152,6 @@ class Book(db.Model):
     bookName = db.Column(db.String(120))
     image = db.Column(db.String(120), nullable=True)
     description = db.Column(db.String(250), nullable=True)
-    genres = db.relationship('Genre', secondary=book_category, backref=db.backref('books'))
     library = db.relationship('User', secondary=library, lazy='subquery',
                               backref=db.backref('users', lazy=True))
     book = db.relationship('Rate', backref='book', lazy=True)
