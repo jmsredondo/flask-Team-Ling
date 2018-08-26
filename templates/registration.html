@@ -52,7 +52,7 @@
         }
         .register-wrap {
             position: relative;
-            margin-top: 10%;
+            margin-top: 1%;
             background: #606479;
             border-radius: 5px;
             box-shadow: 3px 3px 10px #333;
@@ -61,7 +61,7 @@
 
         .validation-wrap {
             position: relative;
-            margin-top: 10%;
+            margin-top: 1%;
             background-color: #f0776c;
             width: 50%;
             text-align: center;
@@ -74,6 +74,10 @@
             text-align: center;
             color: whitesmoke;
         }
+
+        html {
+            overflow-y: auto;
+        }
     </style>
 
 </head>
@@ -82,7 +86,7 @@
 {% from "./includes/_formhelpers.html" import render_field %}
 {% include "loader.html" %}
 {# remove class hidden #}
-<div class="container validation-wrap hidden">
+<div class="container validation-wrap ">
     <div class="row">
         <div class=" col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
                 <p> Invalid username  </p>
