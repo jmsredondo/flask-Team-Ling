@@ -273,4 +273,4 @@ def account():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='phvm-isghp-dev2.ph.trendent.org', port=9500)
+    app.run(debug=True, host='http://phvm-isghp-dev2.ph.trendnet.org', port=9500)
