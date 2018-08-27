@@ -208,7 +208,7 @@ def create_user(request):
             email=request.json['email'],
             password_hash=request.json['password'],
             phone=request.json['phone'],
-            role=request.json['role']
+            role="user"
         )
 
         users.set_password(request.json['password'])

@@ -1,7 +1,7 @@
 from flask import jsonify
 from flask_restful.representations import json
 
-from models import Genre
+from models import Genre, Book_Category, db
 from models import Book
 
 
@@ -79,20 +79,30 @@ def get_genre(id):
 
 
 def add_book_genre(request, id):
-    genre_object = Genre().query.get(id)
-    book = Book.book_info(request.json['book_id'])
-    if genre_object and book:
-        book.genres.append(genre_object)
-        Genre.save(book)
+    if request.json["genre"] and id:
+        result = []
+        for i in request.json["genre"]:
+            bg = Book_Category(
+                book_id=id,
+                genre_id=i
+            )
+            Book_Category.save(bg)
+            obj = {
+                "genre_id": i,
+                "book_id": id
+            }
+            result.append(obj)
+
         headers = {
             "Description": "OK"
         }
-        result = {"genre_id": genre_object.id, "book_id": book.id}
+
         response = jsonify(result)
         response.status_code = 200
         response.headers = headers
         return response
-    elif book is None:
+
+    elif not Book.query.filter_by(id=id):
         headers = {
             "Description": "Invalid Input"
         }
@@ -106,6 +116,35 @@ def add_book_genre(request, id):
         }
         response = jsonify(result)
         response.status_code = 400
+        response.headers = headers
+        return response
+
+    elif not Genre.query.filter_by(id=request.json["genre"]):
+        headers = {
+            "Description": "Invalid Input"
+        }
+        result = {
+            "invalid_fields": [
+                {
+                    "field": "genre_id",
+                    "reason": "Genre id does not exist"
+                }
+            ]
+        }
+        response = jsonify(result)
+        response.status_code = 400
+        response.headers = headers
+        return response
+
+    elif request.json["genre"] is None or id is None:
+        headers = {
+            "Description": "Invalid Input"
+        }
+        result = {
+            "message": "Authentication information is missing or invalid"
+        }
+        response = jsonify(result)
+        response.status_code = 401
         response.headers = headers
         return response
 

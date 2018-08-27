@@ -3,12 +3,18 @@ import os
 import requests
 from flask import request, session, redirect, url_for, render_template, make_response, jsonify, send_from_directory
 from flask_login import LoginManager, logout_user, login_user
-
 from app import app
 from forms import RegistrationForm, LoginForm
 from services.controllers import Users_Controller as uc, \
     Genre_Controller as gc, Books_Controller as bc
 from models import User
+
+#Authentication
+from datetime import timedelta
+from flask_jwt_extended import (
+    JWTManager, decode_token, jwt_required, set_access_cookies, unset_jwt_cookies
+)
+from blacklist_helpers import is_token_revoked
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 
@@ -16,6 +22,36 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 login = LoginManager(app)
 login.login_view = 'login'
 
+
+# ------------- Authentication  Setup--------
+jwt = JWTManager(app)
+
+#setup
+ACCESS_EXPIRES = timedelta(minutes=15)
+app.config['JWT_COOKIE_SECURE'] = False
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
+app.config['JWT_SECRET_KEY'] = 'TeamLing96'
+
+
+# Define our callback function to check if a token has been revoked or not
+@jwt.token_in_blacklist_loader
+def check_if_token_revoked(decoded_token):
+    return is_token_revoked(decoded_token)
+
+@jwt.expired_token_loader
+@jwt.invalid_token_loader
+@jwt.revoked_token_loader
+@jwt.user_loader_error_loader
+@jwt.unauthorized_loader
+def my_expired_token_callback(response):
+    print response
+    return jsonify({
+        "message": "Authentication information is missing or invalid"
+    }), 401
 
 @app.route('/')
 def landing():
@@ -137,10 +173,6 @@ def books():
         return bc.post_books(requests)
 
 
-# else:
-#     return redirect('/login')
-
-
 @app.route('/deletebook/<id>', methods=['POST'])
 def deletebook(id):
     return bc.deletebook(id)
@@ -179,9 +211,16 @@ def library():
 def book_gen():
     return send_from_directory("templates", "admin/edit_book_form.html")
 
+
+@app.route('/bg/<id>', methods=['GET'])
+def bg(id):
+    return gc.bg_query(id)
+
+
 @app.route('/editbook', methods=['POST'])
 def edit_book():
-    return gc.book_genre(request)
+    gc.book_genre(request)
+    return send_from_directory("templates", "admin/view_book_form.html")
 
 
 if __name__ == '__main__':
