@@ -160,8 +160,6 @@ function view_book_form() {
                 });
             }
         });
-
-
     });
 }
 
@@ -244,7 +242,7 @@ function booklist() {
     });
     const count = 0;
     $.ajax({
-        url: "/book",
+        url: "/bookgenrelist",
         dataType: 'json',
         crossDomain: true,
         xhrFields: {
@@ -257,16 +255,10 @@ function booklist() {
                     {"data": "id"},
                     {"data": "book_name"},
                     {"data": "image"},
-                    {
-                        "defaultContent": "<ul class='gen'></ul>"
-
-
-                    },
+                    {"data": "genre"},
                     {
                         "defaultContent": "<button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
                         "<button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
-
-
                     }
                 ]
             });

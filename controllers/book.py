@@ -1,5 +1,5 @@
 from flask import jsonify
-from models import Book
+from models import Book, Genre, Book_Category
 from forms import BookForm
 import os
 
@@ -115,7 +115,7 @@ def delete_book(id):
         response = jsonify('Book not found')
         response.status_code = 404
         response.headers = headers
-        return  response
+        return response
     else:
         book = {'book_name': b.bookName, 'image': b.image, 'description': b.description}
         headers = {

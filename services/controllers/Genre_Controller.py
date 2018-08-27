@@ -19,16 +19,18 @@ def deletegenre(id):
 def book_genre(request):
     bgc = Book_Category.query.filter_by(book_id=request.json['bid']).all()
     print(bgc)
-    if bgc:
-        for i in bgc:
-            Book_Category.delete(i)
 
-    for j in request.json["genre"]:
-        bg = Book_Category(
-            book_id=request.json['bid'],
-            genre_id=j
-        )
-        Book_Category.save(bg)
+    if request.json["genre"]:
+        if bgc:
+            for i in bgc:
+                Book_Category.delete(i)
+
+        for j in request.json["genre"]:
+            bg = Book_Category(
+                book_id=request.json['bid'],
+                genre_id=j
+            )
+            Book_Category.save(bg)
 
     # update row to database
     row = Book.query.filter_by(id=request.json['bid']).first()
