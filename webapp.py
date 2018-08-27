@@ -8,6 +8,7 @@ from app import app
 from forms import RegistrationForm, LoginForm
 from services.controllers import Users_Controller as uc, \
     Genre_Controller as gc, Books_Controller as bc
+from config import app_config
 
 # Authentication
 from datetime import timedelta
@@ -18,6 +19,7 @@ from flask_jwt_extended import (
 from blacklist_helpers import is_token_revoked
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
+app.config.from_object(app_config['development'])
 
 # Login
 login = LoginManager(app)
@@ -37,6 +39,7 @@ app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
 app.config['JWT_SECRET_KEY'] = 'TeamLing96'
 
 
+
 # Define our callback function to check if a token has been revoked or not
 @jwt.token_in_blacklist_loader
 def check_if_token_revoked(decoded_token):
@@ -49,7 +52,7 @@ def check_if_token_revoked(decoded_token):
 @jwt.user_loader_error_loader
 @jwt.unauthorized_loader
 def my_expired_token_callback(response=None):
-    return "Unauthorized"
+    return redirect('/logout')
 
 
 @app.route('/')
@@ -78,13 +81,15 @@ def dashboard():
 
 
 @app.route('/ad-dashboard', methods=['GET'])
-@jwt_required
+# @jwt_required
 def ad_dashboard():
-    claims = get_jwt_claims()
-    if claims:
-        if claims['role'] == 'admin':
-            return send_from_directory("templates", "admin/dashboard.html")
-    return redirect('/login')
+    # claims = get_jwt_claims()
+    # if claims:
+    #     if claims['role'] == 'admin':
+    return send_from_directory("templates", "admin/dashboard.html")
+
+
+# return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -124,7 +129,7 @@ def out():
         #     'X-CSRF-TOKEN': request.cookies['csrf_access_token']
         # }
 
-        #response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
+        # response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
         requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
         response = make_response(redirect('/login'))
         unset_jwt_cookies(response)
@@ -134,14 +139,16 @@ def out():
         return redirect('/login')
 
 
-@app.route('/ulist', methods=['GET'])
-@jwt_required
+@app.route('/userslist', methods=['GET'])
+# @jwt_required
 def users_list():
-    identity = get_jwt_identity()
-    if identity == 'admin':
-        return uc.users_list()
-    else:
-        return redirect('/login')
+    # identity = get_jwt_identity()
+    # if identity == 'admin':
+    return uc.users_list()
+
+
+# else:
+#     return redirect('/login')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -167,7 +174,7 @@ def validate():
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
-        return gc.genre()
+    return gc.genre()
 
 
 @app.route('/addgenre', methods=['GET'])
@@ -272,5 +279,11 @@ def account():
         return uc.account()
 
 
+@app.route('/users-count', methods=['GET'])
+def users_count():
+    return uc.users_count()
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=80)
+    app.run(host='0.0.0.0', port=9500)
+    # app.run(debug=True, port=80)
