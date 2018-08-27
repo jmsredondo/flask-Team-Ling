@@ -41,10 +41,8 @@
                         <li><a href="/books">Books</a></li>
                     {% if token is none %}
                     {% else %}
-                        <li><a href="/my_library">My Library</a></li>
+                        <li><a href="/my_library">My Library </a></li>
                     {% endif %}
-                        <li><a href="#">Contact</a></li>
-
                         {% if token is none %}
                             <li><a href="/login">Login</a></li>
                         {% else %}

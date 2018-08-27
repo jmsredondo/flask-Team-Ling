@@ -1,5 +1,45 @@
 $(document).ready(function () {
 
+    $('#librarySearchH').click(function () {
+        var searchValue = $('#inputValueH').val();
+        $.ajax({
+            url: "/library/" + searchValue,
+            dataType: "JSON"
+        }).done(function (data) {
+            var html = "";
+            var i = 0;
+            if (searchValue) {
+                var html = "";
+                for (var i = 0; i < data.length; i++) {
+                    html += ` <div class="blog-card alt">
+                <div class="meta">
+                    <div class="photo"
+                         style="background-image: url(${data[i].image})"></div>
+                </div>
+                <div class="description">
+                    <h1>${data[i].bookName}</h1>
+                    <h2>Java is not the same as JavaScript</h2>
+                    <p>${data[i].description}</p>
+                    
+                    <p class="read-more">
+                        <button data-id = "${data[i].id}" data-name="${data[i].bookName}" type="button" class="btn btn-primary left openModal" data-toggle="modal" data-target="#ModalCenter1">Add Comment</button>
+                        <a href="#">Read More</a>
+                    </p>
+                </div>
+            </div>`;
+                }
+                if (html) {
+                    $('#myLibraryDivH').html(html)
+                } else {
+                    $('#myLibraryDivH').html("<span>Sorry, We don't have what you're looking for.</span>")
+                }
+            } else {
+                getallbooks();
+            }
+
+        });
+    });
+
     $('#bookID').on('click', function () {
         var rating = $('input[name=rating]:checked').val();
         var comment = $('textarea[name=comment]').val();
@@ -7,7 +47,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             url: '/rate',
-            data: JSON.stringify({'bookid': id,'rate': rating,'comment':comment}),
+            data: JSON.stringify({'bookid': id, 'rate': rating, 'comment': comment}),
             success: function (data) {
                 alert('Book added to your library.')
             },
@@ -20,7 +60,7 @@ $(document).ready(function () {
     initusers();
     viewMyLibrary();
 
-     //Search function for book
+    //Search function for book
     $('#bookSearchH').click(function () {
         var searchValue = $('#inputValueH').val();
         $.ajax({
@@ -162,6 +202,7 @@ function viewMyLibrary() {
         type: "GET",
         url: '/library',
         success: function (data) {
+
             var html = "";
             for (var i = 0; i < data.length; i++) {
                 html += ` <div class="blog-card alt">
@@ -180,9 +221,8 @@ function viewMyLibrary() {
                     </p>
                 </div>
             </div>`;
+                $('#myLibraryDivH').html(html);
             }
-            $('#myLibraryDivH').html(html);
-
         },
         dataType: 'JSON'
     });

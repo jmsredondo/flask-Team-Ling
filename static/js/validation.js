@@ -37,6 +37,7 @@ $(document).ready(function () {
         }
         if (error > 1) {
             $('err-msg').removeAttr('hidden');
+            submit = false;
         } else {
             submit = true;
         }
