@@ -187,6 +187,7 @@ api.add_resource(Get_Book, '/book/<id>')
 
 # Get Genre List
 class Genre_List(Resource):
+    @jwt_required
     def get(self):
         return genre.genrelist()
 

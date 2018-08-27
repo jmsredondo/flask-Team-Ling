@@ -49,7 +49,7 @@ def check_if_token_revoked(decoded_token):
 @jwt.user_loader_error_loader
 @jwt.unauthorized_loader
 def my_expired_token_callback(response=None):
-    return "Unauthorized"
+    return redirect('/logout')
 
 
 @app.route('/')
@@ -282,4 +282,4 @@ def users_count():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=80)
+    app.run(debug=True, host='http://phvm-isghp-dev2.ph.trendnet.org', port=9500)
