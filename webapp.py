@@ -58,11 +58,12 @@ def landing():
         decoded_token = decode_token(request.cookies['access_token_cookie'])
         if 'user_claims' in decoded_token:
             claims = decoded_token['user_claims']
-            if claims['role'] == 'user':
-                token = 'yeah'
-                return render_template('landing/landing.html', token=token)
-            elif claims['role'] == 'admin':
-                return redirect('/dashboard')
+            if 'role' in claims:
+                if claims['role'] == 'user':
+                    token = 'yeah'
+                    return render_template('landing/landing.html', token=token)
+                elif claims['role'] == 'admin':
+                    return redirect('/dashboard')
     return render_template('landing/landing.html', token=None)
 
 
