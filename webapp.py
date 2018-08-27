@@ -104,8 +104,8 @@ def login_user():
             'password': form.password.data
         }
 
-        response = requests.post('http://localhost:5000/users/login', json=json_user)
-        response_info = response.json()
+        resp = requests.post('http://localhost:5000/users/login', json=json_user)
+        response_info = resp.json()
 
         response = make_response(redirect('/'))
         set_access_cookies(response, response_info['token'])
