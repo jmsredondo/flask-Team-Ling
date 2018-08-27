@@ -1,5 +1,29 @@
 $(document).ready(function () {
 
+    $('#bookID').on('click', function () {
+        var rating = $('input[name=rating]:checked').val();
+        var comment = $('textarea[name=comment]').val();
+        var id = $('#bookID').val();
+        $.ajax({
+            type: "POST",
+            url: '/rate',
+            data: JSON.stringify({'bookid': id,'rate': rating,'comment':comment}),
+            success: function (data) {
+                alert('Book added to your library.')
+            },
+            contentType: 'application/JSON'
+        });
+
+    });
+    initgenre();
+    getallbooks();
+    initusers();
+    viewMyLibrary();
+
+    $('.openModal').click(function () {
+        console.log('test');
+    });
+
     //Search function for book
     $('#bookSearchH').click(function () {
         var searchValue = $('#inputValueH').val();
@@ -38,10 +62,7 @@ $(document).ready(function () {
 
         });
     });
-    initgenre();
-    getallbooks();
-    initusers();
-    viewMyLibrary();
+
 });
 
 //Book functions
@@ -110,21 +131,21 @@ function initgenre() {
 //User functions
 
 function initusers() {
-    $.ajax({
-        url: "/users-list",
-        dataType: "JSON"
-    }).done(function (data) {
-        for (var i = 1; i < data.length; i++) {
-            console.log(data);
-        }
-    });
-    var username = "jsmith";
-    $.ajax({
-        url: "/users/" + username,
-        dataType: "JSON"
-    }).done(function (data) {
-        console.log(data);
-    })
+    // $.ajax({
+    //     url: "/users-list",
+    //     dataType: "JSON"
+    // }).done(function (data) {
+    //     for (var i = 1; i < data.length; i++) {
+    //         console.log(data);
+    //     }
+    // });
+    // var username = "jsmith";
+    // $.ajax({
+    //     url: "/users/" + username,
+    //     dataType: "JSON"
+    // }).done(function (data) {
+    //     console.log(data);
+    // })
 }
 
 
@@ -169,70 +190,11 @@ function viewMyLibrary() {
                     <p>${data[i].description}</p>
                     
                     <p class="read-more">
-                        <button type="button" class="btn btn-primary left" data-toggle="modal" data-target="#ModalCenter${data[i].id}">Add Comment</button>
+                        <button data-id = "${data[i].id}" data-name="${data[i].bookName}" type="button" class="btn btn-primary left openModal" data-toggle="modal" data-target="#ModalCenter1">Add Comment</button>
                         <a href="#">Read More</a>
                     </p>
                 </div>
-            </div>
-               <div class="modal fade" id="ModalCenter${data[i].id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Add a Comment to the Book:  ${data[i].bookName}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                           <form action="/rate" id="rateandcomment">
-                               <input type="hidden" id="${data[i].bookName}">
-                              <!-- user id sana i lagay d2 idk kung paano kukunin -->
-                              Comment: <br>
-                              <textarea rows="10" cols="50" name="comment" id="comment" placeholder="Enter Comment Here..."></textarea>
-                              <br>
-                              Rating: <br>
-                              <div class="rating">
-                              <label>
-                                <input type="radio" name="rating" value="1" />
-                                <span class="icon">★</span>
-                              </label>
-                              <label>
-                                <input type="radio" name="rating" value="2" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                              </label>
-                              <label>
-                                <input type="radio" name="rating" value="3" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>   
-                              </label>
-                              <label>
-                                <input type="radio" name="rating" value="4" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                              </label>
-                              <label>
-                                <input type="radio" name="rating" value="5" />
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                              </label>
-                            </div>
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <!-- this will be the trigger for saving -->
-                            <button type="button" class="btn btn-primary">Save Comment</button> 
-                          </div>
-                        </div>
-                      </div>
-                    </div>`;
+            </div>`;
             }
             $('#myLibraryDivH').html(html);
 
