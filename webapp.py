@@ -8,6 +8,7 @@ from app import app
 from forms import RegistrationForm, LoginForm
 from services.controllers import Users_Controller as uc, \
     Genre_Controller as gc, Books_Controller as bc
+from config import app_config
 
 # Authentication
 from datetime import timedelta
@@ -18,6 +19,7 @@ from flask_jwt_extended import (
 from blacklist_helpers import is_token_revoked
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
+app.config.from_object(app_config['development'])
 
 # Login
 login = LoginManager(app)
@@ -35,6 +37,7 @@ app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
 app.config['JWT_SECRET_KEY'] = 'TeamLing96'
+
 
 
 # Define our callback function to check if a token has been revoked or not
