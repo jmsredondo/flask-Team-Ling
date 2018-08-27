@@ -535,21 +535,3 @@ function add_genre() {
         event.preventDefault();
     });
 }
-
-function dashboard() {
-    $.ajax({
-        url: "/users-count",
-        dataType: 'json',
-        crossDomain: true,
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function (response) {
-            console.log(response);
-            $('#ucount').text(response.ucount);
-            $('#bcount').text(response.bcount);
-            $('#gcount').text(response.gcount);
-        }
-    })
-}
-}

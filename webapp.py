@@ -265,7 +265,7 @@ def account():
     if request.method == 'GET':
         return send_from_directory("templates", "admin/account_form.html")
     else:
-        return uc.account()
+        return uc.account(request)
 
 
 @app.route('/users-count', methods=['GET'])
