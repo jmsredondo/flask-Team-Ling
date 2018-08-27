@@ -40,7 +40,7 @@ app.secret_key = 'teamling'
 jwt = JWTManager(app)
 
 # setup
-ACCESS_EXPIRES = timedelta(minutes=15)
+ACCESS_EXPIRES = timedelta(hours=8)
 app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES

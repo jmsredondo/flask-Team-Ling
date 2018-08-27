@@ -83,3 +83,11 @@ def users_count():
     result = jsonify(obj)
     result.status_code = 200
     return result
+
+def validate(username):
+    resp = requests.get('http://localhost:5000/users/'+username)
+    resp_dict = resp.json()
+    if 'username' in resp_dict:
+        return jsonify({'message': True})
+    else:
+        return jsonify({'message':False})
