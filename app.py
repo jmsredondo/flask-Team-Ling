@@ -242,6 +242,7 @@ api.add_resource(Add_Book_Genra, '/genre/addbook/<id>')
 # # Comment/Rate the book
 class Comment_Rate_Book(Resource):
     # @app.route('/rate', methods=['POST'])
+    @jwt_required
     def post(self):
         try:
             user_id = get_jwt_identity()
@@ -283,4 +284,4 @@ class Library_List(Resource):
 api.add_resource(Library_List, '/library')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9500)
+    app.run(host='', port=5000)

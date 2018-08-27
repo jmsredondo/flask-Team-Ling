@@ -105,9 +105,9 @@
             color: #fff;
         }
 
-    .modal {
-        top: 30% !important;
-    }
+        .modal {
+            top: 30% !important;
+        }
     </style>
 {% endblock %}
 
@@ -125,76 +125,78 @@
         </div>
         <div id="myLibraryDivH" class="main">
             <h1> NO BOOKS ADDED TO YOUR LIBRARY YET
-            <a href="/books">Add Book</a></h1>
+                <a href="/books">Add Book</a></h1>
         </div>
-    </div>
-
-    </div>
-{% endblock %}
-
-{% block after_main %}
-    <div class="modal fade" id="ModalCenter1" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Rate And Comment: <span id="bookName"></span></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="/rate" id="rateandcomment">
-                        <input type="hidden" id="${data[i].bookName}">
-                        <!-- user id sana i lagay d2 idk kung paano kukunin -->
-                        Comment: <br>
-                        <textarea rows="10" cols="50" name="comment" id="comment"
-                                  placeholder="Enter Comment Here..."></textarea>
-                        <br>
-                        Rating: <br>
-                        <div class="rating">
-                            <label>
-                                <input type="radio" name="rating" value="1"/>
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="rating" value="2"/>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="rating" value="3"/>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="rating" value="4"/>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                            <label>
-                                <input type="radio" name="rating" value="5"/>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                                <span class="icon">★</span>
-                            </label>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <!-- this will be the trigger for saving -->
-                    <button id="bookID" type="button" class="btn btn-primary">Save Comment</button>
+        <div class="modal fade" id="ModalCenter1" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Rate And Comment: <span id="bookName"></span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/rate" id="rateandcomment">
+                            <input type="hidden" id="${data[i].bookName}">
+                            <!-- user id sana i lagay d2 idk kung paano kukunin -->
+                            Comment: <br>
+                            <textarea rows="10" cols="50" name="comment" id="comment"
+                                      placeholder="Enter Comment Here..."></textarea>
+                            <br>
+                            Rating: <br>
+                            <div class="rating">
+                                <label>
+                                    <input type="radio" name="rating" value="1"/>
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="rating" value="2"/>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="rating" value="3"/>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="rating" value="4"/>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="rating" value="5"/>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                    <span class="icon">★</span>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <!-- this will be the trigger for saving -->
+                        <button id="bookID" type="button" class="btn btn-primary">Save Comment</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
+
+{% block after_main %}
+{% endblock %}
+
+
+
 {% block scripts %}
     <script type="text/javascript">
         $("#open-review-box").click(function () {

@@ -44,21 +44,39 @@ $(document).ready(function () {
         var rating = $('input[name=rating]:checked').val();
         var comment = $('textarea[name=comment]').val();
         var id = $('#bookID').val();
+        console.log(rating, comment, id);
         $.ajax({
             type: "POST",
             url: '/rate',
-            data: JSON.stringify({'bookid': id, 'rate': rating, 'comment': comment}),
+            data: JSON.stringify({'book_id': id, 'rate': rating, 'comment': comment}),
             success: function (data) {
-                alert('Book added to your library.')
+                alert('Book rated.');
             },
             contentType: 'application/JSON'
         });
 
     });
-    initgenre();
+
+    // initgenre();
     getallbooks();
     initusers();
     viewMyLibrary();
+    $.ajax({
+        type: "GET",
+        url: '/library',
+        dataType: "JSON",
+        success: function (data) {
+            for(var i=0;i < data.length; i++){
+                var column = $('.column');
+                var id = data[i].id+data[i].bookName;
+                if(column.data('id') === id){
+                   $('.column[data-id="'+id+'"]').find('span').replaceWith('<p style="color:green;">Book has been added.</p>');
+                }
+
+            }
+        }
+    });
+
 
     //Search function for book
     $('#bookSearchH').click(function () {
@@ -73,7 +91,7 @@ $(document).ready(function () {
                 for (i; i < data.length; i++) {
                     var bookName = data[i].book_name;
                     if (bookName.toUpperCase().includes(searchValue.toUpperCase())) {
-                        html += `<div class="column">
+                        html += `<div class="column" data-id = "${data[i].id}" data-name="${data[i].book_name}" >
                                         <div class="post-module">
                                         <div class="thumbnail">
                                         <img src="${data[i].image}"/>
@@ -84,7 +102,6 @@ $(document).ready(function () {
                                     <div class="post-meta">
                                     <a href="#" class="fancy-button bg-gradient1"><span onclick="addToLibrary(${data[i].id})"><i class="fas fa-plus-circle"></i>Add to Library</span></a>
                                     </div></div></div></div>`;
-
                     }
                 }
                 if (html) {
@@ -103,6 +120,7 @@ $(document).ready(function () {
 
 //Book functions
 function getallbooks() {
+
     //request list of all books
     $.ajax({
         url: "/book",
@@ -111,7 +129,7 @@ function getallbooks() {
         var html = "";
         for (var i = 0; i < data.length; i++) {
             var bookName = data[i].book_name;
-            html += `<div class="column">
+            html += `<div data-id = "${data[i].id}${data[i].book_name}"class="column">
               <div class="post-module">
                 <div class="thumbnail">
                   <img src="${data[i].image}"/>
@@ -119,7 +137,7 @@ function getallbooks() {
                 <div class="post-content">
                   <h1 class="title">${bookName}</h1>
                   <h2 class="sub_title shorten">${data[i].description} asdasdzxczc qdcasdcqwedcad</h2>
-                  <p class="description">New York, the largest city in the U.S., is an architectural marvel with plenty of historic monuments, magnificent buildings and countless dazzling skyscrapers.</p>
+                  <p class="description"></p>
                   <div class="post-meta">
                   <a href="#" class="fancy-button bg-gradient1"><span onclick="addToLibrary(${data[i].id})"><i class="fas fa-plus-circle"></i>Add to Library</span></a>
                  </div>
@@ -216,13 +234,17 @@ function viewMyLibrary() {
                     <p>${data[i].description}</p>
                     
                     <p class="read-more">
-                        <button data-id = "${data[i].id}" data-name="${data[i].bookName}" type="button" class="btn btn-primary left openModal" data-toggle="modal" data-target="#ModalCenter1">Add Comment</button>
+                        <button  data-id = "${data[i].id}" data-name="${data[i].bookName}" type="button" class="openModal btn btn-primary left" data-toggle="modal" data-target="#ModalCenter1">Add Comment</button>
                         <a href="#">Read More</a>
                     </p>
                 </div>
             </div>`;
                 $('#myLibraryDivH').html(html);
             }
+            $(document).on("click", ".openModal", function () {
+                var myBookId = $(this).data('id');
+                $("#bookID").val(myBookId);
+            });
         },
         dataType: 'JSON'
     });
