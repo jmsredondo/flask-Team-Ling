@@ -1,9 +1,6 @@
-import json
-
 from flask import redirect, url_for, send_from_directory, jsonify
 from flask_login import current_user
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import update
+import base64
 
 from models import Book, db, Book_Category, Genre
 
@@ -21,14 +18,15 @@ def deletegenre(id):
 
 def book_genre(request):
     bgc = Book_Category.query.filter_by(book_id=request.json['bid']).all()
+    print(bgc)
     if bgc:
         for i in bgc:
             Book_Category.delete(i)
 
-    for i in request.json["genre"]:
+    for j in request.json["genre"]:
         bg = Book_Category(
             book_id=request.json['bid'],
-            genre_id=i
+            genre_id=j
         )
         Book_Category.save(bg)
 
@@ -38,7 +36,15 @@ def book_genre(request):
     if request.json['image'] is None:
         pass
     else:
-        row.image = request.json['image']
+        img = request.json['image']
+        img_data = img[img.index(',')+1::]
+        moveto = "static/admin/images/book-" + request.json['bid'] + ".jpg"
+
+        with open(moveto, "wb") as fh:
+            fh.write(img_data.decode('base64'))
+
+        row.image = "/"+moveto
+
     row.description = request.json['description']
     db.session.commit()
 
@@ -54,7 +60,6 @@ def bg_query(id):
     for i in res:
         i.pop('_sa_instance_state')
         i.pop('book_id')
-
 
     for i in res:
         genre = Genre.query.filter_by(id=i["genre_id"]).first()
