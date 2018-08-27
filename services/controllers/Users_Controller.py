@@ -1,4 +1,5 @@
 import json
+from flask_jwt_extended import get_jwt_identity
 
 import requests
 from flask import render_template, redirect, url_for, request, session, make_response, jsonify, \
@@ -6,6 +7,7 @@ from flask import render_template, redirect, url_for, request, session, make_res
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user, login_user, LoginManager, login_required
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.urls import url_parse
 
 from app import app
@@ -17,6 +19,14 @@ db = SQLAlchemy()
 # Login
 login = LoginManager(app)
 login.login_view = 'login'
+
+
+def account():
+    # update row to database
+    user = User.query.filter_by(id=get_jwt_identity).first()
+    if user.check_password(request.json['oldpassword']):
+        user.password = generate_password_hash(request.json['newpassword'])
+        db.session.commit()
 
 
 # Register User
@@ -56,12 +66,11 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 
-
-
 def users_list():
     # requests.get('http://localhost:5000/users-list')
     # return render_template('admin/userslist.html', title='List of Users')
     return send_from_directory("templates", "admin/userslist.html")
+
 
 def users():
     return render_template('users.html', title='List of Users')
