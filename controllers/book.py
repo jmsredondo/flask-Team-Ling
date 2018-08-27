@@ -1,7 +1,7 @@
 from flask import jsonify
-from models import Book, Genre, Book_Category
+from models import Book, Genre, Book_Category, db
 from forms import BookForm
-import os
+import os, json
 
 from services.controllers import app
 
@@ -77,11 +77,23 @@ def add_new_book(request):
         response.headers = headers
         return response
     else:
+
         b = Book(bookName=request.json['bookname'],
-                 image=request.json['image'],
+                 image="",
                  description=request.json['description'])
         Book.save(b)
         b = Book.query.filter_by(bookName=request.json['bookname']).first()
+
+        img = request.json['image']
+        img_data = img[img.index(',') + 1::]
+        moveto = "static/admin/images/book-" + json.dumps(b.id) + ".jpg"
+
+        with open(moveto, "wb") as fh:
+            fh.write(img_data.decode('base64'))
+
+        b.image = "/" + moveto
+        db.session.commit()
+
         results = {'book_name': b.bookName, 'image': b.image, 'description': b.description, "id": b.id}
         response = jsonify(results)
         response.status_code = 200

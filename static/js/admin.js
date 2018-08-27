@@ -16,7 +16,7 @@ function remove_book(id) {
         method: "DELETE",
         dataType: "JSON"
     }).done(function (data) {
-        ulist('/book');
+        ulist('/admin-books');
         $('#deleteBookConfirm').modal('hide');
     })
 }
