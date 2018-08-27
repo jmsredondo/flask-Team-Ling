@@ -54,16 +54,16 @@ def my_expired_token_callback(response=None):
 
 @app.route('/')
 def landing():
-    claims = get_jwt_claims()
-
-    if claims:
-        if claims['role'] == 'user':
-            token = 'yeah'
-            return render_template('landing/landing.html', token=token)
-        elif claims['role'] == 'admin':
-            return redirect('/dashboard')
-    else:
-        return render_template('landing/landing.html', token=None)
+    if 'access_token_cookie' in request.cookies:
+        decoded_token = decode_token(request.cookies['access_token_cookie'])
+        if 'user_claims' in decoded_token:
+            claims = decoded_token['user_claims']
+            if claims['role'] == 'user':
+                token = 'yeah'
+                return render_template('landing/landing.html', token=token)
+            elif claims['role'] == 'admin':
+                return redirect('/dashboard')
+    return render_template('landing/landing.html', token=None)
 
 
 @app.route('/dashboard', methods=['GET'])
@@ -105,7 +105,6 @@ def login_user():
 
         resp = requests.post('http://localhost:5000/users/login', json=json_user)
         response_info = resp.json()
-
         response = make_response(redirect('/'))
         set_access_cookies(response, response_info['token'])
         return response
@@ -278,4 +277,4 @@ def account():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=80)
+    app.run(debug=True, host='localhost', port=8000)
