@@ -49,7 +49,7 @@ def check_if_token_revoked(decoded_token):
 @jwt.user_loader_error_loader
 @jwt.unauthorized_loader
 def my_expired_token_callback(response=None):
-    return "Unauthorized"
+    return redirect('/logout')
 
 
 @app.route('/')
@@ -273,4 +273,4 @@ def account():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=8000)
+    app.run(debug=True, host='0.0.0.0', port=9500)
