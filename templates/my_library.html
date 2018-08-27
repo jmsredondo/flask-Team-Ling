@@ -105,6 +105,9 @@
             color: #fff;
         }
 
+    .modal {
+        top: 30% !important;
+    }
     </style>
 {% endblock %}
 
@@ -125,6 +128,11 @@
             <a href="/books">Add Book</a></h1>
         </div>
     </div>
+
+    </div>
+{% endblock %}
+
+{% block after_main %}
     <div class="modal fade" id="ModalCenter1" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -186,10 +194,7 @@
             </div>
         </div>
     </div>
-
-    </div>
 {% endblock %}
-
 {% block scripts %}
     <script type="text/javascript">
         $("#open-review-box").click(function () {
