@@ -125,6 +125,7 @@ class BooksTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
 
 
+
 class GenreTestCase(unittest.TestCase):
     app = Flask(__name__)
     api = Api(app)
@@ -141,6 +142,9 @@ class GenreTestCase(unittest.TestCase):
                             "genre": "genre"}
 
         self.samplebookgenre = {"book_id": "1"}
+
+        self.invalidgenre = { "type": None,
+                              "genre": None}
 
     def test_sucess_add_new_genre(self):
         res = requests.post(self.host + '/genre', json=self.samplegenre)
@@ -162,7 +166,7 @@ class GenreTestCase(unittest.TestCase):
         res = requests.post(self.host + '/genre/addbook/99', json=self.samplebookgenre)
         self.assertEqual(res.status_code, 200)
 
-    def test_fail_get_genre(self):
+    def test_fail_get_genre_404(self):
         res = requests.get(self.host + '/genre/99')
         self.assertEqual(res.status_code, 404)
 
@@ -170,6 +174,9 @@ class GenreTestCase(unittest.TestCase):
         res = requests.get(self.host + '/genre/99')
         self.assertEqual(res.status_code, 404)
 
+    def test_fail_add_genre(self):
+        res = requests.post(self.host + '/genre', json=self.invalidgenre)
+        self.assertEqual(res.status_code, 400)
 
 class LibraryTestCase(unittest.TestCase):
     app = Flask(__name__)
