@@ -12,6 +12,7 @@ from werkzeug.urls import url_parse
 
 from app import app
 from forms import *
+from models import Book, Genre
 
 auth = HTTPBasicAuth()
 db = SQLAlchemy()
@@ -75,11 +76,15 @@ def users():
 
 
 def users_count():
+    ucount = User.query.count()
+    bcount = Book.query.count()
+    gcount = Genre.query.count()
     count = User.query.count()
     obj = {
-        "ucount": str(count)
+        "ucount": str(ucount),
+        "bcount": str(bcount),
+        "gcount": str(gcount)
     }
-    print(count)
     result = jsonify(obj)
     result.status_code = 200
     return result
