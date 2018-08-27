@@ -61,8 +61,7 @@ def check_if_token_revoked(decoded_token):
 @jwt.revoked_token_loader
 @jwt.user_loader_error_loader
 @jwt.unauthorized_loader
-def my_expired_token_callback(response):
-    print response
+def my_expired_token_callback(response=None):
     return jsonify({
         "message": "Authentication information is missing or invalid"
     }), 401
