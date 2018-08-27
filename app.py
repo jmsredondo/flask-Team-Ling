@@ -284,4 +284,4 @@ class Library_List(Resource):
 api.add_resource(Library_List, '/library')
 
 if __name__ == '__main__':
-    app.run(host='', port=5000)
+    app.run(host='0.0.0.0', port=9500)
