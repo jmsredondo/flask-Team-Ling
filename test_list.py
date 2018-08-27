@@ -31,7 +31,7 @@ class UserTestCase(unittest.TestCase):
                            'email': 'jamfama18@gmail.com','balance':"0"}
 
         self.loginuser = {'username': 'jamjamn',
-                           'password': 'N0virus02'}
+                          'password': 'N0virus02'}
 
         self.invaliduser = {'username': 'jamjam',
                             'password': 'asdasdasd'}
@@ -57,17 +57,18 @@ class UserTestCase(unittest.TestCase):
     def test_get_user(self):
         res = requests.get(self.host + '/users/jamjam')
         self.assertEquals(res.status_code, 200)
+
+    def test_user_success_login(self):
+        res = requests.post(self.host + '/users/login', json=self.loginuser)
+        self.assertEqual(res.status_code, 200)
+
     #  EEROR ON LOGOUT
     def test_user_success_logout(self):
         res = requests.post(self.host + '/users/logout')
         self.assertEqual(res.status_code, 200)
 
-    def test_user_success_login(self):
-        res = requests.post(self.host + '/login', json=self.loginuser)
-        self.assertEqual(res.status_code, 200)
-
     def test_user_fail_login(self):
-        res = requests.post(self.host + '/users/loginapi', json=self.invaliduser)
+        res = requests.post(self.host + '/users/login', json=self.invaliduser)
         self.assertEqual(res.status_code, 400)
 
     def test_user_fail_get(self):
@@ -93,8 +94,8 @@ class BooksTestCase(unittest.TestCase):
                            "description": "description"}
 
         self.emptybook = {"bookname": None,
-                           "image": None,
-                           "description": None}
+                          "image": None,
+                          "description": None}
 
     def test_add_new_book(self):
         res = requests.post(self.host + '/book', json=self.samplebook)
