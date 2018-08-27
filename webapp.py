@@ -78,13 +78,15 @@ def dashboard():
 
 
 @app.route('/ad-dashboard', methods=['GET'])
-@jwt_required
+# @jwt_required
 def ad_dashboard():
-    claims = get_jwt_claims()
-    if claims:
-        if claims['role'] == 'admin':
-            return send_from_directory("templates", "admin/dashboard.html")
-    return redirect('/login')
+    # claims = get_jwt_claims()
+    # if claims:
+    #     if claims['role'] == 'admin':
+    return send_from_directory("templates", "admin/dashboard.html")
+
+
+# return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -124,7 +126,7 @@ def out():
         #     'X-CSRF-TOKEN': request.cookies['csrf_access_token']
         # }
 
-        #response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
+        # response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
         requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
         response = make_response(redirect('/login'))
         unset_jwt_cookies(response)
@@ -134,14 +136,16 @@ def out():
         return redirect('/login')
 
 
-@app.route('/ulist', methods=['GET'])
-@jwt_required
+@app.route('/userslist', methods=['GET'])
+# @jwt_required
 def users_list():
-    identity = get_jwt_identity()
-    if identity == 'admin':
-        return uc.users_list()
-    else:
-        return redirect('/login')
+    # identity = get_jwt_identity()
+    # if identity == 'admin':
+    return uc.users_list()
+
+
+# else:
+#     return redirect('/login')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -167,7 +171,7 @@ def validate():
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
-        return gc.genre()
+    return gc.genre()
 
 
 @app.route('/addgenre', methods=['GET'])
@@ -270,6 +274,11 @@ def account():
         return send_from_directory("templates", "admin/account_form.html")
     else:
         return uc.account()
+
+
+@app.route('/users-count', methods=['GET'])
+def users_count():
+    return uc.users_count()
 
 
 if __name__ == '__main__':

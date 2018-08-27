@@ -67,10 +67,19 @@ def login():
 
 
 def users_list():
-    # requests.get('http://localhost:5000/users-list')
-    # return render_template('admin/userslist.html', title='List of Users')
     return send_from_directory("templates", "admin/userslist.html")
 
 
 def users():
     return render_template('users.html', title='List of Users')
+
+
+def users_count():
+    count = User.query.count()
+    obj = {
+        "ucount": str(count)
+    }
+    print(count)
+    result = jsonify(obj)
+    result.status_code = 200
+    return result

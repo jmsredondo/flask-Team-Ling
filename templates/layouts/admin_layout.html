@@ -54,7 +54,7 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li onclick="ulist('/ulist')">
+                <li onclick="ulist('/userslist')">
                     <a href="#">
                         <i class="pe-7s-user"></i>
                         <p>Users</p>
@@ -102,7 +102,7 @@
                     <ul class="nav navbar-nav navbar-left">
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-dashboard"></i>
+                                {#                                <i class="fa fa-dashboard"></i>#}
                             </a>
                         </li>
                     </ul>
@@ -127,53 +127,73 @@
             <div class="container-fluid">
                 <div id="div1" class="row">
 
-                    <div class="col-md-4">
-                        <div class="card">
-
-                            <div class="header">
-                                <h4 class="title">Email Statistics</h4>
-                                <p class="category">Last Campaign Performance</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
-
-                                <div class="footer">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Bounce
-                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
+                    <div class="col-lg-4 col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-comments fa-5x"></i>
                                     </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
+                                    <div class="col-xs-9 text-right">
+                                        <div id="users-count"></div>
+                                        <div>Users Count</div>
                                     </div>
                                 </div>
                             </div>
+                            <a onclick="ulist('/userslist')">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
                         </div>
                     </div>
-
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Users Behavior</h4>
-                                <p class="category">24 Hours performance</p>
-                            </div>
-                            <div class="content">
-                                <div id="chartHours" class="ct-chart"></div>
-                                <div class="footer">
-                                    <div class="legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Click
-                                        <i class="fa fa-circle text-warning"></i> Click Second Time
+                    <div class="col-lg-4 col-md-6">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-tasks fa-5x"></i>
                                     </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="fa fa-history"></i> Updated 3 minutes ago
+                                    <div class="col-xs-9 text-right">
+                                        <div id="genre-count"></div>
+                                        <div>Genre Count</div>
                                     </div>
                                 </div>
                             </div>
+                            <a onclick="ulist('/genres')">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
                         </div>
                     </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-book fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div id="book-count"></div>
+                                        <div>Book Count</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a onclick="ulist('/admin-books')">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -218,7 +238,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Do you really wan to delete this genre?
+                Do you really want to delete this genre?
             </div>
             <div class="modal-footer">
                 <button id="deleteGenre" type="button" class="btn btn-primary">Yes</button>
@@ -240,7 +260,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Do you really wan to delete this book?
+                Do you really want to delete this book?
             </div>
             <div class="modal-footer">
                 <button id="deleteBook" type="button" class="btn btn-primary">Yes</button>
@@ -249,6 +269,24 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+            $.ajax({
+                url: "/users-count",
+                dataType: 'json',
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+                    console.log(response);
+                    $("#users-count").text(response.ucount);
+                }
+            })
+        }
+    );
+</script>
 
 <!--   Core JS Files   -->
 <script src="/static/admin/assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
