@@ -29,7 +29,7 @@ login.login_view = 'login'
 jwt = JWTManager(app)
 
 # setup
-ACCESS_EXPIRES = timedelta(minutes=15)
+ACCESS_EXPIRES = timedelta(hours=8)
 app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
@@ -52,7 +52,94 @@ def check_if_token_revoked(decoded_token):
 @jwt.user_loader_error_loader
 @jwt.unauthorized_loader
 def my_expired_token_callback(response=None):
-    return redirect('/logout')
+    return logout()
+
+
+#------Admin Routes -------
+@app.route('/dashboard', methods=['GET'])
+@jwt_required
+def dashboard():
+    claims = get_jwt_claims()
+    if claims:
+        if claims['role'] == 'admin':
+            return render_template('admin/index.html', title='Home', user='Hi Admin!', page='Dashboard')
+    return redirect('/')
+
+@app.route('/ad-dashboard', methods=['GET'])
+# @jwt_required
+def ad_dashboard():
+    # claims = get_jwt_claims()
+    # if claims:
+    #     if claims['role'] == 'admin':
+    return send_from_directory("templates", "admin/dashboard.html")
+
+@app.route('/addgenre', methods=['GET'])
+def addgenre():
+    if request.method == 'GET':
+        return send_from_directory("templates", "admin/add_genre_form.html")
+
+
+@app.route('/deletegenre/<id>', methods=['POST'])
+def deletegenre(id):
+    return gc.deletegenre(id)
+
+
+@app.route('/add-book', methods=['GET'])
+def books_view():
+    return send_from_directory("templates", "admin/add_book_form.html")
+    # return render_template('books/book_list2.html')
+
+@app.route('/deletebook/<id>', methods=['POST'])
+def deletebook(id):
+    return bc.deletebook(id)
+
+
+@app.route('/users', methods=['GET'])
+def users():
+    return uc.users()
+
+
+@app.route('/view-genre', methods=['GET'])
+def view_genre():
+    return send_from_directory("templates", "admin/view_genre_form.html")
+
+@app.route('/bg/<id>', methods=['GET'])
+def bg(id):
+    return gc.bg_query(id)
+
+@app.route('/editbook', methods=['POST'])
+def edit_book():
+    gc.book_genre(request)
+    return send_from_directory("templates", "admin/view_book_form.html")
+
+
+@app.route('/update_genre', methods=['POST'])
+def edit_gen():
+    gc.edit_genre(request)
+    return send_from_directory("templates", "admin/view_genre_form.html")
+
+
+@app.route('/editgenre', methods=['GET'])
+def show_gen_form():
+    return send_from_directory("templates", "admin/edit_genre_form.html")
+
+
+@app.route('/admin-books', methods=['GET'])
+def admin_books():
+    return send_from_directory("templates", "admin/booklist.html")
+    # return render_template('books/book_list2.html')
+
+#---------- End of Admin Routes --------
+
+
+#------- Users Route ------
+
+@app.route('/my_library', methods=['GET'])
+def library():
+    return render_template('my_library.html')
+
+#-------------------------
+
 
 
 @app.route('/')
@@ -68,29 +155,6 @@ def landing():
                 elif claims['role'] == 'admin':
                     return redirect('/dashboard')
     return render_template('landing/landing.html', token=None)
-
-
-@app.route('/dashboard', methods=['GET'])
-@jwt_required
-def dashboard():
-    claims = get_jwt_claims()
-    if claims:
-        if claims['role'] == 'admin':
-            return render_template('admin/index.html', title='Home', user='Hi Admin!', page='Dashboard')
-    return redirect('/')
-
-
-@app.route('/ad-dashboard', methods=['GET'])
-# @jwt_required
-def ad_dashboard():
-    # claims = get_jwt_claims()
-    # if claims:
-    #     if claims['role'] == 'admin':
-    return send_from_directory("templates", "admin/dashboard.html")
-
-
-# return redirect('/login')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
@@ -122,19 +186,7 @@ def login_user():
 @jwt_required
 def out():
     try:
-        to_send_cookies = {
-            'access_token_cookie': request.cookies['access_token_cookie']
-        }
-        # to_send_headers = {
-        #     'X-CSRF-TOKEN': request.cookies['csrf_access_token']
-        # }
-
-        # response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
-        requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
-        response = make_response(redirect('/login'))
-        unset_jwt_cookies(response)
-        session.clear()
-        return response
+        return logout()
     except:
         return redirect('/login')
 
@@ -177,29 +229,6 @@ def genre():
     return gc.genre()
 
 
-@app.route('/addgenre', methods=['GET'])
-def addgenre():
-    if request.method == 'GET':
-        return send_from_directory("templates", "admin/add_genre_form.html")
-
-
-@app.route('/deletegenre/<id>', methods=['POST'])
-def deletegenre(id):
-    return gc.deletegenre(id)
-
-
-@app.route('/add-book', methods=['GET'])
-def books_view():
-    return send_from_directory("templates", "admin/add_book_form.html")
-    # return render_template('books/book_list2.html')
-
-
-@app.route('/admin-books', methods=['GET'])
-def admin_books():
-    return send_from_directory("templates", "admin/booklist.html")
-    # return render_template('books/book_list2.html')
-
-
 @app.route('/books', methods=['GET', 'POST'])
 def books():
     # if 'token' in session:
@@ -208,62 +237,22 @@ def books():
     else:
         return bc.post_books(requests)
 
-
-@app.route('/deletebook/<id>', methods=['POST'])
-def deletebook(id):
-    return bc.deletebook(id)
-
-
-@app.route('/users', methods=['GET'])
-def users():
-    return uc.users()
-
-
-@app.route('/view-genre', methods=['GET'])
-def view_genre():
-    return send_from_directory("templates", "admin/view_genre_form.html")
-
-
 @app.route('/view-book', methods=['GET'])
 def view_book():
     return send_from_directory("templates", "admin/view_book_form.html")
 
-
 @app.route('/view-user', methods=['GET'])
 def view_user():
     return send_from_directory("templates", "admin/view_users_form.html")
-
-
-@app.route('/my_library', methods=['GET'])
-def library():
-    return render_template('my_library.html')
-
 
 @app.route('/book-genre', methods=['GET'])
 def book_gen():
     return send_from_directory("templates", "admin/edit_book_form.html")
 
 
-@app.route('/bg/<id>', methods=['GET'])
-def bg(id):
-    return gc.bg_query(id)
 
 
-@app.route('/editbook', methods=['POST'])
-def edit_book():
-    gc.book_genre(request)
-    return send_from_directory("templates", "admin/view_book_form.html")
 
-
-@app.route('/update_genre', methods=['POST'])
-def edit_gen():
-    gc.edit_genre(request)
-    return send_from_directory("templates", "admin/view_genre_form.html")
-
-
-@app.route('/editgenre', methods=['GET'])
-def show_gen_form():
-    return send_from_directory("templates", "admin/edit_genre_form.html")
 
 
 @app.route('/bookgenrelist', methods=['GET'])
@@ -283,6 +272,20 @@ def account():
 def users_count():
     return uc.users_count()
 
+def logout():
+    to_send_cookies = {
+        'access_token_cookie': request.cookies['access_token_cookie']
+    }
+    # to_send_headers = {
+    #     'X-CSRF-TOKEN': request.cookies['csrf_access_token']
+    # }
+
+    # response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
+    requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
+    response = make_response(redirect('/login'))
+    unset_jwt_cookies(response)
+    session.clear()
+    return response
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=9500)
