@@ -9,7 +9,7 @@
   font-family: sans-serif;
   border-radius: 5px;
   overflow: hidden;
-  z-index: 1051;
+  z-index: 0;
 }
 .blog-card .description {
     border-bottom: 0;
