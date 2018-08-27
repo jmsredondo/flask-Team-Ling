@@ -285,5 +285,5 @@ def users_count():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='http://phvm-isghp-dev2.ph.trendnet.org', port=9500)
+    app.run(host='0.0.0.0', port=9500)
     # app.run(debug=True, port=80)
