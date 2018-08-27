@@ -53,36 +53,6 @@ def login():
     form = LoginForm()
     return render_template('login.html', title='Sign In', form=form)
 
-# User Login
-def post_login():
-    form = LoginForm()
-    try:
-        # fetch the user data
-        user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username/password supplied'), 400
-            return redirect('/login')
-
-        json_user = {
-            'username': user.username,
-            'password': user.password_hash
-        }
-
-        info = requests.post('http://localhost:5000/users/login', json=json_user)
-        session['token'] = info.text
-        session['userid'] = user.id
-        if user.role == "admin":
-            return redirect('/dashboard')
-        else:
-            return redirect('/')
-    except Exception as e:
-        print(e)
-        responseObject = {
-            'status': 'fail',
-            'message': 'Try again'
-        }
-        return make_response(jsonify(responseObject)), 500
-
 
 def users_list():
     # requests.get('http://localhost:5000/users-list')

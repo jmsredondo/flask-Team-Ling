@@ -1,19 +1,27 @@
 # app/__init__.py
 import os
 
-from flask import request, Flask, session
+from flask import request, Flask, session, jsonify
 from flask_cors import CORS
-from flask_jwt_extended import (
-    JWTManager
-)
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
 
 from config import app_config
 from controllers import user, book, genre, library
 
-# initialize sql-alchemy
+#Authentication
+from datetime import timedelta
+from models import TokenBlacklist
+from blacklist_helpers import (
+    is_token_revoked, add_token_to_database,
+    revoke_token, prune_database, TokenNotFound
+)
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
+# initialize sql-alchemy
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 api = Api(app)
@@ -25,10 +33,38 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy()
 db.init_app(app)
-# ------------- Authentication --------
+
+# ------------- Authentication  Setup--------
 SESSION_TYPE = 'redis'
 app.secret_key = 'teamling'
 jwt = JWTManager(app)
+
+#setup
+ACCESS_EXPIRES = timedelta(minutes=15)
+app.config['JWT_COOKIE_SECURE'] = False
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
+app.config['JWT_SECRET_KEY'] = 'TeamLing96'
+
+
+# Define our callback function to check if a token has been revoked or not
+@jwt.token_in_blacklist_loader
+def check_if_token_revoked(decoded_token):
+    return is_token_revoked(decoded_token)
+
+@jwt.expired_token_loader
+@jwt.invalid_token_loader
+@jwt.revoked_token_loader
+@jwt.user_loader_error_loader
+@jwt.unauthorized_loader
+def my_expired_token_callback(response):
+    print response
+    return jsonify({
+        "message": "Authentication information is missing or invalid"
+    }), 401
 
 # # ----------- User API URI -----------
 
