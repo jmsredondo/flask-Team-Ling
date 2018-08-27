@@ -14,7 +14,7 @@ from models import User
 from datetime import timedelta
 from flask_jwt_extended import (
     JWTManager, decode_token, jwt_required, set_access_cookies, unset_jwt_cookies,
-    get_jwt_claims
+    get_jwt_claims, get_jwt_identity
 )
 from blacklist_helpers import is_token_revoked
 
@@ -49,11 +49,8 @@ def check_if_token_revoked(decoded_token):
 @jwt.revoked_token_loader
 @jwt.user_loader_error_loader
 @jwt.unauthorized_loader
-def my_expired_token_callback(response):
-    print response
-    return jsonify({
-        "message": "Authentication information is missing or invalid"
-    }), 401
+def my_expired_token_callback(response=None):
+    return redirect("/login")
 
 
 @app.route('/')
@@ -70,18 +67,6 @@ def landing():
         return render_template('landing/landing.html', token=None)
 
 
-@app.route('/index', methods=['GET'])
-def index():
-    if 'token' in session:
-        # return render_template('index.html', title='Dashboard')
-        resp = make_response(render_template('index.html'))
-        resp.set_cookie('userID', session['token'])
-        return render_template('index.html', title='Dashboard')
-
-    else:
-        return redirect('/login')
-
-
 @app.route('/dashboard', methods=['GET'])
 @jwt_required
 def dashboard():
@@ -89,23 +74,27 @@ def dashboard():
     if claims:
         if claims['role'] == 'admin':
             return render_template('admin/index.html', title='Home', user='Hi Admin!', page='Dashboard')
-    else:
-        return redirect('/')
+    return redirect('/')
 
 
 @app.route('/ad-dashboard', methods=['GET'])
+@jwt_required
 def ad_dashboard():
-    return send_from_directory("templates", "admin/dashboard.html")
+    claims = get_jwt_claims()
+    if claims:
+        if claims['role'] == 'admin':
+            return send_from_directory("templates", "admin/dashboard.html")
+    return redirect('/login')
 
 
-@app.route('/admin', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
     if request.method == "GET":
-        if 'token' not in session:
-            return uc.login()
+        identity = get_jwt_identity()
+        if identity:
+            return redirect('/')
         else:
-            return redirect('/index')
+            return uc.login()
     else:
         form = LoginForm()
         # try:
@@ -117,8 +106,6 @@ def login_user():
 
         response = requests.post('http://localhost:5000/users/login', json=json_user)
         response_info = response.json()
-        decoded_token = decode_token(response_info['token'])
-
 
         response = make_response(redirect('/'))
         set_access_cookies(response, response_info['token'])
@@ -128,6 +115,7 @@ def login_user():
 
 
 @app.route('/logout')
+@jwt_required
 def out():
     try:
         to_send_cookies = {
@@ -138,15 +126,17 @@ def out():
         # }
 
         #response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
-        response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
+        requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
         response = make_response(redirect('/login'))
         unset_jwt_cookies(response)
+        session.clear()
         return response
     except:
         return redirect('/login')
 
 
 @app.route('/ulist', methods=['GET'])
+@jwt_required
 def users_list():
     if 'token' in session:
         return uc.users_list()
