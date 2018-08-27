@@ -5,11 +5,9 @@ from flask import jsonify, session
 # get bookid on request??
 
 
-def get_book_rate_and_comment(userid,bookid,request):
-    user_logged_in = User.query.get(userid)
-    book = Book.get(bookid)
+def rate_and_comment(user_id, book_id, rate, comment=None):
 
-    if not Book.query.filter_by(id=bookid):
+    if not Book.query.get(book_id):
         headers = {
             "Description": "Invalid Input"
         }
@@ -26,48 +24,20 @@ def get_book_rate_and_comment(userid,bookid,request):
         response.status_code = 400
         response.headers = headers
         return response
-    elif request.json['comment'] is None:
-        headers = {
-            "Description": "Invalid Input"
-        }
-        result = {
-            "invalid_fields": [
-                {
-                    "field": "comment",
-                    "reason": "No Comment was sent"
-                }
-            ]
-        }
-        response = jsonify(result)
-        response.status_code = 400
-        response.headers = headers
-        return response
-    elif user_logged_in is None:
-        headers = {
-            "Description": "Authentication error"
-        }
-        result = {
-            "message": "Authentication information is missing or invalid"
-        }
-        response = jsonify(result)
-        response.status_code = 401
-        response.headers = headers
-        return response
     else:
-        rate = Rate(comment=request.json['comment'],
-                    rate=request.json['rating'],
-                    user_id=user_logged_in,
-                    book_id=book)
+        rate = Rate(comment=comment,
+                    rate=rate,
+                    user_id=user_id,
+                    book_id=book_id)
         Rate.save(rate)
-        r = Rate.query.filter_by(user_id=user_logged_in,
-                                 book_id=book)
-        results = {'book_id': r.user_id,
-                   'rate': r.rate,
-                   'comment': r.comment,
-                   'id': r.id}
+
+        results = {'book_id': rate.book_id,
+                   'rate': rate.rate,
+                   'comment': rate.comment,
+                   'id': rate.id}
         response = jsonify(results)
         response.status_code = 200
-        return jsonify(response)
+        return response
 
 
 def get_all_book_ratings(bookid):

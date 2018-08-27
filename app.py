@@ -239,9 +239,16 @@ api.add_resource(Add_Book_Genra, '/genre/addbook/<id>')
 class Comment_Rate_Book(Resource):
 # @app.route('/rate', methods=['POST'])
     def post(self):
-        rate_object = request.get_json()
-        return rate.rate_book(rate_object)
-#
+        try:
+            user_id = get_jwt_identity()
+            if user_id:
+                rate_object = request.get_json()
+                return rate.rate_and_comment(user_id, rate_object['book_id'], rate_object['rate'], rate_object['comment'])
+
+        except:
+            response= jsonify({"message": "Authentication information is missing or invalid"}), 401
+            response.status_code = 401
+            return response
 #
 api.add_resource(Comment_Rate_Book, '/rate')
 #

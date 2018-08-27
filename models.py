@@ -235,6 +235,10 @@ class Rate(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
                         nullable=False)
 
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
 
 class TokenBlacklist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
