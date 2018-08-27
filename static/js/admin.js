@@ -460,3 +460,75 @@ function add_book_genre_form() {
         event.preventDefault();
     });
 }
+
+function edit_genre_form() {
+
+    // process the form
+    $('form').submit(function (event) {
+
+        // get the form data
+        // there are many ways to get this data using jQuery (you can use the class or id also)
+        var formData = JSON.stringify({
+            "gid": sessionStorage.getItem("genre_id"),
+            "genre": $('#genre').val(),
+            "type": $('#type').val()
+        });
+
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: '/update_genre', // the url where we want to POST
+            data: formData, // our data object
+            contentType: 'application/json', // what type of data do we expect back from the server
+            dataType: 'json', // what type of data do we expect back from the server
+
+        })
+        // using the done promise callback
+            .done(function (data) {
+
+                // log data to the console so we can see
+                console.log(data);
+
+                // here we will handle errors and validation messages
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
+
+}
+
+function add_genre() {
+    // process the form
+    $('form').submit(function (event) {
+
+        // get the form data
+        // there are many ways to get this data using jQuery (you can use the class or id also)
+        var formData = JSON.stringify({
+            "genre": $('#genre').val(),
+            "type": $('#type').val()
+        });
+
+
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: '/genre', // the url where we want to POST
+            data: formData, // our data object
+            contentType: 'application/json', // what type of data do we expect back from the server
+            dataType: 'json', // what type of data do we expect back from the server
+
+        })
+        // using the done promise callback
+            .done(function (data) {
+
+                // log data to the console so we can see
+                console.log(data);
+
+                // here we will handle errors and validation messages
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
+}

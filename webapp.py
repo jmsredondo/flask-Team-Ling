@@ -1,7 +1,8 @@
 import os
 
 import requests
-from flask import request, session, redirect, flash, url_for, render_template, make_response, jsonify, send_from_directory
+from flask import request, session, redirect, flash, url_for, render_template, make_response, jsonify, \
+    send_from_directory
 from flask_login import LoginManager, logout_user, login_user
 from app import app
 from forms import RegistrationForm, LoginForm
@@ -9,7 +10,7 @@ from services.controllers import Users_Controller as uc, \
     Genre_Controller as gc, Books_Controller as bc
 from models import User
 
-#Authentication
+# Authentication
 from datetime import timedelta
 from flask_jwt_extended import (
     JWTManager, decode_token, jwt_required, set_access_cookies, unset_jwt_cookies
@@ -22,11 +23,10 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 login = LoginManager(app)
 login.login_view = 'login'
 
-
 # ------------- Authentication  Setup--------
 jwt = JWTManager(app)
 
-#setup
+# setup
 ACCESS_EXPIRES = timedelta(minutes=15)
 app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
@@ -42,6 +42,7 @@ app.config['JWT_SECRET_KEY'] = 'TeamLing96'
 def check_if_token_revoked(decoded_token):
     return is_token_revoked(decoded_token)
 
+
 @jwt.expired_token_loader
 @jwt.invalid_token_loader
 @jwt.revoked_token_loader
@@ -52,6 +53,7 @@ def my_expired_token_callback(response):
     return jsonify({
         "message": "Authentication information is missing or invalid"
     }), 401
+
 
 @app.route('/')
 def landing():
@@ -155,9 +157,12 @@ def register():
 def reg():
     return uc.register_form()
 
-@app.route('/validate',methods=['POST'])
+
+@app.route('/validate', methods=['POST'])
 def validate():
     return uc.validate(requests)
+
+
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
@@ -212,7 +217,6 @@ def users():
         return redirect('/login')
 
 
-
 @app.route('/view-genre', methods=['GET'])
 def view_genre():
     return send_from_directory("templates", "admin/view_genre_form.html")
@@ -247,6 +251,17 @@ def bg(id):
 def edit_book():
     gc.book_genre(request)
     return send_from_directory("templates", "admin/view_book_form.html")
+
+
+@app.route('/update_genre', methods=['POST'])
+def edit_gen():
+    gc.edit_genre(request)
+    return send_from_directory("templates", "admin/view_genre_form.html")
+
+
+@app.route('/editgenre', methods=['GET'])
+def show_gen_form():
+    return send_from_directory("templates", "admin/edit_genre_form.html")
 
 
 if __name__ == '__main__':

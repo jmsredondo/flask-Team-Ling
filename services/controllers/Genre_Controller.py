@@ -37,15 +37,23 @@ def book_genre(request):
         pass
     else:
         img = request.json['image']
-        img_data = img[img.index(',')+1::]
+        img_data = img[img.index(',') + 1::]
         moveto = "static/admin/images/book-" + request.json['bid'] + ".jpg"
 
         with open(moveto, "wb") as fh:
             fh.write(img_data.decode('base64'))
 
-        row.image = "/"+moveto
+        row.image = "/" + moveto
 
     row.description = request.json['description']
+    db.session.commit()
+
+
+def edit_genre(request):
+    # update row to database
+    row = Genre.query.filter_by(id=request.json['gid']).first()
+    row.type = request.json['type']
+    row.genre = request.json['genre']
     db.session.commit()
 
 
