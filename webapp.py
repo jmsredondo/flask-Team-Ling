@@ -1,7 +1,7 @@
 import os
 
 import requests
-from flask import request, session, redirect, url_for, render_template, make_response, jsonify, send_from_directory
+from flask import request, session, redirect, flash, url_for, render_template, make_response, jsonify, send_from_directory
 from flask_login import LoginManager, logout_user, login_user
 from app import app
 from forms import RegistrationForm, LoginForm
@@ -96,7 +96,33 @@ def login_user():
         else:
             return redirect('/index')
     else:
-        return uc.post_login()
+        form = LoginForm()
+        try:
+            # fetch the user data
+            user = User.query.filter_by(username=form.username.data).first()
+            if user is None or not user.check_password(form.password.data):
+                flash('Invalid username/password supplied'), 400
+                return redirect('/login')
+
+            json_user = {
+                'username': user.username,
+                'password': user.password_hash
+            }
+
+            info = requests.post('http://localhost:5000/users/login', json=json_user)
+            session['token'] = info.text
+            session['userid'] = user.id
+            if user.role == "admin":
+                return redirect('/dashboard')
+            else:
+                return redirect('/')
+        except Exception as e:
+            print(e)
+            responseObject = {
+                'status': 'fail',
+                'message': 'Try again'
+            }
+            return make_response(jsonify(responseObject)), 500
 
 
 @app.route('/logout')

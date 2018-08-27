@@ -1,5 +1,5 @@
 import requests
-from flask import render_template, redirect, url_for, flash, request, session, make_response, jsonify, \
+from flask import render_template, redirect, url_for, request, session, make_response, jsonify, \
     send_from_directory
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user, login_user, LoginManager, login_required
@@ -52,6 +52,8 @@ def new():
 def login():
     form = LoginForm()
     return render_template('login.html', title='Sign In', form=form)
+
+
 
 
 def users_list():
