@@ -10,11 +10,13 @@ function create_book() {
     });
 }
 
-function remove_book() {
+function remove_book(id) {
     $.ajax({
         type: "DELETE",
-        url: '/deletebook/11',
+        url: '/book/'+id,
         success: function () {
+            ulist('/book');
+            $('#deleteBookConfirm').modal('hide');
 
         },
     });
@@ -30,16 +32,6 @@ function create_genre() {
 
         },
         dataType: 'JSON'
-    });
-}
-
-function remove_genre() {
-    $.ajax({
-        type: "DELETE",
-        url: '/deleteGenre/21',
-        success: function () {
-
-        },
     });
 }
 
@@ -239,6 +231,11 @@ function bookAction(action, data) {
 }
 
 function booklist() {
+       //Delete Genre
+    $('#deleteBook').click(function () {
+        var id = $(this).val();
+        remove_book(id);
+    });
     const count = 0;
     $.ajax({
         url: "/book",
@@ -268,8 +265,8 @@ function booklist() {
                 ]
             });
             $('#booklist tbody').on('click', 'button', function () {
-                const data = table.row($(this).parents('tr')).data();
-                const action = $(this).val();
+                var data = table.row($(this).parents('tr')).data();
+                var action = $(this).val();
                 bookAction(action, data);
             });
 

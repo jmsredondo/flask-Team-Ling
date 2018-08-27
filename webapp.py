@@ -194,7 +194,7 @@ def admin_books():
 def books():
     # if 'token' in session:
     if request.method == 'GET':
-        return bc.books()
+        return bc.bo/oks()
     else:
         return bc.post_books(requests)
 
