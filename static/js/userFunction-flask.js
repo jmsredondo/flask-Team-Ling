@@ -66,12 +66,12 @@ $(document).ready(function () {
         url: '/library',
         dataType: "JSON",
         success: function (data) {
-            for(var i=0;i < data.length; i++){
+            for (var i = 0; i < data.length; i++) {
                 var column = $('.column');
-                var id = data[i].id+data[i].bookName;
-                if(column.data('id') === id){
-                   $('.column[data-id="'+id+'"]').find('span').replaceWith('<p style="color:green;">Book has been added.</p>');
-                }
+                var id = data[i].id + "" + data[i].bookName;
+
+                $('.column[data-id="' + id + '"]').find('span')
+                    .replaceWith('<p style="color:green;">Book has been added.</p>');
 
             }
         }
