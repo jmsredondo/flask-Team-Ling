@@ -117,48 +117,46 @@ function view_genre_form() {
 }
 
 function view_book_form() {
-    $(document).ready(function () {
-        sessionStorage.removeItem("imgData");
-        const book_id = sessionStorage.getItem('b_id');
-        $.ajax({
-            url: "/book/" + book_id,
-            dataType: 'json',
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (response) {
-                const bookname = response.book_name;
-                const description = response.description;
-                const image = response.image;
+    sessionStorage.removeItem("imgData");
+    const book_id = sessionStorage.getItem('b_id');
+    $.ajax({
+        url: "/book/" + book_id,
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+            const bookname = response.book_name;
+            const description = response.description;
+            const image = response.image;
 
-                $('#bookname').val(bookname);
-                $('#description').val(description);
-                $("#image").attr("src", image);
+            $('#bookname').val(bookname);
+            $('#description').val(description);
+            $("#image").attr("src", image);
 
 
-                $.ajax({
-                    url: "/bg/" + book_id,
-                    dataType: 'json',
-                    crossDomain: true,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function (response) {
-                        console.log(response.length);
+            $.ajax({
+                url: "/bg/" + book_id,
+                dataType: 'json',
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+                    console.log(response.length);
 
-                        const x = document.getElementById("genreSelect");
-                        var i = 0;
-                        for (i; i < response.length; i++) {
-                            const option = document.createElement("option");
-                            option.text = response[i]["genre_desc"];
-                            option.value = response[i]["genre_id"];
-                            x.add(option);
-                        }
+                    const x = document.getElementById("genreSelect");
+                    var i = 0;
+                    for (i; i < response.length; i++) {
+                        const option = document.createElement("option");
+                        option.text = response[i]["genre_desc"];
+                        option.value = response[i]["genre_id"];
+                        x.add(option);
                     }
-                });
-            }
-        });
+                }
+            });
+        }
     });
 }
 
@@ -371,6 +369,26 @@ function add_book() {
 }
 
 function add_book_genre_form() {
+    sessionStorage.removeItem("imgData");
+    const book_id = sessionStorage.getItem('b_id');
+    $.ajax({
+        url: "/book/" + book_id,
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+            const bookname = response.book_name;
+            const description = response.description;
+            const image = response.image;
+
+            $('#bookname').val(bookname);
+            $('#description').val(description);
+            $("#image").attr("src", image);
+
+        }
+    });
 
     $.ajax({
         url: "/genre",
