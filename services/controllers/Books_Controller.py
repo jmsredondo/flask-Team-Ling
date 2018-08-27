@@ -1,7 +1,31 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, jsonify
 from flask_login import current_user
 
 from forms import *
+from models import Book, Book_Category, Genre
+
+
+def bookgenrelist():
+    # GET
+    books = Book.query.outerjoin(Book_Category, Book.id == Book_Category.book_id).outerjoin(Genre,
+                                                                                            Book_Category.genre_id == Genre.id).add_columns(
+        Genre.genre, Book.id, Book.bookName, Book.description, Book.image)
+    results = []
+
+    for b in books:
+        obj = {
+            'id': b.id, 'book_name': b.bookName, 'image': b.image, 'description': b.description, 'genre': b.genre
+        }
+        results.append(obj)
+
+    headers = {
+        "Description": "OK",
+    }
+
+    response = jsonify(results)
+    response.headers = headers
+    response.status_code = 200
+    return response
 
 
 def books():

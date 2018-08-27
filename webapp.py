@@ -264,5 +264,9 @@ def show_gen_form():
     return send_from_directory("templates", "admin/edit_genre_form.html")
 
 
+@app.route('/bookgenrelist', methods=['GET'])
+def show_bookgenlist():
+    return bc.bookgenrelist()
+
 if __name__ == '__main__':
     app.run(debug=True, host='localhost', port=80)
