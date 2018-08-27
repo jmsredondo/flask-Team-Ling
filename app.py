@@ -9,7 +9,7 @@ from models import User
 from config import app_config
 from controllers import user, book, genre, library, rate
 
-#Authentication
+# Authentication
 from datetime import timedelta
 from models import TokenBlacklist
 from blacklist_helpers import (
@@ -39,7 +39,7 @@ SESSION_TYPE = 'redis'
 app.secret_key = 'teamling'
 jwt = JWTManager(app)
 
-#setup
+# setup
 ACCESS_EXPIRES = timedelta(minutes=15)
 app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
@@ -55,6 +55,7 @@ app.config['JWT_SECRET_KEY'] = 'TeamLing96'
 def check_if_token_revoked(decoded_token):
     return is_token_revoked(decoded_token)
 
+
 @jwt.expired_token_loader
 @jwt.invalid_token_loader
 @jwt.revoked_token_loader
@@ -65,12 +66,15 @@ def my_expired_token_callback(response=None):
         "message": "Authentication information is missing or invalid"
     }), 401
 
+
 @jwt.user_claims_loader
 def add_claims_to_access_token(identity):
     user = User.query.get(identity)
     return {
         'role': user.role
     }
+
+
 # # ----------- User API URI -----------
 
 # User login
@@ -87,6 +91,7 @@ class Login(Resource):
                 return "Invalid username/password supplied"
         except:
             return "Invalid username/password supplied"
+
 
 api.add_resource(Login, '/users/login')
 
@@ -110,7 +115,6 @@ class Logout(Resource):
                 status=400
             )
             return response
-
 
 
 api.add_resource(Logout, '/users/logout')
@@ -237,20 +241,25 @@ api.add_resource(Add_Book_Genra, '/genre/addbook/<id>')
 
 # # Comment/Rate the book
 class Comment_Rate_Book(Resource):
-# @app.route('/rate', methods=['POST'])
+    # @app.route('/rate', methods=['POST'])
     def post(self):
         try:
             user_id = get_jwt_identity()
             if user_id:
                 rate_object = request.get_json()
-                return rate.rate_and_comment(user_id, rate_object['book_id'], rate_object['rate'], rate_object['comment'])
+                return rate.rate_and_comment(user_id, rate_object['book_id'], rate_object['rate'],
+                                             rate_object['comment'])
 
         except:
-            response= jsonify({"message": "Authentication information is missing or invalid"}), 401
+            response = jsonify({"message": "Authentication information is missing or invalid"}), 401
             response.status_code = 401
             return response
+
+
 #
 api.add_resource(Comment_Rate_Book, '/rate')
+
+
 #
 #
 # # Get all ratings on the book
@@ -266,8 +275,9 @@ api.add_resource(Comment_Rate_Book, '/rate')
 class Library_List(Resource):
     def get(self):
         return library.get_all_library(session['userid'])
+
     def post(selfs):
-        return library.add_book_to_library(request,session['userid'])
+        return library.add_book_to_library(request, session['userid'])
 
 
 api.add_resource(Library_List, '/library')

@@ -12,14 +12,13 @@ function create_book() {
 
 function remove_book(id) {
     $.ajax({
-        type: "DELETE",
-        url: '/book/'+id,
-        success: function () {
-            ulist('/book');
-            $('#deleteBookConfirm').modal('hide');
-
-        },
-    });
+        url: '/book/' + id,
+        method: "DELETE",
+        dataType: "JSON"
+    }).done(function (data) {
+        ulist('/admin-books');
+        $('#deleteBookConfirm').modal('hide');
+    })
 }
 
 
@@ -118,48 +117,46 @@ function view_genre_form() {
 }
 
 function view_book_form() {
-    $(document).ready(function () {
-        sessionStorage.removeItem("imgData");
-        const book_id = sessionStorage.getItem('b_id');
-        $.ajax({
-            url: "/book/" + book_id,
-            dataType: 'json',
-            crossDomain: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (response) {
-                const bookname = response.book_name;
-                const description = response.description;
-                const image = response.image;
+    sessionStorage.removeItem("imgData");
+    const book_id = sessionStorage.getItem('b_id');
+    $.ajax({
+        url: "/book/" + book_id,
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+            const bookname = response.book_name;
+            const description = response.description;
+            const image = response.image;
 
-                $('#bookname').val(bookname);
-                $('#description').val(description);
-                $("#image").attr("src", image);
+            $('#bookname').val(bookname);
+            $('#description').val(description);
+            $("#image").attr("src", image);
 
 
-                $.ajax({
-                    url: "/bg/" + book_id,
-                    dataType: 'json',
-                    crossDomain: true,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    success: function (response) {
-                        console.log(response.length);
+            $.ajax({
+                url: "/bg/" + book_id,
+                dataType: 'json',
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (response) {
+                    console.log(response.length);
 
-                        const x = document.getElementById("genreSelect");
-                        var i = 0;
-                        for (i; i < response.length; i++) {
-                            const option = document.createElement("option");
-                            option.text = response[i]["genre_desc"];
-                            option.value = response[i]["genre_id"];
-                            x.add(option);
-                        }
+                    const x = document.getElementById("genreSelect");
+                    var i = 0;
+                    for (i; i < response.length; i++) {
+                        const option = document.createElement("option");
+                        option.text = response[i]["genre_desc"];
+                        option.value = response[i]["genre_id"];
+                        x.add(option);
                     }
-                });
-            }
-        });
+                }
+            });
+        }
     });
 }
 
@@ -225,9 +222,6 @@ function bookAction(action, data) {
         sessionStorage.setItem("b_id", data.id);
         ulist('/view-book')
     }
-    else if (action === 'addbook') {
-        ulist('/book-genre')
-    }
     else {
         $('#deleteBookConfirm').modal();
         $('#deleteBook').val(data.id);
@@ -235,7 +229,7 @@ function bookAction(action, data) {
 }
 
 function booklist() {
-       //Delete Genre
+    //Delete Genre
     $('#deleteBook').click(function () {
         var id = $(this).val();
         remove_book(id);
@@ -258,7 +252,7 @@ function booklist() {
                     {"data": "genre"},
                     {
                         "defaultContent": "<button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
-                        "<button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
+                        "<button class=\"pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
                     }
                 ]
             });
@@ -375,6 +369,26 @@ function add_book() {
 }
 
 function add_book_genre_form() {
+    sessionStorage.removeItem("imgData");
+    const book_id = sessionStorage.getItem('b_id');
+    $.ajax({
+        url: "/book/" + book_id,
+        dataType: 'json',
+        crossDomain: true,
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (response) {
+            const bookname = response.book_name;
+            const description = response.description;
+            const image = response.image;
+
+            $('#bookname').val(bookname);
+            $('#description').val(description);
+            $("#image").attr("src", image);
+
+        }
+    });
 
     $.ajax({
         url: "/genre",
