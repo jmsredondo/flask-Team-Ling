@@ -270,14 +270,14 @@ api.add_resource(Comment_Rate_Book, '/rate')
 #
 #
 # api.add_resource(Get_Ratings, '/rate/<book_id>')
-
 # --------------------------------
 class Library_List(Resource):
+    @jwt_required
     def get(self):
-        return library.get_all_library(session['userid'])
-
-    def post(selfs):
-        return library.add_book_to_library(request, session['userid'])
+        return library.get_all_library(get_jwt_identity())
+    @jwt_required
+    def post(self):
+        return library.add_book_to_library(request, get_jwt_identity())
 
 
 api.add_resource(Library_List, '/library')
