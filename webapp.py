@@ -49,7 +49,7 @@ def check_if_token_revoked(decoded_token):
 @jwt.user_loader_error_loader
 @jwt.unauthorized_loader
 def my_expired_token_callback(response=None):
-    return redirect("/login")
+    return "Unauthorized"
 
 
 @app.route('/')
@@ -90,11 +90,11 @@ def ad_dashboard():
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
     if request.method == "GET":
-        identity = get_jwt_identity()
-        if identity:
-            return redirect('/')
-        else:
-            return uc.login()
+        if 'access_token_cookie' in request.cookies:
+            token = decode_token(request.cookies['access_token_cookie'])
+            if 'identity' in token:
+                return redirect('/')
+        return uc.login()
     else:
         form = LoginForm()
         # try:
@@ -137,7 +137,8 @@ def out():
 @app.route('/ulist', methods=['GET'])
 @jwt_required
 def users_list():
-    if 'token' in session:
+    identity = get_jwt_identity()
+    if identity == 'admin':
         return uc.users_list()
     else:
         return redirect('/login')
@@ -166,10 +167,7 @@ def validate():
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
-    if 'token' in session:
         return gc.genre()
-    else:
-        return redirect('/login')
 
 
 @app.route('/addgenre', methods=['GET'])
@@ -211,10 +209,7 @@ def deletebook(id):
 
 @app.route('/users', methods=['GET'])
 def users():
-    if 'token' in session:
-        return uc.users()
-    else:
-        return redirect('/login')
+    return uc.users()
 
 
 @app.route('/view-genre', methods=['GET'])
