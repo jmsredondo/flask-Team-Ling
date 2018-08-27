@@ -72,12 +72,6 @@
                         <p>Books</p>
                     </a>
                 </li>
-                <li>
-                    <a href="icons.html">
-                        <i class="pe-7s-science"></i>
-                        <p>Icons</p>
-                    </a>
-                </li>
 
             </ul>
         </div>
@@ -109,7 +103,7 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a onclick="ulist('/account')">
+                            <a href="#" onclick="ulist('/account')">
                                 Account
                             </a>
                         </li>
@@ -180,8 +174,24 @@
                     </div>
 
                     <script>
-                        dashboard()
+                        $(document).ready(function () {
+                            $.ajax({
+                                url: "/users-count",
+                                dataType: 'json',
+                                crossDomain: true,
+                                xhrFields: {
+                                    withCredentials: true
+                                },
+                                success: function (response) {
+                                    console.log(response);
+                                    $('#ucount').text(response.ucount);
+                                    $('#bcount').text(response.bcount);
+                                    $('#gcount').text(response.gcount);
+                                }
+                            })
+                        })
                     </script>
+
 
                 </div>
             </div>
@@ -258,6 +268,25 @@
     </div>
 </div>
 
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "/users-count",
+            dataType: 'json',
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                console.log(response);
+                $('#ucount').text(response.ucount);
+                $('#bcount').text(response.bcount);
+                $('#gcount').text(response.gcount);
+            }
+        })
+    })
+</script>
 
 <!--   Core JS Files   -->
 <script src="/static/admin/assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>

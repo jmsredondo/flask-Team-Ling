@@ -1,9 +1,9 @@
 import json
-from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 import requests
 from flask import render_template, redirect, url_for, request, session, make_response, jsonify, \
-    send_from_directory
+    send_from_directory, flash
 from flask_httpauth import HTTPBasicAuth
 from flask_login import current_user, logout_user, login_user, LoginManager, login_required
 from flask_sqlalchemy import SQLAlchemy
@@ -12,22 +12,42 @@ from werkzeug.urls import url_parse
 
 from app import app
 from forms import *
-from models import Book, Genre
+from models import Book, Genre,db
 
 auth = HTTPBasicAuth()
-db = SQLAlchemy()
 
 # Login
 login = LoginManager(app)
 login.login_view = 'login'
 
-
-def account():
+@jwt_required
+def account(request):
     # update row to database
-    user = User.query.filter_by(id=get_jwt_identity).first()
-    if user.check_password(request.json['oldpassword']):
-        user.password = generate_password_hash(request.json['newpassword'])
-        db.session.commit()
+    id = get_jwt_identity()
+    user = User.query.filter_by(id=id).first()
+    if request.json['newpassword'] == request.json['password2']:
+        if user.check_password(request.json['oldpassword']):
+            print(user.password_hash)
+            user.password_hash = generate_password_hash(request.json['newpassword'])
+            print(request.json['newpassword'])
+            print(user.password_hash)
+
+            db.session.commit()
+
+            obj = {
+                "status": "success",
+                "result": "You've successfully changed your password!"
+            }
+            result = jsonify(obj)
+            return result
+    else:
+        obj = {
+            "status": "fail",
+            "result": "Change password failed"
+        }
+
+        result = jsonify(obj)
+        return result
 
 
 # Register User
@@ -88,3 +108,11 @@ def users_count():
     result = jsonify(obj)
     result.status_code = 200
     return result
+
+def validate(username):
+    resp = requests.get('http://localhost:5000/users/'+username)
+    resp_dict = resp.json()
+    if 'username' in resp_dict:
+        return jsonify({'message': True})
+    else:
+        return jsonify({'message':False})

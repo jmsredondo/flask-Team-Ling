@@ -1,3 +1,4 @@
+<div id="flash"></div>
 <div class="col-md-2"></div>
 <div class="col-md-8 card">
     <div class="header">
@@ -9,15 +10,15 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="oldpassword">Old Password</label>
-                        <input id="oldpassword" type="password" class="form-control" name="oldpassword">
+                        <input required id="oldpassword" type="password" class="form-control" name="oldpassword">
                     </div>
                     <div class="form-group">
                         <label for="newpassword">New Password</label>
-                        <input id="newpassword" type="text" class="form-control" name="newpassword">
+                        <input required id="newpassword" type="password" class="form-control" name="newpassword">
                     </div>
                     <div class="form-group">
                         <label for="password2">Retype Password</label>
-                        <input id="password2" type="text" class="form-control" name="password2">
+                        <input required id="password2" type="password" class="form-control" name="password2">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -26,9 +27,10 @@
             </div>
 
             <div class="pull-right">
-                <button type="submit" class="btn btn-warning btn-fill" onclick="ulist('/')">Back
+                <button class="btn btn-warning btn-fill" onclick="ulist('/')">Back
                 </button>
-                <button type="submit" class="btn btn-default btn-fill" onclick="ulist('/')">
+                <button type="submit" class="btn btn-default btn-fill"
+                        onclick="ulist('/account')">
                     Submit
                 </button>
             </div>
@@ -39,34 +41,18 @@
 </div>
 
 <script>
-    $("#passwordform").validate({
-        rules: {
-            newpassword: {
-                required: true,
-                minlength: 6,
-                maxlength: 10,
-
-            },
-
-            password2: {
-                equalTo: "#password",
-                minlength: 6,
-                maxlength: 10
-            }
-
-
-        }
-    });
-
     $('form').submit(function (event) {
 
         const oldpassword = $('#oldpassword').val();
         const newpassword = $('#newpassword').val();
+        const password2 = $('#password2').val();
         const formData = JSON.stringify({
             "oldpassword": oldpassword,
-            "newpassword": newpassword
+            "newpassword": newpassword,
+            "password2": password2
         });
 
+        console.log(formData);
         // process the form
         $.ajax({
             type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
@@ -77,8 +63,23 @@
         })
         // using the done promise callback
             .done(function (data) {
+                $( "#success" ).remove();
+                $( "#fail" ).remove();
+
                 // log data to the console so we can see
-                console.log(data);
+                console.log(data.status);
+                if (data.status === 'fail') {
+                    $("#flash").append("<div id=\"success\" class=\"alert alert-danger\">\n" +
+                        "                                    <button type=\"button\" aria-hidden=\"true\" class=\"close\">×</button>\n" +
+                        "                                    <span>Failed to change password</span>\n" +
+                        "                                </div>");
+                } else {
+                    $("#flash").append("<div id=\"fail\" class=\"alert alert-success\">\n" +
+                        "                                    <button type=\"button\" aria-hidden=\"true\" class=\"close\">×</button>\n" +
+                        "                                    <span>You've successfully changed your password!</span>\n" +
+                        "                                </div>")
+                    $('#passwordform')[0].reset();
+                }
 
             });
 
