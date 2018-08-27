@@ -20,11 +20,7 @@ $(document).ready(function () {
     initusers();
     viewMyLibrary();
 
-    $('.openModal').click(function () {
-        console.log('test');
-    });
-
-    //Search function for book
+     //Search function for book
     $('#bookSearchH').click(function () {
         var searchValue = $('#inputValueH').val();
         $.ajax({
@@ -172,17 +168,6 @@ function viewMyLibrary() {
                 <div class="meta">
                     <div class="photo"
                          style="background-image: url(${data[i].image})"></div>
-                    <!--<ul class="details">-->
-                        <!--<li class="author"><a href="#">Jane Doe</a></li>-->
-                        <!--<li class="date">July. 15, 2015</li>-->
-                        <!--<li class="tags">-->
-                            <!--<ul>-->
-                                <!--<li><a href="#">Learn</a></li>-->
-                                <!--<li><a href="#">Code</a></li>-->
-                                <!--<li><a href="#">JavaScript</a></li>-->
-                            <!--</ul>-->
-                        <!--</li>-->
-                    <!--</ul>-->
                 </div>
                 <div class="description">
                     <h1>${data[i].bookName}</h1>
