@@ -127,73 +127,61 @@
             <div class="container-fluid">
                 <div id="div1" class="row">
 
-                    <div class="col-lg-4 col-md-6">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-comments fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div id="users-count"></div>
-                                        <div>Users Count</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a onclick="ulist('/userslist')">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
+                    <link href="/static/admin/assets/css/admin.css" rel="stylesheet"/>
+
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10 card">
+                        <div class="header">
+                            <h4 class="title"></h4>
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="panel panel-success">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-tasks fa-5x"></i>
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="circle-tile ">
+                                <a href="#">
+                                    <div class="circle-tile-heading dark-blue"><i class="fa fa-users fa-fw fa-3x"></i>
                                     </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div id="genre-count"></div>
-                                        <div>Genre Count</div>
-                                    </div>
+                                </a>
+                                <div class="circle-tile-content dark-blue">
+                                    <div class="circle-tile-description text-faded"> Users</div>
+                                    <div class="circle-tile-number text-faded " id="ucount"></div>
+                                    <a class="circle-tile-footer" onclick="ulist('/userslist')">More Info<i
+                                            class="fa fa-chevron-circle-right"></i></a>
                                 </div>
                             </div>
-                            <a onclick="ulist('/genres')">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="panel panel-danger">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-book fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div id="book-count"></div>
-                                        <div>Book Count</div>
-                                    </div>
+
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="circle-tile ">
+                                <a href="#">
+                                    <div class="circle-tile-heading red"><i class="fa fa-users fa-fw fa-3x"></i></div>
+                                </a>
+                                <div class="circle-tile-content red">
+                                    <div class="circle-tile-description text-faded"> Books</div>
+                                    <div class="circle-tile-number text-faded " id="bcount"></div>
+                                    <a class="circle-tile-footer" onclick="ulist('/admin-books')">More Info<i
+                                            class="fa fa-chevron-circle-right"></i></a>
                                 </div>
                             </div>
-                            <a onclick="ulist('/admin-books')">
-                                <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
+                        </div>
+
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="circle-tile ">
+                                <a href="#">
+                                    <div class="circle-tile-heading purple"><i class="fa fa-users fa-fw fa-3x"></i>
+                                    </div>
+                                </a>
+                                <div class="circle-tile-content purple">
+                                    <div class="circle-tile-description text-faded"> Genre</div>
+                                    <div class="circle-tile-number text-faded " id="gcount"></div>
+                                    <a class="circle-tile-footer" onclick="ulist('/genres')">More Info<i
+                                            class="fa fa-chevron-circle-right"></i></a>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
 
+                    <script>
+                        dashboard()
+                    </script>
 
                 </div>
             </div>
@@ -270,23 +258,6 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-            $.ajax({
-                url: "/users-count",
-                dataType: 'json',
-                crossDomain: true,
-                xhrFields: {
-                    withCredentials: true
-                },
-                success: function (response) {
-                    console.log(response);
-                    $("#users-count").text("hihihihih");
-                }
-            })
-        }
-    );
-</script>
 
 <!--   Core JS Files   -->
 <script src="/static/admin/assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
