@@ -155,7 +155,9 @@ def register():
 def reg():
     return uc.register_form()
 
-
+@app.route('/validate',methods=['POST'])
+def validate():
+    return uc.validate(requests)
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
@@ -208,6 +210,7 @@ def users():
         return uc.users()
     else:
         return redirect('/login')
+
 
 
 @app.route('/view-genre', methods=['GET'])
