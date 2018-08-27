@@ -118,45 +118,50 @@ function view_genre_form() {
 }
 
 function view_book_form() {
-    sessionStorage.removeItem("imgData");
-    const book_id = sessionStorage.getItem('b_id');
-    $.ajax({
-        url: "/book/" + book_id,
-        dataType: 'json',
-        crossDomain: true,
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function (response) {
-            const bookname = response.book_name;
-            const description = response.description;
-            const image = response.image;
+    $(document).ready(function () {
+        sessionStorage.removeItem("imgData");
+        const book_id = sessionStorage.getItem('b_id');
+        $.ajax({
+            url: "/book/" + book_id,
+            dataType: 'json',
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                const bookname = response.book_name;
+                const description = response.description;
+                const image = response.image;
 
-            $('#bookname').val(bookname);
-            $('#description').val(description);
-            $("#image").attr("src", image);
-        }
-    });
+                $('#bookname').val(bookname);
+                $('#description').val(description);
+                $("#image").attr("src", image);
 
-    $.ajax({
-        url: "/bg/" + book_id,
-        dataType: 'json',
-        crossDomain: true,
-        xhrFields: {
-            withCredentials: true
-        },
-        success: function (response) {
-            console.log(response.length);
 
-            const x = document.getElementById("genreSelect");
-            var i = 0;
-            for (i; i < response.length; i++) {
-                const option = document.createElement("option");
-                option.text = response[i]["genre_desc"];
-                option.value = response[i]["genre_id"];
-                x.add(option);
+                $.ajax({
+                    url: "/bg/" + book_id,
+                    dataType: 'json',
+                    crossDomain: true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function (response) {
+                        console.log(response.length);
+
+                        const x = document.getElementById("genreSelect");
+                        var i = 0;
+                        for (i; i < response.length; i++) {
+                            const option = document.createElement("option");
+                            option.text = response[i]["genre_desc"];
+                            option.value = response[i]["genre_id"];
+                            x.add(option);
+                        }
+                    }
+                });
             }
-        }
+        });
+
+
     });
 }
 
@@ -166,7 +171,8 @@ function ulist(x) {
         cache: false,
         dataType: "html",
         success: function (data) {
-            $("#div1").html(data);
+            // document.location.href = (x);
+            $("#div1").html(data)
         }
     });
 }
@@ -352,7 +358,7 @@ function add_book() {
                 // process the form
                 $.ajax({
                     type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
-                    url: '/genre/addbook/'+data.id, // the url where we want to POST
+                    url: '/genre/addbook/' + data.id, // the url where we want to POST
                     data: formData, // our data object
                     contentType: 'application/json', // what type of data do we send to the server
                     dataType: 'json', // what type of data do we expect back from the server
@@ -401,7 +407,7 @@ function add_book_genre_form() {
     });
 
     $('input#file').on('change', function () {
-        console.log(this);
+        // console.log(this);
 
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -410,27 +416,22 @@ function add_book_genre_form() {
             sessionStorage.setItem("imgData", thisImage);
         };
         reader.readAsDataURL(this.files[0]);
-    });
 
-    var pic;
-    if (sessionStorage.getItem("imgData") == null) {
-        pic = null
-    } else {
-        pic = sessionStorage.getItem("imgData")
-    }
+    });
 
     // process the form
     $('form').submit(function (event) {
 
         const bookname = $('#bookname').val();
         const description = $('#description').val();
-        const image = $('#image').val();
+        const image = $('#file').val();
         const genre = $("#genreSelect").val() || [];
         const formData = JSON.stringify({
             "bid": sessionStorage.getItem('b_id'),
             "bookname": bookname,
             "description": description,
-            "image": pic,
+            // "image": image,
+            "image": sessionStorage.getItem("imgData"),
             "genre": genre
         });
 
@@ -442,6 +443,78 @@ function add_book_genre_form() {
             data: formData, // our data object
             contentType: 'application/json', // what type of data do we send to the server
             dataType: 'json', // what type of data do we expect back from the server
+        })
+        // using the done promise callback
+            .done(function (data) {
+
+                // log data to the console so we can see
+                console.log(data);
+
+                // here we will handle errors and validation messages
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
+}
+
+function edit_genre_form() {
+
+    // process the form
+    $('form').submit(function (event) {
+
+        // get the form data
+        // there are many ways to get this data using jQuery (you can use the class or id also)
+        var formData = JSON.stringify({
+            "gid": sessionStorage.getItem("genre_id"),
+            "genre": $('#genre').val(),
+            "type": $('#type').val()
+        });
+
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: '/update_genre', // the url where we want to POST
+            data: formData, // our data object
+            contentType: 'application/json', // what type of data do we expect back from the server
+            dataType: 'json', // what type of data do we expect back from the server
+
+        })
+        // using the done promise callback
+            .done(function (data) {
+
+                // log data to the console so we can see
+                console.log(data);
+
+                // here we will handle errors and validation messages
+            });
+
+        // stop the form from submitting the normal way and refreshing the page
+        event.preventDefault();
+    });
+
+}
+
+function add_genre() {
+    // process the form
+    $('form').submit(function (event) {
+
+        // get the form data
+        // there are many ways to get this data using jQuery (you can use the class or id also)
+        var formData = JSON.stringify({
+            "genre": $('#genre').val(),
+            "type": $('#type').val()
+        });
+
+
+        // process the form
+        $.ajax({
+            type: 'POST', // define the type of HTTP verb we want to use (POST for our form)
+            url: '/genre', // the url where we want to POST
+            data: formData, // our data object
+            contentType: 'application/json', // what type of data do we expect back from the server
+            dataType: 'json', // what type of data do we expect back from the server
+
         })
         // using the done promise callback
             .done(function (data) {

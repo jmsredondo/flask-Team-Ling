@@ -15,21 +15,22 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="genre">Genre</label>
-                        <input disabled id="genre" type="text" class="form-control" placeholder="e.g. Fantasy">
+                        <input id="genre" type="text" class="form-control" placeholder="e.g. Fantasy">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="type">Type</label>
-                        <input disabled id="type" type="text" class="form-control" placeholder="e.g. Fiction">
+                        <input id="type" type="text" class="form-control" placeholder="e.g. Fiction">
                     </div>
                 </div>
             </div>
 
-            <div class="row pull-right">
-                <button type="submit" class="btn btn-warning btn-fill" onclick="ulist('/genres')">Back</button>
-                <button type="submit" class="btn btn-info btn-fill" onclick="ulist('/editgenre')">
-                    Edit
+            <div class="pull-right">
+                <button type="submit" class="btn btn-warning btn-fill" onclick="ulist('/genres')">Back
+                </button>
+                <button type="submit" class="btn btn-success btn-fill" onclick="ulist('/view-genre')">
+                    Update
                 </button>
             </div>
             <div class="clearfix"></div>
@@ -39,5 +40,6 @@
 </div>
 
 <script>
-    view_genre_form()
+    view_genre_form();
+    edit_genre_form()
 </script>
