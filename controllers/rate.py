@@ -5,7 +5,7 @@ from flask import jsonify, session
 # get bookid on request??
 
 
-def rate_and_comment(user_id, book_id , rate, comment=None):
+def rate_and_comment(user_id, book_id, rate, comment=None):
 
     if not Book.query.get(book_id):
         headers = {
@@ -37,7 +37,7 @@ def rate_and_comment(user_id, book_id , rate, comment=None):
                    'id': rate.id}
         response = jsonify(results)
         response.status_code = 200
-        return jsonify(response)
+        return response
 
 
 def get_all_book_ratings(bookid):
