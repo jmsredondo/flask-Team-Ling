@@ -8,7 +8,6 @@ from app import app
 from forms import RegistrationForm, LoginForm
 from services.controllers import Users_Controller as uc, \
     Genre_Controller as gc, Books_Controller as bc
-from models import User
 
 # Authentication
 from datetime import timedelta
@@ -109,7 +108,7 @@ def login_user():
     else:
         form = LoginForm()
         # try:
-            # fetch the user data
+        # fetch the user data
         json_user = {
             'username': form.username.data,
             'password': form.password.data
@@ -118,7 +117,6 @@ def login_user():
         response = requests.post('http://localhost:5000/users/login', json=json_user)
         response_info = response.json()
         decoded_token = decode_token(response_info['token'])
-
 
         response = make_response(redirect('/'))
         set_access_cookies(response, response_info['token'])
@@ -137,7 +135,7 @@ def out():
         #     'X-CSRF-TOKEN': request.cookies['csrf_access_token']
         # }
 
-        #response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
+        # response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
         response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
         response = make_response(redirect('/login'))
         unset_jwt_cookies(response)
@@ -210,7 +208,7 @@ def admin_books():
 def books():
     # if 'token' in session:
     if request.method == 'GET':
-        return bc.bo/oks()
+        return bc.books()
     else:
         return bc.post_books(requests)
 
@@ -279,5 +277,14 @@ def show_gen_form():
 def show_bookgenlist():
     return bc.bookgenrelist()
 
+
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    if request.method == 'GET':
+        return send_from_directory("templates", "admin/account_form.html")
+    else:
+        return uc.account()
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=8000)
+    app.run(debug=True, host='localhost', port=80)
