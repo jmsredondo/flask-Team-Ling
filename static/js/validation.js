@@ -1,50 +1,53 @@
 $(document).ready(function () {
     var usernamePattern = new RegExp('^[a-z][a-z_]+$');
     var emailPattern = new RegExp('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
-    var username = $('input[name=username]');
-    var email = $('input[name=email]');
-    username.on('input', function () {
-        var val = $(this).val();
-        if (val !== '') {
-            console.log(ifUnique('username',val))
-            if (usernamePattern.test(val) === true && ifUnique('username',val) === 0) {
-                    validate(username, true, '');
-            } else {
-                validate(username, false, 'Invalid Username');
-            }
+    var passwordPattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$');
+
+    $('#registerForm').submit(function (event) {
+        submit = false;
+        var username = $('input[name=username]').val();
+        var email = $('input[name=email]').val();
+        var password = $('input[name=password]').val();
+        var password2 = $('input[name=password2]').val();
+
+        var error = 0;
+        if (!validate(username, usernamePattern)) {
+            $('#username-errmsg').removeAttr('hidden');
+            error += 1;
+        } else {
+            $('#username-errmsg').attr('hidden', 'hidden');
         }
+        if (!validate(email, emailPattern)) {
+            $('#email-errmsg').removeAttr('hidden');
+            error += 1;
+        } else {
+            $('#email-errmsg').attr('hidden', 'hidden');
+        }
+        if (!validate(password, passwordPattern)) {
+            $('#password-errmsg').removeAttr('hidden');
+            error += 1;
+        }else{
+             $('#password-errmsg').attr('hidden', 'hidden');
+        }
+        if (password !== password2) {
+            $('#conf-password-errmsg').removeAttr('hidden');
+            error += 1;
+        }else {
+            $('#conf-password-errmsg').attr('hidden', 'hidden');
+        }
+        if (error > 1) {
+            $('err-msg').removeAttr('hidden');
+        } else {
+            submit = true;
+        }
+        return submit;
     });
-    email.on('keyup', function () {
-        var val = $(this).val();
-        if (val !== '') {
-            if (emailPattern.test(val) === true && ifUnique('email',val) === 0) {
-                    validate(email, true, '');
-            } else {
-                validate(email, false, 'Invalid Email');
-            }
 
-        }
-    })
 
-});
+})
+;
 
-function validate(element, result, message) {
-    if (result === true) {
-        element.removeClass('input-invalid');
-        element.closest('.form-group').find('span').html(message);
-    } else {
-        element.addClass('input-invalid');
-        element.closest('.form-group').find('span').html(message);
-    }
-}
 
-function ifUnique(field, val) {
-    $.ajax({
-        url: '/validate',
-        data: {'field':field,'value': val},
-        dataType: 'JSON',
-        success: function (result) {
-
-        }
-    });
+function validate(field, pattern) {
+    return pattern.test(field);
 }
