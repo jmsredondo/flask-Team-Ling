@@ -77,7 +77,9 @@ def add_new_book(request):
         response.headers = headers
         return response
     else:
-        b = Book(bookName=request.json['bookname'], image=request.json['image'], description=request.json['description'])
+        b = Book(bookName=request.json['bookname'],
+                 image=request.json['image'],
+                 description=request.json['description'])
         Book.save(b)
         b = Book.query.filter_by(bookName=request.json['bookname']).first()
         results = {'book_name': b.bookName, 'image': b.image, 'description': b.description, "id": b.id}

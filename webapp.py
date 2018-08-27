@@ -1,14 +1,20 @@
 import os
 
 import requests
-from flask import request, session, redirect, url_for, render_template, make_response, jsonify, send_from_directory
+from flask import request, session, redirect, flash, url_for, render_template, make_response, jsonify, send_from_directory
 from flask_login import LoginManager, logout_user, login_user
-
 from app import app
 from forms import RegistrationForm, LoginForm
 from services.controllers import Users_Controller as uc, \
     Genre_Controller as gc, Books_Controller as bc
 from models import User
+
+#Authentication
+from datetime import timedelta
+from flask_jwt_extended import (
+    JWTManager, decode_token, jwt_required, set_access_cookies, unset_jwt_cookies
+)
+from blacklist_helpers import is_token_revoked
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 
@@ -16,6 +22,36 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 login = LoginManager(app)
 login.login_view = 'login'
 
+
+# ------------- Authentication  Setup--------
+jwt = JWTManager(app)
+
+#setup
+ACCESS_EXPIRES = timedelta(minutes=15)
+app.config['JWT_COOKIE_SECURE'] = False
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = ACCESS_EXPIRES
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access']
+app.config['JWT_SECRET_KEY'] = 'TeamLing96'
+
+
+# Define our callback function to check if a token has been revoked or not
+@jwt.token_in_blacklist_loader
+def check_if_token_revoked(decoded_token):
+    return is_token_revoked(decoded_token)
+
+@jwt.expired_token_loader
+@jwt.invalid_token_loader
+@jwt.revoked_token_loader
+@jwt.user_loader_error_loader
+@jwt.unauthorized_loader
+def my_expired_token_callback(response):
+    print response
+    return jsonify({
+        "message": "Authentication information is missing or invalid"
+    }), 401
 
 @app.route('/')
 def landing():
@@ -60,7 +96,33 @@ def login_user():
         else:
             return redirect('/index')
     else:
-        return uc.post_login()
+        form = LoginForm()
+        try:
+            # fetch the user data
+            user = User.query.filter_by(username=form.username.data).first()
+            if user is None or not user.check_password(form.password.data):
+                flash('Invalid username/password supplied'), 400
+                return redirect('/login')
+
+            json_user = {
+                'username': user.username,
+                'password': user.password_hash
+            }
+
+            info = requests.post('http://localhost:5000/users/login', json=json_user)
+            session['token'] = info.text
+            session['userid'] = user.id
+            if user.role == "admin":
+                return redirect('/dashboard')
+            else:
+                return redirect('/')
+        except Exception as e:
+            print(e)
+            responseObject = {
+                'status': 'fail',
+                'message': 'Try again'
+            }
+            return make_response(jsonify(responseObject)), 500
 
 
 @app.route('/logout')
@@ -93,7 +155,9 @@ def register():
 def reg():
     return uc.register_form()
 
-
+@app.route('/validate',methods=['POST'])
+def validate():
+    return uc.validate(requests)
 # Books
 @app.route('/genres', methods=['GET'])
 def genre():
@@ -146,6 +210,7 @@ def users():
         return uc.users()
     else:
         return redirect('/login')
+
 
 
 @app.route('/view-genre', methods=['GET'])

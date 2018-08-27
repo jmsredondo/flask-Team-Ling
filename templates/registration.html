@@ -14,9 +14,6 @@
           crossorigin="anonymous">
     <title> BookLib - Register</title>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/static/landing/css/loader.css">
     <link rel="stylesheet" type="text/css" href="/static/login/login.css">
     <style rel="stylesheet" type="text/css">
@@ -47,9 +44,11 @@
         {#background-color: whitesmoke;#}
 
         }
+
         .white-text {
             color: white;
         }
+
         .register-wrap {
             position: relative;
             margin-top: 1%;
@@ -86,10 +85,14 @@
 {% from "./includes/_formhelpers.html" import render_field %}
 {% include "loader.html" %}
 {# remove class hidden #}
-<div class="container validation-wrap ">
+<div id="err-msg" class="container validation-wrap">
     <div class="row">
         <div class=" col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-                <p> Invalid username  </p>
+            <p id="username-errmsg" hidden> Invalid username</p>
+            <p id="email-errmsg" hidden> Invalid email </p>
+            <p id="password-errmsg" hidden> Invalid password </p>
+            <p id="conf-password-errmsg" hidden> Password does not match </p>
+
         </div>
     </div>
 </div>
@@ -99,7 +102,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 
-            <form role="form" action="/register" method="POST" >
+            <form id="registerForm" role="form" action="/register" method="POST">
                 <h2 class="white-text">Please Sign Up
                     <small class="white-text">It's free and always will be.</small>
                 </h2>
@@ -116,14 +119,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    {{ render_field(form.phone,class_='form-control input-lg', placeholder='Enter Phone number') }}<br>
-                </div>
+                <span class="white-text">must be lowercase letter,only underscore is allowed,must start with letter</span>
+                                        </br>
                 <div class="form-group">
                     {{ render_field(form.username,class_='form-control input-lg', placeholder='Username') }}
                 </div>
                 <div class="form-group">
                     {{ render_field(form.email,class_='form-control input-lg', placeholder='Email') }}
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 col-sm-12 align-content-center">
+                        <span class="white-text">at least 8 characters,1 numeric character,1 lowercase letter,1 uppercase letter 1 special character</span>
+                        </br>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
@@ -137,6 +145,10 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    {{ render_field(form.phone,class_='form-control input-lg', placeholder='Enter Phone number') }}<br>
+                </div>
                 <hr class="colorgraph">
                 <div class="row">
                     {{ render_field(form.submit,type="submit", value="Register", class="col-xs-6 col-md-6 btn btn-primary btn-block btn-lg") }}
@@ -145,10 +157,12 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="/static/landing/js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="/static/landing/js/jquery-migrate-1.2.1.min.js"></script>
-
-<script src="/static/landing/js/main.js" type="application/javascript" rel="script"></script>
 </body>
+<footer>
+    <script src="/static/landing/js/jquery-1.10.1.min.js"></script>
+    <script src="/static/landing/js/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/static/js/3.3.7/bootstrap.min.js"></script>
+    <script src="/static/landing/js/main.js"></script>
+    <script src="/static/js/validation.js"></script>
+</footer>
 </html>

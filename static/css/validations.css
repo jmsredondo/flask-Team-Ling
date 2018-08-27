@@ -1,0 +1,18 @@
+label {
+  margin-bottom: 0;
+}
+
+.label-invalid {
+  color: #FF0000;
+}
+
+
+.input-valid {
+  color: #70D572;
+  border: 2px solid #70D572;
+}
+
+.input-invalid {
+  color: #FF0000;
+  border: 2px solid #FF0000;
+}
