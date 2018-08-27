@@ -55,7 +55,7 @@ def my_expired_token_callback(response=None):
     if 'access_token_cookie' in request.cookies:
         return logout()
     else:
-        return jsonify({'message': 'Internal Server Error'}), 500
+        return uc.login()
 
 
 #------Admin Routes -------
