@@ -12,14 +12,13 @@ function create_book() {
 
 function remove_book(id) {
     $.ajax({
-        type: "DELETE",
-        url: '/book/'+id,
-        success: function () {
-            ulist('/book');
-            $('#deleteBookConfirm').modal('hide');
-
-        },
-    });
+        url: '/book/' + id,
+        method: "DELETE",
+        dataType: "JSON"
+    }).done(function (data) {
+        ulist('/book');
+        $('#deleteBookConfirm').modal('hide');
+    })
 }
 
 
@@ -225,9 +224,6 @@ function bookAction(action, data) {
         sessionStorage.setItem("b_id", data.id);
         ulist('/view-book')
     }
-    else if (action === 'addbook') {
-        ulist('/book-genre')
-    }
     else {
         $('#deleteBookConfirm').modal();
         $('#deleteBook').val(data.id);
@@ -235,7 +231,7 @@ function bookAction(action, data) {
 }
 
 function booklist() {
-       //Delete Genre
+    //Delete Genre
     $('#deleteBook').click(function () {
         var id = $(this).val();
         remove_book(id);
@@ -258,7 +254,7 @@ function booklist() {
                     {"data": "genre"},
                     {
                         "defaultContent": "<button class=\"pe-7s-look btn btn-info btn-fill\" value=\"view\"></button>\n" +
-                        "<button class=\"btnDeleteBook pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
+                        "<button class=\"pe-7s-trash btn btn-danger btn-fill\" value=\"delete\"></button>\n"
                     }
                 ]
             });

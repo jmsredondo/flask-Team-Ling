@@ -205,6 +205,7 @@
 
 
 </body>
+
 <!-- Modal -->
 <div class="modal fade" id="deleteGenreConfirm" tabindex="-1" role="dialog" aria-labelledby="deleteGenreConfirm"
      aria-hidden="true">
@@ -233,7 +234,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteGenreLabel">Confirmation Dialog</h5>
+                <h5 class="modal-title" id="deleteBookLabel">Confirmation Dialog</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -248,15 +249,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(function () {
-        $('ul.nav li').on('click', function () {
-            $(this).parent().find('li.active').removeClass('active');
-            $(this).addClass('active');
-        });
-    });
-</script>
 
 <!--   Core JS Files   -->
 <script src="/static/admin/assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
