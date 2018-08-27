@@ -13,7 +13,8 @@ from models import User
 # Authentication
 from datetime import timedelta
 from flask_jwt_extended import (
-    JWTManager, decode_token, jwt_required, set_access_cookies, unset_jwt_cookies
+    JWTManager, decode_token, jwt_required, set_access_cookies, unset_jwt_cookies,
+    get_jwt_claims
 )
 from blacklist_helpers import is_token_revoked
 
@@ -57,9 +58,14 @@ def my_expired_token_callback(response):
 
 @app.route('/')
 def landing():
-    if 'token' in session:
-        token = session['token']
-        return render_template('landing/landing.html', token=token)
+    claims = get_jwt_claims()
+
+    if claims:
+        if claims['role'] == 'user':
+            token = 'yeah'
+            return render_template('landing/landing.html', token=token)
+        elif claims['role'] == 'admin':
+            return redirect('/dashboard')
     else:
         return render_template('landing/landing.html', token=None)
 
@@ -77,11 +83,14 @@ def index():
 
 
 @app.route('/dashboard', methods=['GET'])
+@jwt_required
 def dashboard():
-    if 'token' in session:
-        return render_template('admin/index.html', title='Home', user='Hi Admin!', page='Dashboard')
+    claims = get_jwt_claims()
+    if claims:
+        if claims['role'] == 'admin':
+            return render_template('admin/index.html', title='Home', user='Hi Admin!', page='Dashboard')
     else:
-        return redirect('/login')
+        return redirect('/')
 
 
 @app.route('/ad-dashboard', methods=['GET'])
@@ -99,40 +108,42 @@ def login_user():
             return redirect('/index')
     else:
         form = LoginForm()
-        try:
+        # try:
             # fetch the user data
-            user = User.query.filter_by(username=form.username.data).first()
-            if user is None or not user.check_password(form.password.data):
-                flash('Invalid username/password supplied'), 400
-                return redirect('/login')
+        json_user = {
+            'username': form.username.data,
+            'password': form.password.data
+        }
 
-            json_user = {
-                'username': user.username,
-                'password': user.password_hash
-            }
+        response = requests.post('http://localhost:5000/users/login', json=json_user)
+        response_info = response.json()
+        decoded_token = decode_token(response_info['token'])
 
-            info = requests.post('http://localhost:5000/users/login', json=json_user)
-            session['token'] = info.text
-            session['userid'] = user.id
-            if user.role == "admin":
-                return redirect('/dashboard')
-            else:
-                return redirect('/')
-        except Exception as e:
-            print(e)
-            responseObject = {
-                'status': 'fail',
-                'message': 'Try again'
-            }
-            return make_response(jsonify(responseObject)), 500
+
+        response = make_response(redirect('/'))
+        set_access_cookies(response, response_info['token'])
+        return response
+        # except:
+        #     return 'Invalid username/password supplied'
 
 
 @app.route('/logout')
 def out():
-    session.pop('token', None)
-    session.clear()
-    requests.post('http://localhost:5000/users/logout')
-    return redirect('/login')
+    try:
+        to_send_cookies = {
+            'access_token_cookie': request.cookies['access_token_cookie']
+        }
+        # to_send_headers = {
+        #     'X-CSRF-TOKEN': request.cookies['csrf_access_token']
+        # }
+
+        #response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
+        response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
+        response = make_response(redirect('/login'))
+        unset_jwt_cookies(response)
+        return response
+    except:
+        return redirect('/login')
 
 
 @app.route('/ulist', methods=['GET'])
@@ -199,7 +210,7 @@ def admin_books():
 def books():
     # if 'token' in session:
     if request.method == 'GET':
-        return bc.books()
+        return bc.bo/oks()
     else:
         return bc.post_books(requests)
 
@@ -269,4 +280,4 @@ def show_bookgenlist():
     return bc.bookgenrelist()
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=80)
+    app.run(debug=True, host='localhost', port=8000)

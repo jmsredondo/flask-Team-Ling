@@ -20,11 +20,7 @@ $(document).ready(function () {
     initusers();
     viewMyLibrary();
 
-    $('.openModal').click(function () {
-        console.log('test');
-    });
-
-    //Search function for book
+     //Search function for book
     $('#bookSearchH').click(function () {
         var searchValue = $('#inputValueH').val();
         $.ajax({

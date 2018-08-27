@@ -5,9 +5,9 @@ from flask import request, Flask, session, jsonify
 from flask_cors import CORS
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
-
+from models import User
 from config import app_config
-from controllers import user, book, genre, library
+from controllers import user, book, genre, library, rate
 
 #Authentication
 from datetime import timedelta
@@ -18,7 +18,7 @@ from blacklist_helpers import (
 )
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
-    get_jwt_identity
+    get_jwt_identity, set_access_cookies
 )
 
 # initialize sql-alchemy
@@ -66,24 +66,52 @@ def my_expired_token_callback(response):
         "message": "Authentication information is missing or invalid"
     }), 401
 
+@jwt.user_claims_loader
+def add_claims_to_access_token(identity):
+    user = User.query.get(identity)
+    return {
+        'role': user.role
+    }
 # # ----------- User API URI -----------
 
 # User login
 class Login(Resource):
-    # @app.route('/users/login', methods=['GET', 'POST'])
     def post(self):
-        return user.login(request)
+        try:
+            user = User.query.filter_by(username=request.json['username']).first()
+            if user and user.check_password(request.json['password']):
+                access_token = create_access_token(identity=user.id)
+                # Store the tokens in our store with a status of not currently revoked.
+                add_token_to_database(access_token, app.config['JWT_IDENTITY_CLAIM'])
+                return jsonify({'token': access_token})
+            else:
+                return "Invalid username/password supplied"
+        except:
+            return "Invalid username/password supplied"
 
-api.add_resource(Login, '/users/loginapi')
+api.add_resource(Login, '/users/login')
 
 
 # User login
 class Logout(Resource):
-    # @app.route('/users/login', methods=['GET', 'POST'])
+    @jwt_required
     def post(self):
-        session.clear()
-        return "logged out"
-        #return user.log_out()
+        user_identity = get_jwt_identity()
+        try:
+            token = TokenBlacklist.query.filter_by(user_identity=user_identity, revoked=False).first()
+            revoke_token(token.id, user_identity)
+            response = app.response_class(
+                response="OK",
+                status=200
+            )
+            return response
+        except TokenNotFound:
+            response = app.response_class(
+                response="Invalid token",
+                status=400
+            )
+            return response
+
 
 
 api.add_resource(Logout, '/users/logout')
@@ -208,13 +236,14 @@ api.add_resource(Add_Book_Genra, '/genre/addbook/<id>')
 # ----------- Rate API URI -----------
 
 # # Comment/Rate the book
-# class Comment_Rate_Book(Resource):
-# # @app.route('/rate', methods=['POST'])
-#     def post(self):
-#         return rate.rate_book()
+class Comment_Rate_Book(Resource):
+# @app.route('/rate', methods=['POST'])
+    def post(self):
+        rate_object = request.get_json()
+        return rate.rate_book(rate_object)
 #
 #
-# api.add_resource(Comment_Rate_Book, '/rate')
+api.add_resource(Comment_Rate_Book, '/rate')
 #
 #
 # # Get all ratings on the book

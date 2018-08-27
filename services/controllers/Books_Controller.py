@@ -64,3 +64,4 @@ def deletebook(id):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     # return render_template('book_view.html', title='Genre')
+

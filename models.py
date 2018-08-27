@@ -63,7 +63,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(120), default='user')
     password_hash = db.Column(db.String(128))
     balance = db.Column(db.Float, nullable=True, default=0)
-    user_id = db.relationship('Rate', backref='user', lazy=True)
+    user_rate = db.relationship('Rate', backref='user', lazy=True)
     user_library = db.relationship('Book', secondary=library, backref=db.backref('user'))
 
     # JSON OBJECT
