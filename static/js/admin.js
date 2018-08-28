@@ -67,7 +67,7 @@ function genrelist() {
     });
     var count = 0;
     $.ajax({
-        url: "http://localhost:9501/genre",
+        url: "http://localhost:5056/genre",
         dataType: 'json',
         crossDomain: true,
         xhrFields: {

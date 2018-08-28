@@ -85,7 +85,7 @@
         $("#submit-register").on('click', function () {
             // send ajax
             $.ajax({
-                url: 'http://localhost:9501/users', // url where to submit the request
+                url: 'http://localhost:5056/users', // url where to submit the request
                 type: "POST", // type of action POST || GET
                 dataType: 'json', // data type
                 data: $("#register-user").serialize(), // post data || get data
