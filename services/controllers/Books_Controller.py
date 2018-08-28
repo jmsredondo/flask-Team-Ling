@@ -42,7 +42,7 @@ def post_books(requests):
         'description': form.description.data,
     }
 
-    requests.post('http://localhost:5000/book', json=json)
+    requests.post('http://localhost:5056/book', json=json)
     return redirect('/login')
 
 
