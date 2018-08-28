@@ -237,7 +237,7 @@ def login_user():
             'password': form.password.data
         }
 
-        resp = requests.post('http://localhost:5056/users/login', json=json_user)
+        resp = requests.post('http://localhost:5057/users/login', json=json_user)
 
         response_info = resp.json()
         response = make_response(redirect('/'))
@@ -351,7 +351,7 @@ def logout():
     # }
 
     # response = requests.post('/users/logout', cookies=to_send_cookies, headers=to_send_headers)
-    requests.post('http://localhost:5056/users/logout', cookies=to_send_cookies)
+    requests.post('http://localhost:5057/users/logout', cookies=to_send_cookies)
     response = make_response(redirect('/login'))
     unset_jwt_cookies(response)
     session.clear()
