@@ -238,6 +238,7 @@ def login_user():
         }
 
         resp = requests.post('http://localhost:5056/users/login', json=json_user)
+
         response_info = resp.json()
         response = make_response(redirect('/'))
         if 'token' in response_info:

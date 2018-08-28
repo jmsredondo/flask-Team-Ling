@@ -111,6 +111,7 @@ def users_count():
 
 def validate(username):
     resp = requests.get('http://localhost:5056/users/'+username)
+
     resp_dict = resp.json()
     if 'username' in resp_dict:
         return jsonify({'message': True})
