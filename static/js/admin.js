@@ -67,7 +67,7 @@ function genrelist() {
     });
     var count = 0;
     $.ajax({
-        url: "http://localhost:5000/genre",
+        url: "/genre",
         dataType: 'json',
         crossDomain: true,
         xhrFields: {
@@ -185,7 +185,7 @@ function genreAction(action, data) {
 
 function users_list() {
     $.ajax({
-        url: "http://localhost:5000/users-list",
+        url: "/users-list",
         dataType: 'json',
         crossDomain: true,
         xhrFields: {

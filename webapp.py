@@ -237,7 +237,7 @@ def login_user():
             'password': form.password.data
         }
 
-        resp = requests.post('http://localhost:5000/users/login', json=json_user)
+        resp = requests.post('/users/login', json=json_user)
         response_info = resp.json()
         response = make_response(redirect('/'))
         if 'token' in response_info:
@@ -349,8 +349,8 @@ def logout():
     #     'X-CSRF-TOKEN': request.cookies['csrf_access_token']
     # }
 
-    # response = requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies, headers=to_send_headers)
-    requests.post('http://localhost:5000/users/logout', cookies=to_send_cookies)
+    # response = requests.post('/users/logout', cookies=to_send_cookies, headers=to_send_headers)
+    requests.post('/users/logout', cookies=to_send_cookies)
     response = make_response(redirect('/login'))
     unset_jwt_cookies(response)
     session.clear()

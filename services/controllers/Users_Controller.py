@@ -72,7 +72,7 @@ def redirect_login(requests):
         'role': 'user'
     }
 
-    requests.post('http://localhost:5000/users', json=json)
+    requests.post('/users', json=json)
     return redirect('/login')
 
 
@@ -110,7 +110,7 @@ def users_count():
     return result
 
 def validate(username):
-    resp = requests.get('http://localhost:5000/users/'+username)
+    resp = requests.get('/users/'+username)
     resp_dict = resp.json()
     if 'username' in resp_dict:
         return jsonify({'message': True})
