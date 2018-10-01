@@ -3,7 +3,6 @@
 /venv
 /migrations
 .env
-app.db
 /migrations
 *.pyc
 
