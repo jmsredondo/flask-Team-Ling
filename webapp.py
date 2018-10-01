@@ -16,7 +16,7 @@ from flask_jwt_extended import (
     JWTManager, decode_token, jwt_required, set_access_cookies, unset_jwt_cookies,
     get_jwt_claims, get_jwt_identity
 )
-from blacklist_helpers import is_token_revoked, prune_database
+from blacklist_helpers import (is_token_revoked, prune_database)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'chardeanheinrichdanzel')
 app.config.from_object(app_config['development'])
@@ -237,7 +237,7 @@ def login_user():
             'password': form.password.data
         }
 
-        resp = requests.post('/users/login', json=json_user)
+        resp = requests.post('http://localhost:9500/users/login', json=json_user)
 
         response_info = resp.json()
         response = make_response(redirect('/'))
